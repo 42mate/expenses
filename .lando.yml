@@ -1,0 +1,10 @@
+name: myexpenses-2
+recipe: laravel
+config:
+  webroot: src/
+
+services:
+  mail:
+    type: mailhog:v1.0.0
+    portforward: false
+    hogfrom: []

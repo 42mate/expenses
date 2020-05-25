@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+@import "boostrap_variables";
+
+@import "~bootstrap/scss/bootstrap";
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+@import "sb-admin-2/sb-admin-2";
+
+@import "~datatables.net-dt";
+
+a:hover {
+  text-decoration: none;
+}
+
+.title-brand a {
+  color: #fff;
+  font-size: 40px;
+  text-transform: uppercase;
+
+}
