@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class CategoriesDropDown extends Component
@@ -18,7 +19,7 @@ class CategoriesDropDown extends Component
     {
         $this->name = $name;
         $this->selected = $selected;
-        $this->categories = Category::all();
+        $this->categories = Category::where('user_id', Auth::id())->get();
     }
 
     /**

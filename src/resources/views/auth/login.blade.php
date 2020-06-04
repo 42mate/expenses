@@ -2,7 +2,7 @@
 @section('content')
     <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
     <div class="col-lg-6 p-5">
-        <h2 class="mb-4">Sigin</h2>
+        <h2 class="mb-4">Sign in</h2>
 
         <form method="POST" action="{{ route('login') }}" class="mt-5 mb-5">
                 @csrf
@@ -54,7 +54,7 @@
                 <div class="form-group row mb-3">
                     <div class="col-md-8 offset-md-4">
                         <button type="submit" class="btn btn-primary block ">
-                            {{ __('Login') }} <i class="fas fa-sign-in-alt"></i>
+                            {{ __('Sign in') }} <i class="fas fa-sign-in-alt"></i>
 
                         </button>
                     </div>
@@ -69,7 +69,7 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <a href="{{ route('register') }}">
-                            Create a new account
+                            Register
                         </a>
                     </div>
                 </div>

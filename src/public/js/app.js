@@ -101665,7 +101665,8 @@ __webpack_require__(/*! ./charts/charts */ "./resources/js/charts/charts.js"); /
 
 $(document).ready(function () {
   $('.data-table').DataTable({
-    "order": []
+    "order": [],
+    responsive: false
   });
 });
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -101732,7 +101733,12 @@ $(document).ready(function () {
     axios.get(apiDataSource).then(function (response) {
       var chart = new Chart(ctx, {
         type: $e.attr('type'),
-        data: response.data.data
+        data: response.data.data,
+        options: {
+          legend: {
+            display: $e.attr('show_legend')
+          }
+        }
       });
     });
   });

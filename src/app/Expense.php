@@ -84,7 +84,7 @@ class Expense extends Model
     public static function getExpensesByCategory($userId) {
         return DB::select('SELECT c.category, SUM(e.amount) as total 
             FROM categories c INNER JOIN expenses e ON e.category_id = c.id
-            WHERE e.created_at BETWEEN ? AND ?
+            WHERE e.date BETWEEN ? AND ?
             AND e.user_id = ?
             GROUP BY 1
             ORDER BY 2', [

@@ -14,6 +14,11 @@ $(document).ready(function() {
           var chart = new Chart(ctx, {
             type: $e.attr('type'),
             data: response.data.data,
+            options: {
+              legend: {
+                display: $e.attr('show_legend')
+              }
+            }
           });
         });
 

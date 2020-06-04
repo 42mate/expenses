@@ -12,7 +12,7 @@
             </li>
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="{{ route('login') }}" >
-                    Login
+                    Sign In
                 </a>
             </li>
         @else

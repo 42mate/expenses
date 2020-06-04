@@ -91,7 +91,10 @@
                                         <h6 class="m-0 font-weight-bold text-primary">Expenses by categories</h6>
                                     </div>
                                     <div class="card-body">
-                                       <canvas class="chart" type="pie" data="/api/v1/charts/categories" width="100%" height="auto">
+                                       <canvas class="chart" type="pie" data="/api/v1/charts/categories"
+                                               width="100%"
+                                               height="100px"
+                                               show_legend="0">
 
                                        </canvas>
                                     </div>
