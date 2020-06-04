@@ -23,6 +23,7 @@ class ExpenseController extends Controller
         $request->validate([
             'amount'=> 'required|numeric',
             'category_id'=>'required|numeric',
+            'description' => 'required',
         ]);
 
         Expense::create([
