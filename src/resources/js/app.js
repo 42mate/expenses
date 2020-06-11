@@ -14,7 +14,9 @@ require('./charts/charts');
 $(document).ready(function() {
   $('.data-table').DataTable({
     "order" : [],
-    responsive: false,
+    responsive: {
+      details: false
+    }
   });
 });
 

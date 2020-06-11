@@ -9,6 +9,17 @@
     };
   });
 
+  $('#sideMenuToggle').click(function() {
+    var sidebar = $('#accordionSidebar');
+    if (sidebar.hasClass('d-none')) {
+      sidebar.removeClass('d-none');
+    }
+    else {
+      sidebar.addClass('d-none');
+    }
+  });
+
+
   // Close any open menu accordions when window is resized below 768px
   $(window).resize(function() {
     if ($(window).width() < 768) {

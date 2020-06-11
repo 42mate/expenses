@@ -101666,7 +101666,9 @@ __webpack_require__(/*! ./charts/charts */ "./resources/js/charts/charts.js"); /
 $(document).ready(function () {
   $('.data-table').DataTable({
     "order": [],
-    responsive: false
+    responsive: {
+      details: false
+    }
   });
 });
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -101766,6 +101768,15 @@ $(document).ready(function () {
     }
 
     ;
+  });
+  $('#sideMenuToggle').click(function () {
+    var sidebar = $('#accordionSidebar');
+
+    if (sidebar.hasClass('d-none')) {
+      sidebar.removeClass('d-none');
+    } else {
+      sidebar.addClass('d-none');
+    }
   }); // Close any open menu accordions when window is resized below 768px
 
   $(window).resize(function () {

@@ -28,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/expense/{expense}', 'ExpenseController@view')->name('expense.view');
 
+    Route::get('/expense/{expense}/edit', 'ExpenseController@edit')->name('expense.edit');
+
+    Route::put('/expense/{expense}', 'ExpenseController@update')->name('expense.update');
+
+
     Route::get('/expense', 'ExpenseController@index')->name('expense.index');
 
     Route::get('/category', 'CategoryController@index')->name('category');

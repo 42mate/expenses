@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
     <!-- Custom fonts for this template-->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
@@ -18,7 +18,7 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion d-none d-sm-block" id="accordionSidebar">
         @section('sidebar')
             @include('includes.sidebar')
         @show

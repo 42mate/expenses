@@ -16,7 +16,7 @@ class ExpenseController extends Controller
     }
 
     public function create() {
-        return view('pages.expense.create');
+        return view('pages.expense.form');
     }
 
     public function store(Request $request) {
@@ -35,6 +35,33 @@ class ExpenseController extends Controller
         ]);
 
         return redirect('/')->with('success', 'Expense saved!');
+    }
+
+    public function edit(Expense $expense) {
+        return view('pages.expense.form', [
+            'model' => $expense,
+        ]);
+    }
+
+    public function update(Request $request, Expense $expense) {
+        $request->validate([
+            'amount'=> 'required|regex:/^\d*(\.\d{2})?$/',
+            'category_id'=>'required|numeric',
+            'description' => 'required',
+        ]);
+
+        $expense->fill([
+            'amount' => $request->amount,
+            'date' => ($request->date),
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+        ]);
+
+        $expense->save();
+
+        return redirect(route('expense.view', ['expense' => $expense->id]))
+            ->with('success', 'Expense Updated!');
+
     }
 
     public function view(Expense $expense) {

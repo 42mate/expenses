@@ -4,8 +4,7 @@
     <div class="content">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
+                <div class="">
 
                     <div class="card-body">
                         <div class="row">
@@ -80,20 +79,20 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row row-eq-height">
 
                             <!-- Content Column -->
-                            <div class="col-lg-6 mb-4">
+                            <div class="col-lg-6 ">
 
                                 <!-- Project Card Example -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Expenses by categories</h6>
+                                        <h6 class="m-0 ">Expenses by categories</h6>
                                     </div>
                                     <div class="card-body">
                                        <canvas class="chart" type="pie" data="/api/v1/charts/categories"
                                                width="100%"
-                                               height="100px"
+                                               height="80px"
                                                show_legend="0">
 
                                        </canvas>
@@ -111,12 +110,12 @@
                                         <div class="table">
                                             @forelse ($expenses as $expense)
                                                 @if ($loop->first)
-                                                    <table class="table table-bordered data-table" width="100%" cellspacing="0">
+                                                    <table class="table table-bordered data-table display responsive " width="100%" cellspacing="0">
                                                     <thead>
                                                     <tr>
                                                         <th>Date</th>
-                                                        <th>Category</th>
-                                                        <th>Total</th>
+                                                        <th class="d-block d-sm-table-cell">Category</th>
+                                                        <th class="d-block d-sm-table-cell font-weight-bold">Total</th>
                                                     </tr>
                                                     </thead>
                                                 @endif
@@ -126,8 +125,8 @@
                                                             {{ date('Y-m-d', strtotime($expense->date)) }}
                                                             </a>
                                                         </td>
-                                                        <td>{{ $expense->category->category }}</td>
-                                                        <td>$ {{ $expense->amount }}</td>
+                                                        <td class="d-block d-sm-table-cell">{{ $expense->category->category }}</td>
+                                                        <td class="d-block d-sm-table-cell font-weight-bold text-right">$ {{ $expense->amount }}</td>
                                                     </tr>
                                                 @if ($loop->last)
                                                     </table>

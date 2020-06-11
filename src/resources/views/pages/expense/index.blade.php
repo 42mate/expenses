@@ -1,11 +1,11 @@
 @extends('theme/master_layout')
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
+    <div class="">
+        <h1 class="mb-3">
             Expenses
-        </div>
-        <div class="card-body">
+        </h1>
+        <div class="">
             <div class="table">
                 @forelse ($expenses as $expense)
                     @if ($loop->first)
@@ -13,21 +13,24 @@
                             <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Category</th>
-                                <th>Description</th>
-                                <th>Total</th>
+                                <th class="d-block d-sm-table-cell">Category</th>
+                                <th class="d-block d-sm-table-cell">Description</th>
+                                <th class="d-block d-sm-table-cell">Total</th>
                             </tr>
                             </thead>
                             @endif
                             <tr>
                                 <td>
                                     <a href="{{ route('expense.view', ['expense' => $expense->id]) }}">
-                                        {{ date('Y-m-d', strtotime($expense->date)) }}
+                                        {{
+
+                                        date('yy-m-d', strtotime($expense->date))
+                                        }}
                                     </a>
                                 </td>
-                                <td>{{ $expense->category->category }}</td>
-                                <td>{{ $expense->description }}</td>
-                                <td class="text-right">$ {{ $expense->amount }}</td>
+                                <td class="d-block d-sm-table-cell">{{ $expense->category->category }}</td>
+                                <td class="d-block d-sm-table-cell">{{ $expense->description }}</td>
+                                <td class="d-block d-sm-table-cell font-weight-bold text-right">$ {{ $expense->amount }}</td>
                             </tr>
                             @if ($loop->last)
                         </table>
