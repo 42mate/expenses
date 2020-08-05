@@ -8,3 +8,29 @@ services:
     type: mailhog:v1.0.0
     portforward: false
     hogfrom: []
+  node:
+    type: node:12
+    ssl: false
+    user: node
+    build:
+      - npm install
+    command: npm run watch > /tmp/node.log 2>&1
+
+tooling:
+  npm:
+    service: node
+    description: Runs npm.
+    user: node
+    cmd: npm
+
+  npm-logs:
+    service: node
+    description: Follow the log from the node container to check for errors during vue compiling process.
+    user: node
+    cmd: tail --follow /tmp/node.log
+
+  npm-install:
+    service: node
+    description: Install node dependencies using npm inside node container.
+    user: node
+    cmd: yarn install

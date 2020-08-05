@@ -101733,6 +101733,7 @@ $(document).ready(function () {
     var $e = $(e);
     var apiDataSource = $e.attr('data');
     axios.get(apiDataSource).then(function (response) {
+      console.log(response.data.data);
       var chart = new Chart(ctx, {
         type: $e.attr('type'),
         data: response.data.data,
@@ -101835,8 +101836,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/agustin/projects/42mate/myexp2/src/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/agustin/projects/42mate/myexp2/src/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /app/src/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /app/src/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
