@@ -36,7 +36,7 @@
                         </table>
                     @endif
                 @empty
-                    <p class="text-center">Good, you don't have any expense</p>
+                    <p class="text-center">Good, you don't have any expense in this month.</p>
                     <div class="text-center">
                         <a href="{{ route('expense.create') }}" class="btn btn-primary">
                             Add your first expense

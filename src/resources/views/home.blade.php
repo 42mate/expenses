@@ -90,12 +90,16 @@
                                         <h6 class="m-0 ">Expenses by categories</h6>
                                     </div>
                                     <div class="card-body">
-                                       <canvas class="chart" type="pie"
+                                        @if (count($expenses) === 0)
+                                            <div>Good, you don't have any expense in this month.</div>
+                                        @else
+                                        <canvas class="chart" type="pie"
                                                data="/api/v1/charts/categories"
                                                width="100%"
                                                height="80px"
                                                show_legend="0">
-                                       </canvas>
+                                        </canvas>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +136,7 @@
                                                     </table>
                                                 @endif
                                             @empty
-                                                <p class="text-center">Good, you don't have any expense</p>
+                                                <p class="text-center">Good, you don't have any expense in this month.</p>
                                                 <div class="text-center">
                                                     <a href="{{ route('expense.create') }}" class="btn btn-primary">
                                                         Add your first expense

@@ -10,9 +10,18 @@ require('./sb-admin-2');
 require('chart.js');
 require('./charts/charts');
 
+
 //Demo for Data Table
 $(document).ready(function() {
+
   $('.data-table').DataTable({
+    dom: 'B<"clear">lfrtip',
+    buttons: [
+      'copyHtml5',
+      'excelHtml5',
+      'csvHtml5',
+      'pdfHtml5',
+    ],
     "order" : [],
     responsive: {
       details: false
