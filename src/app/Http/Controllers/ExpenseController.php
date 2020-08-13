@@ -69,4 +69,37 @@ class ExpenseController extends Controller
             'expense' => $expense,
         ]);
     }
+
+    /**
+     * Returns the total by month of the expenses.
+     *
+     * @return array
+     */
+    public function apiGetTotalByMonth() {
+        $data = Expense::getTotalByMonth(Auth::id());
+
+        $return = new \stdClass();
+
+        $return->labels = [];
+        $return->datasets = [];
+
+        $dataset = new \stdClass();
+        $dataset->label = 'Total by month';
+        $dataset->data = [];
+        $dataset->backgroundColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+        $dataset->borderColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+
+        foreach ($data as $model) {
+            $return->labels[] = $model->month;
+            $dataset->data[] = $model->total;
+        }
+
+        $return->datasets[] = $dataset;
+
+        return response()->json([
+            'data' => $return
+        ]);
+    }
 }
+
+

@@ -11,10 +11,10 @@ $(document).ready(function() {
 
     axios.get(apiDataSource)
         .then(function(response) {
-          console.log(response.data.data);
           var chart = new Chart(ctx, {
             type: $e.attr('type'),
             data: response.data.data,
+
             options: {
               legend: {
                 display: $e.attr('show_legend')

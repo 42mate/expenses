@@ -45,6 +45,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::put('/me', 'UserController@update')->name('user.update');
 
+    Route::name('reports.')->group(function () {
+        Route::prefix('reports')->group(function () {
+            Route::get('/month_flow', 'ReportsController@monthFlow')->name('month_flow');
+
+        });
+    });
+
     Route::name('theme.')->group(function () {
         Route::prefix('theme')->group(function () {
             Route::get('/', 'StyleGuide@index')->name('index');
@@ -56,4 +63,9 @@ Route::middleware(['auth'])->group(function () {
     Route::name('demo.')->group(function() {
         Route::resource('model', 'DemoCrud');
     });
+
+
+
+    Route::get('/api/v1/charts/expense/month', 'ExpenseController@apiGetTotalByMonth')
+        ->name('api.chart.report.month');
 });

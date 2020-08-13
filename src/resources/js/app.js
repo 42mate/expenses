@@ -22,10 +22,7 @@ $(document).ready(function() {
       'csvHtml5',
       'pdfHtml5',
     ],
-    "order" : [],
-    responsive: {
-      details: false
-    }
+    "order" : []
   });
 });
 

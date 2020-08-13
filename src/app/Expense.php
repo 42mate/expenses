@@ -27,7 +27,7 @@ class Expense extends Model
     {
         return self::where('user_id', $userId)
             ->orderBy('date', 'desc')
-            ->paginate(50);
+            ->get();
     }
 
     public static function byUserCurrentMonth($userId)
@@ -81,13 +81,24 @@ class Expense extends Model
         return $expenses->sum('amount');
     }
 
+    public static function getTotalByMonth($userId) {
+        return DB::select('SELECT DATE_FORMAT(e.date, "%Y/%c") as `month` , SUM(e.amount) as total 
+            FROM  expenses e
+            WHERE e.user_id = ?
+            GROUP BY 1
+            ORDER BY 1 ASC', [
+            $userId
+        ]);
+    }
+
     public static function getExpensesByCategory($userId) {
         return DB::select('SELECT c.category, SUM(e.amount) as total 
             FROM categories c INNER JOIN expenses e ON e.category_id = c.id
             WHERE e.date BETWEEN ? AND ?
             AND e.user_id = ?
             GROUP BY 1
-            ORDER BY 2', [
+            ORDER BY 1 DESC
+            LIMIT 24', [
             Carbon::now()->startOfMonth()->format('Y-m-d'),
             Carbon::tomorrow()->format('Y-m-d'),
             $userId
