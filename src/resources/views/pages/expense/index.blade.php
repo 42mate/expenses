@@ -7,6 +7,16 @@
         </h1>
         <div class="">
             <div class="table">
+                <div>
+                    <div class="form-group">
+                        <label for="email">Category:</label>
+                        <x-categories-drop-down id="dpFilterCategory" addEmpty="true" name="dpFilterCategory" selected="0" useAsValue="category" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Date:</label>
+                        {!! Form::date('date', null, ['class' => 'form-control', 'id' => 'dpFilterDate']) !!}
+                    </div>
+                </div>
                 @forelse ($expenses as $expense)
                     @if ($loop->first)
                         <table class="table table-bordered data-table" width="100%" cellspacing="0">

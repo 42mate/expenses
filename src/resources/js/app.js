@@ -14,7 +14,33 @@ require('./charts/charts');
 //Demo for Data Table
 $(document).ready(function() {
 
-  $('.data-table').DataTable({
+  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex){
+      var category = $('#dpFilterCategory').val();
+
+      if (category === '') {
+        return true;
+      }
+
+      if (data[1] === category) {
+        return true;
+      }
+      return false;
+  });
+
+  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex){
+    var date = $('#dpFilterDate').val();
+
+    if (date === '') {
+      return true;
+    }
+
+    if (data[0].trim()  === date) {
+      return true;
+    }
+    return false;
+  });
+
+  var table = $('.data-table').DataTable({
     dom: 'B<"clear">lfrtip',
     buttons: [
       'copyHtml5',
@@ -24,6 +50,14 @@ $(document).ready(function() {
     ],
     "order" : []
   });
+
+  $('#dpFilterCategory').change( function() {
+    table.draw();
+  } );
+
+  $('#dpFilterDate').change( function() {
+    table.draw();
+  } );
 });
 
 window.Vue = require('vue');
