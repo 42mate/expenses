@@ -37,7 +37,8 @@ a:hover {
 
 .dt-buttons {
   text-align: left;
-}
+  float: left;
+  min-height: 55px;}
 
 input[type="search"] {
   border: 1px solid #444;

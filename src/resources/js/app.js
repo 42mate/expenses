@@ -11,11 +11,33 @@ require('chart.js');
 require('./charts/charts');
 
 
-//Demo for Data Table
-$(document).ready(function() {
+var dataTableInit = function () {
+  var filterCategory = $('#dpFilterCategory');
+  var filterDate = $('#dpFilterDate');
+  var filterSearch = $('#dpFilterSearch');
 
-  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex){
-      var category = $('#dpFilterCategory').val();
+  var tableFormat = 'Brtip';
+
+  if (filterSearch.length == 0) {
+    tableFormat = 'Bfrtip';
+  }
+
+  var table = $('.data-table').DataTable({
+    dom: tableFormat,
+    buttons: [
+      'copyHtml5',
+      'excelHtml5',
+      'csvHtml5',
+      'pdfHtml5',
+    ],
+    "order": []
+  });
+
+
+
+  if (filterCategory.length > 0) {
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+      var category = filterCategory.val();
 
       if (category === '') {
         return true;
@@ -25,43 +47,43 @@ $(document).ready(function() {
         return true;
       }
       return false;
-  });
+    });
 
-  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex){
-    var date = $('#dpFilterDate').val();
+    filterCategory.change(function () {
+      table.draw();
+    });
+  }
 
-    if (date === '') {
-      return true;
-    }
 
-    if (data[0].trim()  === date) {
-      return true;
-    }
-    return false;
-  });
+  if (filterDate.length > 0) {
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+      var date = filterDate.val();
 
-  var table = $('.data-table').DataTable({
-    dom: 'Brtip',
-    buttons: [
-      'copyHtml5',
-      'excelHtml5',
-      'csvHtml5',
-      'pdfHtml5',
-    ],
-    "order" : []
-  });
+      if (date === '') {
+        return true;
+      }
 
-  $('#dpFilterSearch').keyup(function(){
-    table.search($(this).val()).draw() ;
-  })
+      if (data[0].trim() === date) {
+        return true;
+      }
+      return false;
+    });
 
-  $('#dpFilterCategory').change( function() {
-    table.draw();
-  } );
+    filterDate.change(function () {
+      table.draw();
+    });
+  }
 
-  $('#dpFilterDate').change( function() {
-    table.draw();
-  } );
+  if (filterSearch.length > 0) {
+    filterSearch.keyup(function () {
+      table.search($(this).val()).draw();
+    });
+  }
+}
+
+//Demo for Data Table
+$(document).ready(function() {
+  dataTableInit();
 });
 
 window.Vue = require('vue');
