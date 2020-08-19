@@ -41,7 +41,7 @@ $(document).ready(function() {
   });
 
   var table = $('.data-table').DataTable({
-    dom: 'B<"clear">lfrtip',
+    dom: 'Brtip',
     buttons: [
       'copyHtml5',
       'excelHtml5',
@@ -50,6 +50,10 @@ $(document).ready(function() {
     ],
     "order" : []
   });
+
+  $('#dpFilterSearch').keyup(function(){
+    table.search($(this).val()).draw() ;
+  })
 
   $('#dpFilterCategory').change( function() {
     table.draw();
