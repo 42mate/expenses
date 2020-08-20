@@ -1,5 +1,7 @@
 const axios = require('axios').default;
 require('chart.js');
+import 'chartjs-plugin-colorschemes';
+import { Aspect6 } from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.office';
 
 $(document).ready(function() {
 
@@ -18,6 +20,11 @@ $(document).ready(function() {
             options: {
               legend: {
                 display: $e.attr('show_legend')
+              },
+              plugins: {
+                colorschemes: {
+                  scheme: Aspect6
+                }
               }
             }
           });

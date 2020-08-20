@@ -45,12 +45,10 @@ class HomeController extends Controller
         $dataset = new \stdClass();
         $dataset->label = 'Total by category';
         $dataset->data = [];
-        $dataset->backgroundColor = [];
 
         foreach ($models as $model) {
             $return->labels[] = $model->category;
             $dataset->data[] = $model->total;
-            $dataset->backgroundColor[] = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         }
 
         $return->datasets[] = $dataset;

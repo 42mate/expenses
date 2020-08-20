@@ -86,7 +86,6 @@ class ExpenseController extends Controller
         $dataset = new \stdClass();
         $dataset->label = 'Total by month';
         $dataset->data = [];
-        $dataset->backgroundColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         $dataset->borderColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
 
         foreach ($data as $model) {

@@ -19,20 +19,6 @@
 </li>
 
 
-<!-- Nav Item - User Information -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userColapsed" aria-expanded="true" aria-controls="userColapsed">
-        <i class="fas fa-user"></i>
-        <span>{{ Auth::user()->name }}</span>
-    </a>
-    <!-- Dropdown - User Information -->
-    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown" id="userColapsed">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('user.edit') }}"> <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile</a>
-        </div>
-    </div>
-</li>
-
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
 
