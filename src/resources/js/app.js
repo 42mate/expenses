@@ -30,6 +30,7 @@ var dataTableInit = function () {
       'csvHtml5',
       'pdfHtml5',
     ],
+    "pageLength": 50,
     "order": []
   });
 
