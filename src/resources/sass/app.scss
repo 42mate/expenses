@@ -86,3 +86,8 @@ table.dataTable {
 .dataTables_info {
   font-size: 11px;
 }
+
+.table-home tr td:last-child {
+  text-align: right;
+  font-weight: bold;
+}

@@ -11,8 +11,23 @@ class Expense extends Model
 
     protected $table = 'expenses';
 
+    protected $appends = ['amount_formatted', 'category_name'];
+
+
     public function category() {
         return $this->belongsTo('App\Category');
+    }
+
+    public function getDateAttribute() {
+        return date('Y-m-d', strtotime($this->attributes['date']));
+    }
+
+    public function getAmountFormattedAttribute() {
+        return '$ ' . $this->attributes['amount'];
+    }
+
+    public function getCategoryNameAttribute() {
+        return $this->category->category;
     }
 
     protected $fillable = [

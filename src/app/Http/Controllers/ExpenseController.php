@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
 {
@@ -99,6 +100,19 @@ class ExpenseController extends Controller
             'data' => $return
         ]);
     }
+
+    public function apiGetExpenseTable(Request $request) {
+        if ($request->get('month', null) === null) {
+            $expenes = Expense::byUser(Auth::id());
+        }
+        else {
+            $expenes = Expense::byUserCurrentMonth(Auth::id());
+        }
+
+        return DataTables::collection($expenes)
+            ->toJson();
+    }
+
 }
 
 

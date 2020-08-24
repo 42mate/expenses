@@ -93,12 +93,12 @@
                                         @if (count($expenses) === 0)
                                             <div>Good, you don't have any expense in this month.</div>
                                         @else
-                                        <canvas class="chart" type="pie"
-                                               data="/api/v1/charts/categories"
-                                               width="100%"
-                                               height="80px"
-                                               show_legend="0">
-                                        </canvas>
+                                            <canvas class="chart" type="pie"
+                                                    data="/api/v1/charts/categories"
+                                                    width="100%"
+                                                    height="80px"
+                                                    show_legend="0">
+                                            </canvas>
                                         @endif
                                     </div>
                                 </div>
@@ -112,37 +112,19 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table">
-                                            @forelse ($expenses as $expense)
-                                                @if ($loop->first)
-                                                    <table class="table table-bordered data-table display responsive " width="100%" cellspacing="0">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Date</th>
-                                                        <th class="d-block d-sm-table-cell">Category</th>
-                                                        <th class="d-block d-sm-table-cell font-weight-bold">Total</th>
-                                                    </tr>
-                                                    </thead>
-                                                @endif
-                                                    <tr>
-                                                        <td>
-                                                            <a href="{{ route('expense.view', ['expense' => $expense->id]) }}">
-                                                            {{ date('Y-m-d', strtotime($expense->date)) }}
-                                                            </a>
-                                                        </td>
-                                                        <td class="d-block d-sm-table-cell">{{ $expense->category->category }}</td>
-                                                        <td class="d-block d-sm-table-cell font-weight-bold text-right">$ {{ $expense->amount }}</td>
-                                                    </tr>
-                                                @if ($loop->last)
-                                                    </table>
-                                                @endif
-                                            @empty
-                                                <p class="text-center">Good, you don't have any expense in this month.</p>
-                                                <div class="text-center">
-                                                    <a href="{{ route('expense.create') }}" class="btn btn-primary">
-                                                        Add your first expense
-                                                    </a>
-                                                </div>
-                                            @endforelse
+                                            <table class="table table-bordered data-table-ajax display responsive table-home"
+                                                   endpoint="/api/v1/expenses/table?month=1"
+                                                   columns="date,category_name,amount_formatted"
+                                                   linkeable="date,/expense/%id"
+                                                   width="100%" cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th class="d-block d-sm-table-cell">Category</th>
+                                                    <th class="d-block d-sm-table-cell font-weight-bold">Amount</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

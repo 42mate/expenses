@@ -64,7 +64,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('model', 'DemoCrud');
     });
 
-
+    Route::get('/api/v1/expenses/table', 'ExpenseController@apiGetExpenseTable')
+        ->name('api.expense.table');
 
     Route::get('/api/v1/charts/expense/month', 'ExpenseController@apiGetTotalByMonth')
         ->name('api.chart.report.month');
