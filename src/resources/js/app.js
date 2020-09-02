@@ -12,3 +12,9 @@ require('./charts/charts');
 require('./datatable/datatable');
 
 window.Vue = require('vue');
+
+Vue.component('tags-input', require('./vue/components/tags.vue').default);
+
+const app = new Vue({
+  el: '#wrapper',
+});

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Matrix\Exception;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
@@ -16,8 +18,15 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function create() {
-        return view('pages.expense.form');
+    public function create(Request $request) {
+        $requested_tags = null;
+
+        if (isset($request->session()->get('_old_input')['tags'])) {
+            $requested_tags = $request->session()->get('_old_input')['tags'];
+        }
+        return view('pages.expense.form', [
+            'request_tags' => $requested_tags
+        ]);
     }
 
     public function store(Request $request) {
@@ -27,15 +36,27 @@ class ExpenseController extends Controller
             'description' => 'required',
         ]);
 
-        Expense::create([
-            'amount' => $request->amount,
-            'date' => ($request->date),
-            'description' => $request->description,
-            'user_id' => Auth::id(),
-            'category_id' => $request->category_id,
-        ]);
+        try {
+            DB::beginTransaction();
 
-        return redirect('/')->with('success', 'Expense saved!');
+            $expense = Expense::create([
+                'amount' => $request->amount,
+                'date' => ($request->date),
+                'description' => $request->description,
+                'user_id' => Auth::id(),
+                'category_id' => $request->category_id,
+                'wallet_id' => $request->wallet_id,
+            ]);
+
+            $expense->updateTags(Auth::id(), $request->tags);
+            DB::commit();
+
+        } catch(Exception $e) {
+            DB::rollBack();
+            return redirect('/create')->with('error', 'Error Saving!');
+        }
+
+        return redirect('/create')->with('success', 'Expense Created!');
     }
 
     public function edit(Expense $expense) {
@@ -51,21 +72,39 @@ class ExpenseController extends Controller
             'description' => 'required',
         ]);
 
-        $expense->fill([
-            'amount' => $request->amount,
-            'date' => ($request->date),
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-        ]);
 
-        $expense->save();
 
-        return redirect(route('expense.view', ['expense' => $expense->id]))
-            ->with('success', 'Expense Updated!');
+        try {
+            DB::beginTransaction();
+            $expense->fill([
+                'amount' => $request->amount,
+                'date' => ($request->date),
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+            ]);
+
+            $expense->updateTags(Auth::id(), $request->tags);
+            $expense->save();
+            DB::commit();
+            return redirect(route('expense.view', ['expense' => $expense->id]))
+                ->with('success', 'Expense Updated!');
+
+        } catch(Exception $e) {
+            DB::rollBack();
+            return redirect('/expense/' . $expense->id . '/edit')
+                ->with('error', 'Error Saving!');
+        }
+
+
 
     }
 
     public function view(Expense $expense) {
+        if ($expense->user_id !== Auth::id()) {
+            return redirect(route('home'))
+                ->with('warning', 'Not allowed!');
+        }
+
         return view('pages.expense.view', [
             'expense' => $expense,
         ]);
@@ -103,13 +142,13 @@ class ExpenseController extends Controller
 
     public function apiGetExpenseTable(Request $request) {
         if ($request->get('month', null) === null) {
-            $expenes = Expense::byUser(Auth::id());
+            $expenses = Expense::byUser(Auth::id());
         }
         else {
-            $expenes = Expense::byUserCurrentMonth(Auth::id());
+            $expenses = Expense::byUserCurrentMonth(Auth::id());
         }
 
-        return DataTables::collection($expenes)
+        return DataTables::collection($expenses)
             ->toJson();
     }
 

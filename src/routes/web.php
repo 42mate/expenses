@@ -41,6 +41,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/category/create', 'CategoryController@store')->name('category.store');
 
+    Route::get('/wallet/create', 'WalletController@create')->name('wallet.create');
+
+    Route::post('/wallet/create', 'WalletController@store')->name('wallet.store');
+
     Route::get('/me', 'UserController@edit')->name('user.edit');
 
     Route::put('/me', 'UserController@update')->name('user.update');

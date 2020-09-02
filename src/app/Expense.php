@@ -4,15 +4,36 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use App\Tag;
+use App\ExpenseTags;
 
 class Expense extends Model
 {
 
     protected $table = 'expenses';
 
-    protected $appends = ['amount_formatted', 'category_name'];
+    protected $appends = [
+        'amount_formatted',
+        'category_name',
+        'wallet',
+        'tags_formatted'
+    ];
 
+    protected function tags() {
+        return $this->belongsToMany('App\Tag', 'expense_tags');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function wallet()
+    {
+        return $this->belongsTo('App\Wallet');
+    }
 
     public function category() {
         return $this->belongsTo('App\Category');
@@ -26,8 +47,21 @@ class Expense extends Model
         return '$ ' . $this->attributes['amount'];
     }
 
+    public function getTagsFormattedAttribute() {
+
+        $out = [];
+        foreach ($this->tags()->get() as $tag) {
+            $out[] = $tag->name;
+        }
+        return implode(', ', $out);
+    }
+
     public function getCategoryNameAttribute() {
         return $this->category->category;
+    }
+
+    public function getWalletAttribute() {
+        return isset($this->wallet()->first()->name) ? $this->wallet()->first()->name : 'No wallet';
     }
 
     protected $fillable = [
@@ -36,6 +70,7 @@ class Expense extends Model
         'category_id',
         'user_id',
         'description',
+        'wallet_id'
     ];
 
     public static function byUser($userId)
@@ -48,7 +83,7 @@ class Expense extends Model
     public static function byUserCurrentMonth($userId)
     {
         $from = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $to = Carbon::tomorrow()->format('Y-m-d');
+        $to = Carbon::now()->endOfMonth('Y-m-d');
 
         return self::whereBetween('date', [$from, $to])
             ->where('user_id', $userId)
@@ -67,7 +102,7 @@ class Expense extends Model
     public static function weekTotal($userId)
     {
         $from = Carbon::now()->startOfWeek()->format('Y-m-d');
-        $to = Carbon::tomorrow()->format('Y-m-d');
+        $to = Carbon::now()->endOfWeek()->format('Y-m-d');
 
         return self::totalByDateRange($userId, $from, $to);
     }
@@ -75,15 +110,15 @@ class Expense extends Model
     public static function monthTotal($userId)
     {
         $from = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $to = Carbon::tomorrow()->format('Y-m-d');
+        $to = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         return self::totalByDateRange($userId, $from, $to);
     }
 
     public static function lastMonthTotal($userId)
     {
-        $from = Carbon::now()->startOfMonth()->sub('1 month')->format('Y-m-d');
-        $to = Carbon::now()->startOfMonth()->sub('1 day')->format('Y-m-d');
+        $from = Carbon::now()->startOfMonth()->sub('1 month')->startOfMonth()->format('Y-m-d');
+        $to = Carbon::now()->startOfMonth()->sub('1 day')->endOfMonth()->format('Y-m-d');
 
         return self::totalByDateRange($userId, $from, $to);
     }
@@ -115,8 +150,34 @@ class Expense extends Model
             ORDER BY 1 DESC
             LIMIT 24', [
             Carbon::now()->startOfMonth()->format('Y-m-d'),
-            Carbon::tomorrow()->format('Y-m-d'),
+            Carbon::now()->endOfMonth()->format('Y-m-d'),
             $userId
         ]);
+    }
+
+    public function updateTags($userId, $tags) {
+        $iTags = json_decode($tags);
+
+        ExpenseTags::clear($this->id);
+
+        foreach ($iTags as $iTag) {
+            if (!isset($iTag->id)) {
+                $tag = Tag::firstOrNew([
+                    'name' => $iTag->name,
+                    'user_id' => $userId,
+                ]);
+
+                $tag->save();
+            }
+            else {
+                $tag = Tag::find($iTag->id);
+            }
+
+            ExpenseTags::create([
+                'tag_id' => $tag->id,
+                'expense_id' => $this->id,
+                'user_id' => $userId,
+            ]);
+        }
     }
 }

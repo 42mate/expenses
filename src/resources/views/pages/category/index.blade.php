@@ -1,15 +1,12 @@
 @extends('theme.master_layout')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
+            <div class="col-md-8">
+                <h1 class="mb-5">
                     Categories
-                </div>
+                </h1>
 
-                <div class="card-body">
+                <div class="">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
@@ -18,16 +15,12 @@
 
                     <div class="table ">
                         @forelse ($categories as $category)
-                            @if ($loop->first)
-                                <div class="row head font-weight-bold">
-                                    <div class="col-md-8">Category</div>
-                                    <div class="col-md-4 text-right">Actions</div>
-                                </div>
-                            @endif
-                            <div class="row">
+                            <div class="row mb-1">
                                 <div class="col-md-8">{{ $category->category }}</div>
                                 <div class="col-md-4 text-right">
-                                    Edit
+                                    <span class="btn-primary btn">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </span>
                                 </div>
                             </div>
                         @empty
@@ -35,7 +28,7 @@
                                 <p>You don't have any category</p>
                                 <div>
                                     <a href="{{ route('category.create') }}" class="btn btn-primary">
-                                        + Add
+                                        <i class="fas fa-plus"></i>  Add
                                     </a>
                                 </div>
                             </div>
@@ -44,7 +37,4 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 @endsection

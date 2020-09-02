@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-    <div class="col-lg-6">
+    <div class="col-lg-6 pb-5 pt-5">
+        <h2 class="mb-4">{{ __('Reset Password') }}</h2>
+
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 

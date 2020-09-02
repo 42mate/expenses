@@ -91,3 +91,41 @@ table.dataTable {
   text-align: right;
   font-weight: bold;
 }
+
+ul.tags {
+  padding: 0px;
+
+  li {
+    list-style: none;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #2196F3;
+    color: #fff;
+    display: inline-block;
+    margin-right: 11px;
+    position: relative;
+    padding-right: 24px;
+    line-height: 20px;
+    padding: 5px 24px 5px 10px;
+    .remove {
+      background-color: red;
+      border-radius: 4px;
+      padding: 1px 2px;
+      font-size: 11px;
+      color: #fff;
+      position: absolute;
+      top: 1px;
+      right: 2px;
+    }
+  }
+}
+
+h1 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}

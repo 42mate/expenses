@@ -14,16 +14,16 @@
 
     <meta property="twitter:creator" content="@42mate" />
     <meta property="twitter:site" content="@42mate" />
-    <meta property="twitter:domain" content="expenses.casivaagustin.com.ar" />
-    <meta property="twitter:image:src" content="http://expenses.casivaagustin.com.ar/images/login-image.jpg" />
-    <meta property="twitter:title" content="My Expenses" />
+    <meta property="twitter:domain" content="expenses.42mate.com" />
+    <meta property="twitter:image:src" content="http://expenses.42mate.com/images/login-image.jpg" />
+    <meta property="twitter:title" content="Expenses" />
     <meta property="og:description" content="Tracking Expanses made easy." />
-    <meta property="twitter:image" content="http://expenses.casivaagustin.com.ar/images/login-image.jpg" />
+    <meta property="twitter:image" content="http://expenses.42mate.com/images/login-image.jpg" />
     <meta property="twitter:card" content="Tracking expanses made easy" />
-    <meta property="og:image" content="http://expenses.casivaagustin.com.ar/images/login-image.jpg" />
-    <meta property="og:title" content="My Expenses" />
-    <meta property="og:url" content="http://expenses.casivaagustin.com.ar" />
-    <meta property="og:site_name" content="My Expenses" />
+    <meta property="og:image" content="http://expenses.42mate.com/images/login-image.jpg" />
+    <meta property="og:title" content="Expenses" />
+    <meta property="og:url" content="http://expenses.42mate.com" />
+    <meta property="og:site_name" content="Expenses" />
     <meta property="og:type" content="article" />
     <meta name="description" content="Tracking expenses made easy" />
     <meta name="abstract" content="A website to track your expenses, that's it" />
@@ -31,12 +31,13 @@
     <meta name="robots" content="follow, index" />
     <meta name="generator" content="42mate" />
     <link rel="image_src" href="" />
-    <link rel="canonical" href="http://expenses.casivaagustin.com.ar" />
-    <link rel="shortlink" href="http://expenses.casivaagustin.com.ar" />
+    <link rel="canonical" href="http://expenses.42mate.com" />
+    <link rel="shortlink" href="http://expenses.42mate.com" />
     <meta name="MobileOptimized" content="width">
     <meta name="HandheldFriendly" content="true">
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="cleartype" content="on">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
 </head>
 
 <body id="page-top">
@@ -63,13 +64,17 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                @section('session_messages')
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                @endsection
+
+                @yield('page_titĺe')
+
+                @if (Session::has('success'))
+                    <div class="alert alert-success">{{ Session::get('success') }}</div>
+                @endif
+
+                @if (!$errors->isEmpty())
+                    <div class="alert alert-danger">There are some errors, please verify</div>
+                @endif
+
                 @yield('content')
             </div>
             <!-- /.container-fluid -->
@@ -111,5 +116,6 @@
 <script src="/js/app.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
 
 </html>

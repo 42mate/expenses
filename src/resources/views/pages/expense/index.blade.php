@@ -12,7 +12,7 @@
                     @if ($loop->first)
                         <table class="table table-bordered data-table-ajax"
                                endpoint="/api/v1/expenses/table"
-                               columns="date,category_name,description,amount_formatted"
+                               columns="date,category_name,wallet,description,tags_formatted,amount_formatted"
                                linkeable="date,/expense/%id"
                                width="100%"
                                cellspacing="0">
@@ -20,25 +20,14 @@
                             <tr>
                                 <th>Date</th>
                                 <th class="d-block d-sm-table-cell">Category</th>
+                                <th class="d-block d-sm-table-cell">Wallet</th>
                                 <th class="d-block d-sm-table-cell">Description</th>
+                                <th class="d-block d-sm-table-cell">Tags</th>
                                 <th class="d-block d-sm-table-cell">Total</th>
                             </tr>
                             </thead>
-                            @endif
-                            {{--<tr>--}}
-                                {{--<td>--}}
-                                    {{--<a href="{{ route('expense.view', ['expense' => $expense->id]) }}">--}}
-                                        {{--{{--}}
-
-                                        {{--date('yy-m-d', strtotime($expense->date))--}}
-                                        {{--}}--}}
-                                    {{--</a>--}}
-                                {{--</td>--}}
-                                {{--<td class="d-block d-sm-table-cell">{{ $expense->category->category }}</td>--}}
-                                {{--<td class="d-block d-sm-table-cell">{{ $expense->description }}</td>--}}
-                                {{--<td class="d-block d-sm-table-cell font-weight-bold text-right">$ {{ $expense->amount }}</td>--}}
-                            {{--</tr>--}}
-                            @if ($loop->last)
+                    @endif
+                    @if ($loop->last)
                         </table>
                     @endif
                 @empty
