@@ -35,11 +35,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/expense', 'ExpenseController@index')->name('expense.index');
 
-    Route::get('/category', 'CategoryController@index')->name('category');
+    Route::get('/category', 'CategoryController@index')->name('category.index');
 
     Route::get('/category/create', 'CategoryController@create')->name('category.create');
 
+    Route::get('/category/{category}/edit', 'CategoryController@edit')->name('category.edit');
+
     Route::post('/category/create', 'CategoryController@store')->name('category.store');
+
+    Route::put('/category/{category}', 'CategoryController@update')->name('category.update');
+
+    Route::delete('/category/{category}', 'CategoryController@delete')->name('category.delete');
 
     Route::get('/wallet/create', 'WalletController@create')->name('wallet.create');
 

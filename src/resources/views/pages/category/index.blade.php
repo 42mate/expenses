@@ -18,9 +18,17 @@
                             <div class="row mb-1">
                                 <div class="col-md-8">{{ $category->category }}</div>
                                 <div class="col-md-4 text-right">
-                                    <span class="btn-primary btn">
+                                    <a href="{{ route('category.edit', ['category' => $category->id]) }}" class="btn-primary btn">
                                         <i class="fas fa-edit"></i> Edit
-                                    </span>
+                                    </a>
+
+
+                                    <form method="POST" action="{{ route('category.delete', ['category' => $category->id]) }}" class="d-inline">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+
+                                        <input type="submit" class="btn btn-danger" value="Delete">
+                                    </form>
                                 </div>
                             </div>
                         @empty

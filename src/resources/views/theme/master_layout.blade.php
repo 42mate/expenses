@@ -71,6 +71,10 @@
                     <div class="alert alert-success">{{ Session::get('success') }}</div>
                 @endif
 
+                @if (Session::has('warning'))
+                    <div class="alert alert-warning">{{ Session::get('warning') }}</div>
+                @endif
+
                 @if (!$errors->isEmpty())
                     <div class="alert alert-danger">There are some errors, please verify</div>
                 @endif
