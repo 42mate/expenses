@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
 {
     public function index() {
-        $categories = Category::all()
+        $categories = Auth::user()
+            ->categories()
+            ->get()
             ->sortBy('category');
 
         return view('pages.category.index',[
