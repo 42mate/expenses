@@ -3,7 +3,12 @@
 @section('content')
     <div class="">
         <h1 class="mb-3">
-            Expenses
+            <i class="fas fa-fw fa-cog"></i> {{ __('Expenses') }}
+            <div class="add_control">
+                <a href="{{ route('expense.create') }}">
+                    <i class="fas fa-plus"></i> {{ __("Add expense") }}
+                </a>
+            </div>
         </h1>
         <div class="">
             <div class="filter">

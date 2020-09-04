@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
-    public function create() {
+
+    public function create()
+    {
         return view('pages.wallet.create');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'name'=> 'required|max:100',
+            'name' => 'required|max:100',
         ]);
 
         Wallet::create([
@@ -22,6 +25,50 @@ class WalletController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect('/create')->with('success', 'Category created!');
+        return back()->with('success', 'Wallet created!');
+    }
+
+    public function edit(Wallet $wallet)
+    {
+        return view('pages.wallet.form', [
+            'model' => $wallet
+        ]);
+    }
+
+    public function update(Request $request, Wallet $wallet) {
+        $request->validate([
+            'name'=> 'required|max:100',
+        ]);
+
+        $wallet->fill([
+            'name' => $request->name,
+        ]);
+
+        $wallet->save();
+
+        return redirect('/wallet')->with('success', 'Wallet updated!');
+    }
+
+    public function delete(Wallet $wallet)
+    {
+        if ($wallet->expenses()->count() > 0) {
+            return redirect('/wallet')
+                ->with('warning',
+                    'This wallet has related expenses, it can\'t be deleted!');
+
+        }
+
+        $wallet->delete();
+
+        return redirect('/wallet')->with('success', 'Wallet Deleted!');
+    }
+
+    public function index()
+    {
+        $wallets = Auth::user()->wallets()->get();
+
+        return view('pages.wallet.index', [
+            'wallets' => $wallets,
+        ]);
     }
 }

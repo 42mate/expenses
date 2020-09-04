@@ -14,43 +14,30 @@
     </a>
     <a class="nav-link" href="{{ route('expense.create') }}">
         <i class="fas fa-money-bill-wave"></i>
-        <span>Add Expense</span>
+        <span>{{ __('Add Expense') }}</span>
     </a>
-</li>
-
-
-<!-- Nav Item - Pages Collapse Menu -->
-<li class="nav-item">
-
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+    <a class="nav-link" href="{{ route('expense.index') }}">
         <i class="fas fa-fw fa-cog"></i>
-        <span>Expenses</span>
+        <span>{{ __('Expenses') }}</span>
     </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('expense.index') }}">Browse</a>
-            <a class="collapse-item" href="{{ route('expense.create') }}">Add New</a>
-        </div>
-    </div>
+    <a class="nav-link " href="{{ route('wallet.index') }}">
+        <i class="fas fa-wallet"></i>
+        <span>{{ __('Wallets') }}</span>
+    </a>
+    <a class="nav-link " href="{{ route('category.index') }}" >
+        <i class="fas fa-tasks"></i>
+        <span>{{ __('Categories') }}</span>
+    </a>
+    <a class="nav-link " href="{{ route('tag.index') }}" >
+        <i class="fas fa-tags"></i>
+        <span>{{ __('Tags') }}</span>
+    </a>
 </li>
 
-<!-- Nav Item - Utilities Collapse Menu -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-wrench"></i>
-        <span>Categories</span>
-    </a>
-    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('category.index') }}">Browse</a>
-            <a class="collapse-item" href="{{ route('category.create') }}">Add New</a>
-        </div>
-    </div>
-</li>
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">
-        <i class="fas fa-fw fa-wrench"></i>
+        <i class="fas fa-chart-bar"></i>
         <span>Reports</span>
     </a>
     <div id="collapseReports" class="collapse" aria-labelledby="collapseReports" data-parent="#accordionSidebar">

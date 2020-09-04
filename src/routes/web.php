@@ -51,6 +51,25 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/wallet/create', 'WalletController@store')->name('wallet.store');
 
+
+    Route::get('/wallet', 'WalletController@index')->name('wallet.index');
+
+    Route::get('/wallet/{wallet}/edit', 'WalletController@edit')->name('wallet.edit');
+
+    Route::put('/wallet/{wallet}/edit', 'WalletController@update')->name('wallet.update');
+
+    Route::delete('/wallet/{wallet}', 'WalletController@delete')->name('wallet.delete');
+
+
+    Route::get('/tag', 'TagController@index')->name('tag.index');
+
+    Route::get('/tag/{model}/edit', 'TagController@edit')->name('tag.edit');
+
+    Route::put('/tag/{model}/edit', 'TagController@update')->name('tag.update');
+
+    Route::delete('/tag/{model}', 'TagController@delete')->name('tag.delete');
+
+
     Route::get('/me', 'UserController@edit')->name('user.edit');
 
     Route::put('/me', 'UserController@update')->name('user.update');

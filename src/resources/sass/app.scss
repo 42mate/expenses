@@ -129,4 +129,12 @@ h1 {
   font-weight: bold;
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
+  position: relative;
+}
+
+.add_control {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-size: 15px;
 }

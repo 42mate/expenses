@@ -3,7 +3,12 @@
 @section('content')
             <div class="col-md-8">
                 <h1 class="mb-5">
-                    Categories
+                    <i class="fas fa-tasks"></i> {{ __('Categories') }}
+                    <div class="add_control">
+                        <a href="{{ route('category.create') }}">
+                            <i class="fas fa-plus"></i> {{ __("Add category") }}
+                        </a>
+                    </div>
                 </h1>
 
                 <div class="">
