@@ -3,27 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\Exports\ExpenseExport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Matrix\Exception;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
 {
-    public function index() {
-        $expenses = Expense::byUser(Auth::id());
+    public function index(Request $request) {
+        $expenses = Expense::filter(Auth::id(), $request->all());
+
+        if ($request->get('action') == 'xls') {
+            return $this->export($expenses->get());
+        }
+
         return view('pages.expense.index', [
-            'expenses' => $expenses,
+            'expenses' => $expenses->paginate(50),
         ]);
     }
 
     public function create(Request $request) {
-        $requested_tags = null;
+        $requested_tags = $request->old('tags', null);
 
-        if (isset($request->session()->get('_old_input')['tags'])) {
-            $requested_tags = $request->session()->get('_old_input')['tags'];
-        }
         return view('pages.expense.form', [
             'request_tags' => $requested_tags
         ]);
@@ -94,9 +100,6 @@ class ExpenseController extends Controller
             return redirect('/expense/' . $expense->id . '/edit')
                 ->with('error', 'Error Saving!');
         }
-
-
-
     }
 
     public function view(Expense $expense) {
@@ -150,6 +153,13 @@ class ExpenseController extends Controller
 
         return DataTables::collection($expenses)
             ->toJson();
+    }
+
+    public function export(Collection $data)
+    {
+        $date = Carbon::now();
+        $name = 'expenses-' . $date . '.xlsx';
+        return Excel::download(new ExpenseExport($data), $name);
     }
 
 }

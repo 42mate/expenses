@@ -112,18 +112,53 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table">
-                                            <table class="table table-bordered data-table-ajax display responsive table-home"
-                                                   endpoint="/api/v1/expenses/table?month=1"
-                                                   columns="date,category_name,amount_formatted"
-                                                   linkeable="date,/expense/%id"
+                                            <table class="table table-bordered  display responsive table-home"
                                                    width="100%" cellspacing="0">
-                                                <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th class="d-block d-sm-table-cell">Category</th>
-                                                    <th class="d-block d-sm-table-cell font-weight-bold">Amount</th>
-                                                </tr>
-                                                </thead>
+
+                                                @forelse ($expenses as $expense)
+                                                    @if ($loop->first)
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th class="d-block d-sm-table-cell">Category</th>
+                                                            <th class="d-block d-sm-table-cell font-weight-bold">
+                                                                Amount
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                    @endif
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{ route('expense.edit', [$expense->id]) }}" class="font-weight-bold">
+                                                                {{ $expense->date }}
+                                                            </a>
+                                                        </td>
+                                                        <td class="d-block d-sm-table-cell">
+                                                            <a href="{{ route('expense.index', ['category_id' => $expense->category->id]) }}">
+                                                                {{ $expense->category->category }}
+                                                            </a>
+                                                        </td>
+                                                        <td class="d-block d-sm-table-cell font-weight-bold">
+                                                            {{ $expense->amount_formatted }}
+                                                        </td>
+                                                    </tr>
+                                                    @if ($loop->last)
+                                                    @endif
+                                                @empty
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-center">Good, you don't have any expense in
+                                                                this
+                                                                month.</p>
+                                                            <div class="text-center">
+                                                                <a href="{{ route('expense.create') }}"
+                                                                   class="btn btn-primary">
+                                                                    Add your first expense
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
                                             </table>
                                         </div>
                                     </div>

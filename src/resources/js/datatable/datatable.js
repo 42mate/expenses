@@ -69,7 +69,18 @@ var dataTableAjaxInit = function () {
 
 };
 
+var dataTableSimple = function () {
+  var tableFormat = 't';
+
+  var table = $('.data-table-simple').DataTable({
+    dom: tableFormat,
+    "order": []
+  });
+}
+
+
 $(document).ready(function() {
   dataTableInit();
   dataTableAjaxInit();
+  dataTableSimple();
 });

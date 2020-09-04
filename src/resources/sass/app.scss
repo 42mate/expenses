@@ -46,13 +46,14 @@ input[type="search"] {
 }
 
 .table .table {
-  background-color: #3d7da4;
   thead {
     color: #fff;
+    background-color: #3d7da4;
+
   }
 }
 
-table.dataTable {
+table {
   border-bottom: 1px solid #111111;
   font-size: 14px;
   font-family: Roboto, sans-serif;
@@ -75,7 +76,7 @@ table.dataTable {
 
   tr a {
     color: #444;
-    font-weight: bold;
+    text-decoration: underline;
   }
 }
 

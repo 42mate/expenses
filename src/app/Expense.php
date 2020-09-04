@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,17 @@ class Expense extends Model
         'tags_formatted'
     ];
 
-    protected function tags() {
+    protected $fillable = [
+        'amount',
+        'date',
+        'category_id',
+        'user_id',
+        'description',
+        'wallet_id'
+    ];
+
+
+    public function tags() {
         return $this->belongsToMany('App\Tag', 'expense_tags');
     }
 
@@ -64,14 +75,42 @@ class Expense extends Model
         return isset($this->wallet()->first()->name) ? $this->wallet()->first()->name : 'No wallet';
     }
 
-    protected $fillable = [
-        'amount',
-        'date',
-        'category_id',
-        'user_id',
-        'description',
-        'wallet_id'
-    ];
+    public static function filter($userId, $args) {
+        $q = self::query();
+
+        $q->where('user_id', $userId);
+
+        if (!empty($args['wallet_id'])) {
+            $q->where('wallet_id', $args['wallet_id']);
+        }
+
+        if (!empty($args['category_id'])) {
+            $q->where('category_id', $args['category_id']);
+        }
+
+        if (!empty($args['description'])) {
+            $q->where('description', 'LIKE', '%'. $args['description'] . '%');
+        }
+
+        if (!empty($args['date_from'])) {
+            $q->where('date', '>=',  $args['date_from']);
+        }
+
+        if (!empty($args['date_to'])) {
+            $q->where('date', '<=',  $args['date_to']);
+        }
+
+        if (!empty($args['tags'])) {
+          //  $tags = explode(',', $args['tags']);
+       //     foreach ($tags as $tag) {
+                $q->whereHas('tags', function(Builder $q) use ($args) {
+                    $q->where('name', $args['tags']);
+                });
+          //  }
+        }
+
+        return $q;
+    }
 
     public static function byUser($userId)
     {
