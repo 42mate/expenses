@@ -80,6 +80,19 @@ table {
   }
 }
 
+#accordionSidebar {
+  display: none;
+
+  &.navbar-nav.collapse {
+    display: none;
+  }
+
+  &.navbar-nav.collapse.show {
+    display: block;
+  }
+}
+
+
 .dataTables_paginate.paging_simple_numbers {
   font-size: 11px;
 }

@@ -45,7 +45,7 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion d-none d-sm-block" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark d-sm-block" id="accordionSidebar">
         @section('sidebar')
             @include('includes.sidebar')
         @show

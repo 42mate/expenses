@@ -25,14 +25,14 @@
         </li>
 
         <li  class="nav-item dropdown no-arrow">
-            <a id="sideMenuToggle" class="d-sm-none nav-link dropdown-toggle"><i class="fas fa-bars"></i></a>
+            <a class="d-sm-none nav-link" data-toggle="collapse" href="#accordionSidebar" role="button" aria-expanded="false" aria-controls="accordionSidebar">
+                <i class="fas fa-bars"></i>
+            </a>
         </li>
 
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-
-
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                     {{ Auth::user()->name }}
