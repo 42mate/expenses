@@ -132,6 +132,11 @@
                     </div>
                 @endforelse
                 <div>
+                    <div class="float-right pr-5">
+                        <span class="font-weight-bold">
+                            TOTAL: $ {{ $total }}
+                        </span>
+                    </div>
                     {{ $expenses->withQueryString()->links() }}
                 </div>
             </div>

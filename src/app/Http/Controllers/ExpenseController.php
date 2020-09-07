@@ -22,8 +22,11 @@ class ExpenseController extends Controller
             return $this->export($expenses->get());
         }
 
+        $total = $expenses->sum('amount');
+
         return view('pages.expense.index', [
             'expenses' => $expenses->paginate(50),
+            'total' => $total,
         ]);
     }
 
