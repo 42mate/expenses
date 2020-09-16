@@ -1,4 +1,7 @@
 @extends('theme/full-page')
+@section('title')
+    Welcome!
+@endsection
 @section('content')
 <div class="mkt">
     <div class="row align-items-center btn-spacer">
@@ -33,7 +36,7 @@
             </div>
         </div>
         <div class="col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6">
-            <img src="https://landkit.goodthemes.co/assets/img/illustrations/illustration-2.png"  class="img-fluid" />
+            <img src="/images/home.svg"  class="img-fluid" />
         </div>
     </div>
     <div class="row align-items-top">
@@ -113,5 +116,8 @@
         </div>
         <div class="col-12 btn-spacer"></div>
     </div>
+</div>
+<div class="text-align-center mt-2 mb-5">
+    Made with <i class="fas fa-heart"></i> in <a href="https://www.42mate.com">42mate</a>
 </div>
 @endsection
