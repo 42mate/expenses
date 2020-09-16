@@ -15,8 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/', 'HomeController@public_home')
+    ->name('public_home');
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', 'HomeController@home')
+
+    Route::get('/dashboard', 'HomeController@dashboard')
         ->name('home');
 
     Route::get('/api/v1/charts/categories', 'HomeController@getChartByCategory')

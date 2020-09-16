@@ -14,7 +14,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function home() {
+    public function public_home() {
+        return view('pages.public.home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function dashboard() {
         $expenses = Expense::byUserCurrentMonth(Auth::id());
 
         $today = Expense::todayTotal(Auth::id());

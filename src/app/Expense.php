@@ -101,13 +101,12 @@ class Expense extends Model
         }
 
         if (!empty($args['tags'])) {
-          //  $tags = explode(',', $args['tags']);
-       //     foreach ($tags as $tag) {
-                $q->whereHas('tags', function(Builder $q) use ($args) {
-                    $q->where('name', $args['tags']);
-                });
-          //  }
+            $q->whereHas('tags', function(Builder $q) use ($args) {
+                $q->where('name', $args['tags']);
+            });
         }
+
+        $q->orderBy('date', 'DESC');
 
         return $q;
     }
