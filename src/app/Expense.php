@@ -170,17 +170,17 @@ class Expense extends Model
     }
 
     public static function getTotalByMonth($userId) {
-        return DB::select('SELECT DATE_FORMAT(e.date, "%Y/%c") as `month` , SUM(e.amount) as total 
+        return DB::select('SELECT DATE_FORMAT(e.date, "%Y-%c") as `month`,  SUM(e.amount) as total
             FROM  expenses e
             WHERE e.user_id = ?
             GROUP BY 1
-            ORDER BY 1 ASC', [
+            ORDER BY STR_TO_DATE(1, "%d-%m-%Y") ASC', [
             $userId
         ]);
     }
 
     public static function getExpensesByCategory($userId) {
-        return DB::select('SELECT c.category, SUM(e.amount) as total 
+        return DB::select('SELECT c.category, SUM(e.amount) as total
             FROM categories c INNER JOIN expenses e ON e.category_id = c.id
             WHERE e.date BETWEEN ? AND ?
             AND e.user_id = ?
