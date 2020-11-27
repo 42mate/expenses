@@ -21,7 +21,7 @@ class WalletDropDown extends Component
         $this->id = empty($id) ? 'rid_' . Str::random(10) : $id;
         $this->addEmpty = $addEmpty;
         $this->use_as_value = $useAsValue;
-        $this->wallets = Auth::user()->wallets()->get();
+        $this->wallets = Auth::user()->wallets()->orderBy('name')->get();
     }
 
     /**

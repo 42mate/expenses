@@ -24,7 +24,9 @@ class CategoriesDropDown extends Component
         $this->addEmpty = $addEmpty;
         $this->use_as_value = $useAsValue;
 
-        $this->categories = Category::where('user_id', Auth::id())->get();
+        $this->categories = Category::where('user_id', Auth::id())
+            ->orderBy('category')
+            ->get();
     }
 
     /**
