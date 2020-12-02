@@ -31,7 +31,6 @@ class Expense extends Model
         'wallet_id'
     ];
 
-
     public function tags() {
         return $this->belongsToMany('App\Tag', 'expense_tags');
     }

@@ -20,6 +20,11 @@
         <i class="fas fa-fw fa-cog"></i>
         <span>{{ __('Expenses') }}</span>
     </a>
+    <a class="nav-link" href="{{ route('recurrent_expense.index') }}">
+        <i class="far fa-calendar-alt"></i>
+        <span>{{ __('Recurrent Expenses') }}</span>
+    </a>
+
     <a class="nav-link " href="{{ route('wallet.index') }}">
         <i class="fas fa-wallet"></i>
         <span>{{ __('Wallets') }}</span>

@@ -18,3 +18,11 @@ Vue.component('tags-input', require('./vue/components/tags.vue').default);
 const app = new Vue({
   el: '#wrapper',
 });
+
+//Used for recurrent payments in create expense
+$('.fill-expense').click(function(e) {
+    var recurrent = $(e.target).data('expense');
+    $('form input[name=amount]').val(recurrent.amount);
+    $('form input[name=description]').val(recurrent.description);
+    $('form select[name=category_id]').val(recurrent.category_id);
+});

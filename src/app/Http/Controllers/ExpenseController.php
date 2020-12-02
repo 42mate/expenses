@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use App\Exports\ExpenseExport;
+use App\RecurrentExpense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -34,7 +35,8 @@ class ExpenseController extends Controller
         $requested_tags = $request->old('tags', null);
 
         return view('pages.expense.form', [
-            'request_tags' => $requested_tags
+            'request_tags' => $requested_tags,
+            'recurrent_expenses' => RecurrentExpense::all(),
         ]);
     }
 

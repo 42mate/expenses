@@ -73,6 +73,20 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/tag/{model}', 'TagController@delete')->name('tag.delete');
 
+    Route::get('/recurrent_expense/create', 'RecurrentExpenseController@create')
+        ->name('recurrent_expense.create');
+
+    Route::post('/recurrent_expense/create', 'RecurrentExpenseController@store')
+        ->name('recurrent_expense.store');
+
+    Route::put('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@update')
+        ->name('recurrent_expense.update');
+
+    Route::get('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@edit')
+        ->name('recurrent_expense.edit');
+
+    Route::get('/recurrent_expense', 'RecurrentExpenseController@index')
+        ->name('recurrent_expense.index');
 
     Route::get('/me', 'UserController@edit')->name('user.edit');
 
