@@ -8,14 +8,6 @@
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-    <a class="nav-link" href="{{ route('home') }}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span>
-    </a>
-    <a class="nav-link" href="{{ route('expense.create') }}">
-        <i class="fas fa-money-bill-wave"></i>
-        <span>{{ __('Add Expense') }}</span>
-    </a>
     <a class="nav-link" href="{{ route('expense.index') }}">
         <i class="fas fa-fw fa-cog"></i>
         <span>{{ __('Expenses') }}</span>

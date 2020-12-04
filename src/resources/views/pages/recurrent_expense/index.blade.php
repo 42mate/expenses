@@ -19,24 +19,21 @@
                                cellspacing="0">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th class="d-block d-sm-table-cell">Category</th>
                                 <th class="d-block d-sm-table-cell">Description</th>
+                                <th class="d-block d-sm-table-cell">Category</th>
                                 <th class="d-block d-sm-table-cell">Total</th>
                             </tr>
                             </thead>
                             @endif
                             <tr>
-                                <td>
+                                <td class="d-block d-sm-table-cell">
                                     <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"
-                                       class="font-weight-bold">{{ $expense->id }}
+                                       class="font-weight-bold">
+                                        {{ $expense->description }}
                                     </a>
                                 </td>
                                 <td class="d-block d-sm-table-cell">
                                     {{ $expense->category->category }}
-                                </td>
-                                <td class="d-block d-sm-table-cell">
-                                    {{ $expense->description }}
                                 </td>
                                 <td class="d-block d-sm-table-cell font-weight-bold">
                                     {{ $expense->amount_formatted }}

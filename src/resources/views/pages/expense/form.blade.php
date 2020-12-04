@@ -86,11 +86,14 @@
 
 
                 </div>
-
+                <div>
+                    {{ Form::hidden('recurrent_expense_id', null) }}
+                </div>
                 <div class="form-group mt-5">
                     {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('expense.index') }}">Cancel</a>
                 </div>
+
                 {!! Form::close() !!}
             </div>
 
@@ -103,12 +106,15 @@
                             <th></th>
                             <th>Category</th>
                             <th>Description</th>
+                            <th>Last Payment</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($recurrent_expenses as $recurrent)
-                    <tr>
+                    <tr @if ($recurrent->usedThisMonth())
+                            style="background-color: rgb(247 247 247 / 22%)"
+                            @endif>
                         <td>
                             <span class="btn btn-primary fill-expense" data-expense="{{ $recurrent->getJsonData() }}">Use</span>
                         </td>
@@ -119,7 +125,10 @@
                             {{ $recurrent->description }}
                         </td>
                         <td>
-                            {{ $recurrent->amount_formatted }}
+                            {{ empty($recurrent->last_use_date) ? ' ' : $recurrent->last_use_date->format('m/d/Y') }}
+                        </td>
+                        <td>
+                            <strong>{{ $recurrent->amount_formatted }}</strong>
                         </td>
                     </tr>
                     @endforeach

@@ -36,7 +36,7 @@ class ExpenseController extends Controller
 
         return view('pages.expense.form', [
             'request_tags' => $requested_tags,
-            'recurrent_expenses' => RecurrentExpense::all(),
+            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(),
         ]);
     }
 
@@ -61,6 +61,17 @@ class ExpenseController extends Controller
 
             $expense->updateTags(Auth::id(), $request->tags);
             DB::commit();
+
+            //If there is a recurrent expense realted will update the recurrent expense amount and will set the last used date
+            if ($request->get('recurrent_expense_id', 0) > 0) {
+                $recurrentExpense = RecurrentExpense::find($request->get('recurrent_expense_id'));
+                if ($recurrentExpense) {
+                    $recurrentExpense->fill([
+                        'amount' => $request->amount,
+                        'last_use_date' => $request->date,
+                    ])->save();
+                }
+            }
 
         } catch(Exception $e) {
             DB::rollBack();

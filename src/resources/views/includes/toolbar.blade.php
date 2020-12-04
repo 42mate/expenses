@@ -18,7 +18,13 @@
         @else
 
         <li  class="nav-item dropdown no-arrow">
-            <a class="nav-link d-sm-none" href="{{ route('expense.create') }}">
+            <a class="nav-link" href="{{ route('home') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>&nbsp; Dashboard</span>
+            </a>
+        </li>
+        <li  class="nav-item dropdown no-arrow">
+            <a class="nav-link" href="{{ route('expense.create') }}">
                 <i class="fas fa-money-bill-wave"></i>
                 <span>&nbsp; Add Expense</span>
             </a>
