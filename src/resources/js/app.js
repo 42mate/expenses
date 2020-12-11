@@ -26,4 +26,13 @@ $('.fill-expense').click(function(e) {
     $('form input[name=description]').val(recurrent.description);
     $('form select[name=category_id]').val(recurrent.category_id);
     $('form input[name=recurrent_expense_id]').val(recurrent.id);
+    $('.sidepanel').toggleClass('active');
+});
+
+$(document).ready(function () {
+
+    $('.sidebarCollapse').on('click', function () {
+        $('.sidepanel').toggleClass('active');
+    });
+
 });

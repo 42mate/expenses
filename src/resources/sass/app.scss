@@ -151,3 +151,29 @@ h1 {
   right: 0px;
   font-size: 15px;
 }
+
+.sidepanel {
+    min-width: 30%;
+    max-width: 30%;
+    display: none;
+    min-height: 100vh;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 2px solid #ccc;
+    transition: 1s;
+
+    &.active {
+        display: block;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .sidepanel {
+        max-width: 100%;
+        min-width: 100%;
+    }
+}
