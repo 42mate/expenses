@@ -32,11 +32,23 @@ class ExpenseController extends Controller
     }
 
     public function create(Request $request) {
+        $expense = new Expense();
+        if ($request->get('recurrent_expense', 0) > 0) {
+            $recurrent_expense = RecurrentExpense::find($request->get('recurrent_expense'));
+            if ($recurrent_expense) {
+                $expense->amount = $recurrent_expense->amount;
+                $expense->description = $recurrent_expense->description;
+                $expense->category_id = $recurrent_expense->category_id;
+                $expense->recurrent_expense_id = $recurrent_expense->id;
+            }
+        }
+
         $requested_tags = $request->old('tags', null);
 
         return view('pages.expense.form', [
             'request_tags' => $requested_tags,
             'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(),
+            'model' => $expense,
         ]);
     }
 
@@ -84,6 +96,7 @@ class ExpenseController extends Controller
     public function edit(Expense $expense) {
         return view('pages.expense.form', [
             'model' => $expense,
+            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(),
         ]);
     }
 

@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="">
         <h1>
-            @if (empty($model)) Add @else Edit @endif Expense
+            @if (empty($model->id)) Add @else Edit @endif Expense
             <button type="button"  class="btn btn-info float-right sidebarCollapse">
                 <span><i class="far fa-calendar-alt"></i> Recurrent</span>
             </button>
@@ -12,12 +12,18 @@
         <div class="side-wrapper">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                    @if (empty($model))
-                        {!! Form::open(['url' => route('expense.store')]) !!}
+                    @if (empty($model) or empty($model->id))
+                        @php
+                            $route = route('expense.store');
+                            $method = 'POST';
+                        @endphp
                     @else
-                        {!! Form::model($model, ['method' => 'put', 'url' => route('expense.update', ['expense' => $model->id])]) !!}
+                        @php
+                            $route = route('expense.update', ['expense' => $model->id]);
+                            $method = 'PUT';
+                        @endphp
                     @endif
-
+                    {!! Form::model($model, ['method' => $method, 'url' => $route]) !!}
                     <div class="form-group">
                         {!! Form::label('Amount:', null, ['class' => 'font-weight-bold']) !!}
                         {!! Form::number('amount', null, ['step' => '.01', 'class' => [ 'form-control',  ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
@@ -30,7 +36,7 @@
 
                     <div class="form-group">
                         {!! Form::label('Date:', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::date('date', (empty($model) ? Carbon\Carbon::now()->format('Y-m-d') : \Carbon\Carbon::parse($model->date)->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
+                        {!! Form::date('date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d') : $model->date->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
                         @error('date')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -92,7 +98,7 @@
 
                     </div>
                     <div>
-                        {{ Form::hidden('recurrent_expense_id', null) }}
+                        {{ Form::hidden('recurrent_expense_id', (empty($model->recurrent_expense_id) ? 0 : $model->recurrent_expense_id)) }}
                     </div>
                     <div class="form-group mt-5">
                         {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}

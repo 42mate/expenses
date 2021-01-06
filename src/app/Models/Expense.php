@@ -28,6 +28,12 @@ class Expense extends Model
         'wallet_id'
     ];
 
+    protected $casts = [
+        'date' => 'datetime:Y-m-d',
+    ];
+
+    protected $dateFormat = 'Y-m-d';
+
     public function tags() {
         return $this->belongsToMany('App\Models\Tag', 'expense_tags');
     }
@@ -46,9 +52,7 @@ class Expense extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
-    public function getDateAttribute() {
-        return date('Y-m-d', strtotime($this->attributes['date']));
-    }
+
 
     public function getAmountFormattedAttribute() {
         return '$ ' . $this->attributes['amount'];
