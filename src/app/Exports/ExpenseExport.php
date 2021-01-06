@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Expense;
+use App\Models\Expense;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 

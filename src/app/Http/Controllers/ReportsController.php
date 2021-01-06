@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Expense;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 

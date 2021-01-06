@@ -1,14 +1,39 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    use HasFactory;
+
+    // Rest omitted for brevity
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -40,27 +65,27 @@ class User extends Authenticatable
 
     public function expenses()
     {
-        return $this->hasMany('App\Expense');
+        return $this->hasMany('App\Models\Expense');
     }
 
     public function incomes()
     {
-        return $this->hasMany('App\Income');
+        return $this->hasMany('App\Models\Income');
     }
 
     public function categories()
     {
-        return $this->hasMany('App\Category');
+        return $this->hasMany('App\Models\Category');
     }
 
     public function tags()
     {
-        return $this->hasMany('App\Tag');
+        return $this->hasMany('App\Models\Tag');
     }
 
     public function wallets()
     {
-        return $this->hasMany('App\Wallet');
+        return $this->hasMany('App\Models\Wallet');
     }
 
 

@@ -99,18 +99,6 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    Route::name('theme.')->group(function () {
-        Route::prefix('theme')->group(function () {
-            Route::get('/', 'StyleGuide@index')->name('index');
-
-            Route::get('/{page}', 'StyleGuide@page')->name('page');
-        });
-    });
-
-    Route::name('demo.')->group(function() {
-        Route::resource('model', 'DemoCrud');
-    });
-
     Route::get('/api/v1/expenses/table', 'ExpenseController@apiGetExpenseTable')
         ->name('api.expense.table');
 

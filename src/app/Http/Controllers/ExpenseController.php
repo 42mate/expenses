@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Expense;
+use App\Models\Expense;
 use App\Exports\ExpenseExport;
-use App\RecurrentExpense;
+use App\Models\RecurrentExpense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;

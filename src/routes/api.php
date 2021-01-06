@@ -14,7 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
+Route::post('login', 'Api\UserController@login')
+    ->name('user.login');
+
+Route::post('user', 'Api\UserController@store')
+    ->name('user.create');
+
+Route::group(['as' => 'api.', 'middleware' => 'auth:api' ], function() {
+
+    Route::put('user/{user}', 'Api\UserController@update')
+        ->name('user.update');
+
+    Route::get('user',  'Api\UserController@index')
+        ->name('user.index');
+
+    Orion::resource('category', Api\CategoryController::class);
+});

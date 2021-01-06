@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Theme;
 
-use App\DemoEntity;
+use App\Models\DemoEntity;
 use App\Http\Requests\DemoEntityRequest;
 use Illuminate\Http\Request;
 

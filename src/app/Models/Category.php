@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
@@ -19,7 +20,13 @@ class Category extends Model
      */
     public function expenses()
     {
-        return $this->hasMany('App\Expense');
+        return $this->hasMany('App\Models\Expense');
+    }
+
+    static public function allForUser() {
+        return self::query()
+            ->where('user_id', Auth::user()->id)
+            ->orderBy('category');
     }
 
 }

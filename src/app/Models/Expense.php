@@ -1,18 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use App\Tag;
-use App\ExpenseTags;
 
 class Expense extends Model
 {
-
     protected $table = 'expenses';
 
     protected $appends = [
@@ -32,21 +29,21 @@ class Expense extends Model
     ];
 
     public function tags() {
-        return $this->belongsToMany('App\Tag', 'expense_tags');
+        return $this->belongsToMany('App\Models\Tag', 'expense_tags');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function wallet()
     {
-        return $this->belongsTo('App\Wallet');
+        return $this->belongsTo('App\Models\Wallet');
     }
 
     public function category() {
-        return $this->belongsTo('App\Category');
+        return $this->belongsTo('App\Models\Category');
     }
 
     public function getDateAttribute() {

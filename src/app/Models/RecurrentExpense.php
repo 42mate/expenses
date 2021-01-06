@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +26,8 @@ class RecurrentExpense extends Expense
         'last_use_date' => 'datetime:Y-m-d',
     ];
 
+    protected $dateFormat = 'Y-m-d';
+
     public function getJsonData() {
         return json_encode([
             'id' => $this->id,
@@ -42,6 +44,13 @@ class RecurrentExpense extends Expense
     public static function getAllNotUsedFirst() {
         return self::query()
             ->orderBy('last_use_date')
+            ->get();
+    }
+
+    public static function getPendingToPayThisMonth() {
+        return self::query()
+            ->whereMonth('last_use_date', '<>', date('m'))
+            ->orWhereNull('last_use_date')
             ->get();
     }
 }

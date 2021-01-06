@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Category;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
@@ -24,9 +24,7 @@ class CategoriesDropDown extends Component
         $this->addEmpty = $addEmpty;
         $this->use_as_value = $useAsValue;
 
-        $this->categories = Category::where('user_id', Auth::id())
-            ->orderBy('category')
-            ->get();
+        $this->categories = Category::allForUser()->get();
     }
 
     /**

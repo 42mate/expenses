@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Expense;
-use App\RecurrentExpense;
+use App\Models\Expense;
+use App\Models\RecurrentExpense;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -1,14 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class DemoEntity extends Model
 {
     protected $table = 'demo_entity';
-
-    public $timestamps = false;
 
     protected $fillable = [
         'name',

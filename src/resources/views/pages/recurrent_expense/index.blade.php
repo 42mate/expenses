@@ -21,6 +21,7 @@
                             <tr>
                                 <th class="d-block d-sm-table-cell">Description</th>
                                 <th class="d-block d-sm-table-cell">Category</th>
+                                <th class="d-block d-sm-table-cell">Last Payment</th>
                                 <th class="d-block d-sm-table-cell">Total</th>
                             </tr>
                             </thead>
@@ -35,8 +36,11 @@
                                 <td class="d-block d-sm-table-cell">
                                     {{ $expense->category->category }}
                                 </td>
+                                <td class="d-block d-sm-table-cell">
+                                    {{ empty($expense->last_use_date) ? 'Never' : $expense->last_use_date->format('Y-m-d') }}
+                                </td>
                                 <td class="d-block d-sm-table-cell font-weight-bold">
-                                    {{ $expense->amount_formatted }}
+                                    {{ $expense->amount_formatted}}
                                 </td>
                             </tr>
                             @if ($loop->last)

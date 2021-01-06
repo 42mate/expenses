@@ -17,7 +17,6 @@ class UserController extends Controller
     public function update(UserPostRequest $request) {
         $user = Auth::user();
 
-
         $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),

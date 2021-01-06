@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,16 +16,16 @@ class Tag extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function expenses()
     {
-        return $this->belongsToMany('App\Expense', 'expense_tags');
+        return $this->belongsToMany('App\Models\Expense', 'expense_tags');
     }
 
     public function incomes()
     {
-        return $this->belongsToMany('App\Income', 'income_tags');
+        return $this->belongsToMany('App\Models\Income', 'income_tags');
     }
 }

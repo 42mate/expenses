@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     public function index() {
-        $categories = Auth::user()
-            ->categories()
-            ->get()
-            ->sortBy('category');
+        $categories = Category::allForUser();
 
         return view('pages.category.index',[
-            'categories' => $categories
+            'categories' => $categories->get(),
         ]);
     }
 
