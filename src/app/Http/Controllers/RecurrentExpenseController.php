@@ -31,6 +31,7 @@ class RecurrentExpenseController extends Controller
             'amount'=> 'required|numeric',
             'category_id'=>'required|numeric',
             'description' => 'required',
+            'period' => 'required|numeric',
         ]);
 
         $redirect = redirect('/recurrent_expense/create');
@@ -40,6 +41,8 @@ class RecurrentExpenseController extends Controller
             'description' => $request->description,
             'user_id' => Auth::id(),
             'category_id' => $request->category_id,
+            'period' => $request->period,
+            'last_use_date' => $request->get('last_use_date', null),
         ]);
 
         return $redirect->with('success', 'Expense Created!');
@@ -58,12 +61,15 @@ class RecurrentExpenseController extends Controller
             'amount'=> 'required|regex:/^\d*(\.\d{2})?$/',
             'category_id'=>'required|numeric',
             'description' => 'required',
+            'period' => 'required|numeric',
         ]);
 
         $recurrent_expense->fill([
             'amount' => $request->amount,
             'description' => $request->description,
             'category_id' => $request->category_id,
+            'period' => $request->period,
+            'last_use_date' => $request->get('last_use_date', $recurrent_expense->last_use_date),
         ]);
 
         $recurrent_expense->save();

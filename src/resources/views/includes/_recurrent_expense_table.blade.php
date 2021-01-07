@@ -27,7 +27,13 @@
                 {{ $recurrent->description }}
             </td>
             <td class="d-block d-sm-table-cell">
-                {{ empty($recurrent->last_use_date) ? 'Never' : $recurrent->last_use_date->format('Y-m-d') }}
+                @if (empty($recurrent->last_use_date))
+                    <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $recurrent->id ]) }}">
+                        Never
+                    </a>
+                @else
+                    {{ $recurrent->last_use_date->format('Y-m-d') }}
+                @endif
             </td>
             <td class="d-block d-sm-table-cell">
                 <strong>{{ $recurrent->amount_formatted }}</strong>

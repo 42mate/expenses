@@ -22,6 +22,7 @@
                                 <th class="d-block d-sm-table-cell">Description</th>
                                 <th class="d-block d-sm-table-cell">Category</th>
                                 <th class="d-block d-sm-table-cell">Last Payment</th>
+                                <th class="d-block d-sm-table-cell">Periodicity</th>
                                 <th class="d-block d-sm-table-cell">Total</th>
                             </tr>
                             </thead>
@@ -37,7 +38,22 @@
                                     {{ $expense->category->category }}
                                 </td>
                                 <td class="d-block d-sm-table-cell">
-                                    {{ empty($expense->last_use_date) ? 'Never' : $expense->last_use_date->format('Y-m-d') }}
+                                    @if (empty($expense->last_use_date))
+                                        <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $expense->id ]) }}">
+                                            Never
+                                        </a>
+                                    @else
+                                        {{ $expense->last_use_date->format('Y-m-d') }}
+                                    @endif
+                                </td>
+                                <td class="d-block d-sm-table-cell">
+                                    @switch($expense->period)
+                                        @case(1) Monthly @break
+                                        @case(2) Bimonthly @break
+                                        @case(3) Trimonthly @break
+                                        @case(6) Bianual @break
+                                        @case(12) Anual @break
+                                    @endswitch
                                 </td>
                                 <td class="d-block d-sm-table-cell font-weight-bold">
                                     {{ $expense->amount_formatted}}

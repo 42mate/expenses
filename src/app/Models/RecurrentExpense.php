@@ -3,9 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class RecurrentExpense extends Expense
 {
+    const PERIOD_MONTHLY = 1;
+    const PERIOD_BIMONTHLY = 2;
+    const PERIOD_TRIMONTHLY = 3;
+    const PERIOD_BIANUAL = 6;
+    const PERIOD_ANUAL = 12;
+
     protected $table = 'recurrent_expense';
 
     public $timestamps = false;
@@ -19,7 +26,8 @@ class RecurrentExpense extends Expense
         'category_id',
         'user_id',
         'description',
-        'last_use_date'
+        'last_use_date',
+        'period'
     ];
 
     protected $casts = [
@@ -49,8 +57,16 @@ class RecurrentExpense extends Expense
 
     public static function getPendingToPayThisMonth() {
         return self::query()
-            ->whereMonth('last_use_date', '<>', date('m'))
-            ->orWhereNull('last_use_date')
-            ->get();
+            ->whereRaw("
+                last_use_date IS NULL
+                OR (
+                    IF(
+                        MOD(MONTH(last_use_date) + period, 12) = 0,
+                        12,
+                        MOD(MONTH(last_use_date) + period, 12)
+                    ) = MONTH(CURRENT_DATE())
+                )"
+            )->get();
+
     }
 }

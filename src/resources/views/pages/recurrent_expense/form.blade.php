@@ -34,6 +34,16 @@
                 </div>
 
                 <div class="form-group">
+                    {!! Form::label('Last payment date:', null, ['class' => 'font-weight-bold']) !!}
+                    {!! Form::date('last_use_date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
+                    @error('last_use_date')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <div>
                         <label for="email" class="font-weight-bold">Category:</label>
                         <span class="mt-1 mb-1 float-right">
@@ -42,6 +52,31 @@
                     </div>
                     <x-categories-drop-down name="category_id" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
                     @error('category_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label for="period" class="font-weight-bold">Periodicity:</label>
+                    </div>
+
+                    {{
+                        Form::select('period',
+                            [
+                                '1' => 'Monthly',
+                                '2' => 'Bimonthly',
+                                '3' => 'Trimonthly',
+                                '6' => 'Bianual',
+                                '12' => 'Anual',
+                            ],
+                            (empty($model->period) ? 1 : $model->period),
+                            ['class' => [ 'form-control',  ($errors->has('period') ? 'is-invalid' : '')]]
+                        )
+                    }}
+                    @error('period')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
