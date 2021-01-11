@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::put('/expense/{expense}', 'ExpenseController@update')->name('expense.update');
 
+    Route::delete('/expense/{expense}', 'ExpenseController@delete')->name('expense.delete');
+
 
     Route::get('/expense', 'ExpenseController@index')->name('expense.index');
 

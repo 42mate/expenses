@@ -11,15 +11,12 @@
                 @forelse ($tags as $tag)
                     <div class="row mb-1">
                         <div class="col-md-8">
-                            <a href="{{ route('expense.index', ['tags' => $tag->name]) }}">
-                                {{ $tag->name }}
-                            </a>
+                            {{ $tag->name }}
                         </div>
                         <div class="col-md-4 text-right">
                             <a href="{{ route('tag.edit', ['model' => $tag->id]) }}" class="btn-primary btn">
-                                <i class="fas fa-edit"></i> Edit
+                                Edit
                             </a>
-
 
                             <form method="POST" action="{{ route('tag.delete', ['model' => $tag->id]) }}" class="d-inline">
                                 {{ csrf_field() }}

@@ -25,7 +25,7 @@
                         <div class="col-md-4 text-right">
                             <a href="{{ route('category.edit', ['category' => $category->id]) }}"
                                class="btn-primary btn">
-                                <i class="fas fa-edit"></i> Edit
+                                Edit
                             </a>
 
 

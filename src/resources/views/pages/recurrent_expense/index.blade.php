@@ -23,16 +23,14 @@
                                 <th class="d-block d-sm-table-cell">Category</th>
                                 <th class="d-block d-sm-table-cell">Last Payment</th>
                                 <th class="d-block d-sm-table-cell">Periodicity</th>
-                                <th class="d-block d-sm-table-cell">Total</th>
+                                <th class="d-block d-sm-table-cell text-right">Total</th>
+                                <th class="d-block d-sm-table-cell"></th>
                             </tr>
                             </thead>
                             @endif
                             <tr>
                                 <td class="d-block d-sm-table-cell">
-                                    <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"
-                                       class="font-weight-bold">
-                                        {{ $expense->description }}
-                                    </a>
+                                    {{ $expense->description }}
                                 </td>
                                 <td class="d-block d-sm-table-cell">
                                     {{ $expense->category->category }}
@@ -55,8 +53,14 @@
                                         @case(12) Anual @break
                                     @endswitch
                                 </td>
-                                <td class="d-block d-sm-table-cell font-weight-bold">
+                                <td class="d-block d-sm-table-cell font-weight-bold text-right">
                                     {{ $expense->amount_formatted}}
+                                </td>
+                                <td class="text-right">
+                                    <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"
+                                       class="btn btn-primary">
+                                        Edit
+                                    </a>
                                 </td>
                             </tr>
                             @if ($loop->last)

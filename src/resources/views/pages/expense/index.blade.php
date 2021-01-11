@@ -104,12 +104,17 @@
                                 <th class="d-block d-sm-table-cell">Wallet</th>
                                 <th class="d-block d-sm-table-cell">Description</th>
                                 <th class="d-block d-sm-table-cell">Tags</th>
-                                <th class="d-block d-sm-table-cell">Total</th>
+                                <th class="d-block d-sm-table-cell text-right">Total</th>
+                                <th class="d-block d-sm-table-cell text-right"></th>
                             </tr>
                             </thead>
                     @endif
                             <tr>
-                                <td><a href="{{ route('expense.edit', [$expense->id]) }}" class="font-weight-bold">{{ $expense->date }}</a></td>
+                                <td>
+                                    <span class="font-weight-bold">
+                                        {{ $expense->date->format('Y-m-d') }}
+                                    </span>
+                                </td>
                                 <td class="d-block d-sm-table-cell"><a href="{{ route('expense.index', ['category_id' => $expense->category->id]) }}">{{ $expense->category->category }}</a></td>
                                 <td class="d-block d-sm-table-cell"><a href="{{ route('expense.index', ['wallet_id' => $expense->wallet_id]) }}">{{ $expense->wallet }}</a></td>
                                 <td class="d-block d-sm-table-cell">{{ $expense->description }}</td>
@@ -118,7 +123,12 @@
                                         <a href="{{ route('expense.index', ['tags' => $tag->name]) }}">{{ $tag->name }}</a>&nbsp;
                                     @endforeach
                                 </td>
-                                <td class="d-block d-sm-table-cell font-weight-bold">{{ $expense->amount_formatted }}</td>
+                                <td class="d-block d-sm-table-cell font-weight-bold text-right">{{ $expense->amount_formatted }}</td>
+                                <td class="text-right">
+                                    <a href="{{ route('expense.edit', [$expense->id]) }}" class="btn btn-primary">
+                                       Edit
+                                    </a>
+                                </td>
                             </tr>
                     @if ($loop->last)
                         </table>
@@ -132,8 +142,8 @@
                     </div>
                 @endforelse
                 <div>
-                    <div class="float-right pr-5">
-                        <span class="font-weight-bold">
+                    <div class="float-right pr-5 text-righ">
+                        <span class="font-weight-bold text-right">
                             TOTAL: $ {{ $total }}
                         </span>
                     </div>

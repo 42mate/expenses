@@ -18,7 +18,7 @@
                         <div class="col-md-8">{{ $wallet->name }}</div>
                         <div class="col-md-4 text-right">
                             <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn">
-                                <i class="fas fa-edit"></i> Edit
+                                Edit
                             </a>
 
 

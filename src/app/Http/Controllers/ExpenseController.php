@@ -100,6 +100,11 @@ class ExpenseController extends Controller
         ]);
     }
 
+    public function delete(Expense $expense) {
+        $expense->delete();
+        return redirect(route('expense.index'))->with('success', 'Expense deleted!');
+    }
+
     public function update(Request $request, Expense $expense) {
         $request->validate([
             'amount'=> 'required|regex:/^\d*(\.\d{2})?$/',
