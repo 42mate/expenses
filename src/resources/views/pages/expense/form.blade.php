@@ -103,19 +103,23 @@
                     <div class="form-group mt-5">
                         {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}
                         <a class="btn btn-warning" href="{{ route('expense.index') }}">Cancel</a>
-                        <a href="{{ route('expense.delete', ['expense' => $model->id]) }}" class="btn btn-danger float-right"
-                           onclick="event.preventDefault(); document.getElementById('delete-form-{{ $model->id }}').submit();">
-                            Delete
-                        </a>
+                        @if (!empty($model) and !empty($model->id))
+                            <a href="{{ route('expense.delete', ['expense' => $model->id]) }}" class="btn btn-danger float-right"
+                               onclick="event.preventDefault(); document.getElementById('delete-form-{{ $model->id }}').submit();">
+                                Delete
+                            </a>
+                        @endif
                     </div>
 
                     {!! Form::close() !!}
 
-                    <form id="delete-form-{{ $model->id }}" action="{{ route('expense.delete', ['expense' => $model->id]) }}"
-                          method="POST" style="display: none;">
-                        {{ method_field('DELETE') }}
-                        @csrf
-                    </form>
+                    @if (!empty($model) and !empty($model->id))
+                        <form id="delete-form-{{ $model->id }}" action="{{ route('expense.delete', ['expense' => $model->id]) }}"
+                              method="POST" style="display: none;">
+                            {{ method_field('DELETE') }}
+                            @csrf
+                        </form>
+                    @endif
                 </div>
             </div>
             <div class="sidepanel" id="fill-from-recurrent">
