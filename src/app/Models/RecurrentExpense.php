@@ -49,23 +49,25 @@ class RecurrentExpense extends Expense
         return (!is_null($this->last_use_date) && date('m') === $this->last_use_date->format('m'));
     }
 
-    public static function getAllNotUsedFirst() {
+    public static function getAllNotUsedFirst($userId) {
         return self::query()
+            ->where('user_id', '=', $userId)
             ->orderBy('last_use_date')
             ->get();
     }
 
-    public static function getPendingToPayThisMonth() {
+    public static function getPendingToPayThisMonth($userId) {
         return self::query()
             ->whereRaw("
-                last_use_date IS NULL
+                (last_use_date IS NULL
                 OR (
                     IF(
                         MOD(MONTH(last_use_date) + period, 12) = 0,
                         12,
                         MOD(MONTH(last_use_date) + period, 12)
                     ) = MONTH(CURRENT_DATE())
-                )"
+                )) AND
+                user_id = $userId"
             )->get();
 
     }

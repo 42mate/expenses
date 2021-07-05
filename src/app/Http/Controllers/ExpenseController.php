@@ -47,7 +47,7 @@ class ExpenseController extends Controller
 
         return view('pages.expense.form', [
             'request_tags' => $requested_tags,
-            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(),
+            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
             'model' => $expense,
         ]);
     }
@@ -96,7 +96,7 @@ class ExpenseController extends Controller
     public function edit(Expense $expense) {
         return view('pages.expense.form', [
             'model' => $expense,
-            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(),
+            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
         ]);
     }
 
