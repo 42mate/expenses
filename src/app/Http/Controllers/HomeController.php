@@ -34,7 +34,7 @@ class HomeController extends Controller
         $week = Expense::weekTotal(Auth::id());
         $month = Expense::monthTotal(Auth::id());
         $lastMonth = Expense::lastMonthTotal(Auth::id());
-        $recurrentExpensePendingPayment = RecurrentExpense::getPendingToPayThisMonth();
+        $recurrentExpensePendingPayment = RecurrentExpense::getPendingToPayThisMonth(Auth::id());
 
         return view('home', [
             'expenses' => $expenses,
