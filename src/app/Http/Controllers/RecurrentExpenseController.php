@@ -77,4 +77,10 @@ class RecurrentExpenseController extends Controller
         return redirect(route('recurrent_expense.edit', ['recurrent_expense' => $recurrent_expense->id]))
             ->with('success', 'Recurrent Expense Updated!');
     }
+
+    public function delete(RecurrentExpense $recurrent_expense) {
+        $recurrent_expense->delete();
+        return redirect(route('recurrent_expense.index'))
+            ->with('success', 'Expense deleted!');
+    }
 }

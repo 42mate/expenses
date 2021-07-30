@@ -86,8 +86,22 @@
                 <div class="form-group mt-5">
                     {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('recurrent_expense.index') }}">Cancel</a>
+                    @if (!empty($model) and !empty($model->id))
+                        <a href="#" class="btn btn-danger float-right"
+                           onclick="event.preventDefault(); document.getElementById('delete-form-{{ $model->id }}').submit();">
+                            Delete
+                        </a>
+                    @endif
                 </div>
                 {!! Form::close() !!}
+
+                @if (!empty($model) and !empty($model->id))
+                    <form id="delete-form-{{ $model->id }}" action="{{ route('recurrent_expense.delete', ['recurrent_expense' => $model->id]) }}"
+                          method="POST" style="display: none;">
+                        {{ method_field('DELETE') }}
+                        @csrf
+                    </form>
+                @endif
             </div>
 
         </div>
