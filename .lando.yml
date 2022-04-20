@@ -1,6 +1,7 @@
 name: myexpenses-2
 recipe: laravel
 config:
+  php: '8.0'
   webroot: src/public
   excludes:
     - src/node_modules
