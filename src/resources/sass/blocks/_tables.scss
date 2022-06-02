@@ -1,0 +1,38 @@
+table.table, table {
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+    margin-bottom: 0;
+
+    &.table-bordered {
+        border: 1px solid #dee2e6;
+        background-color: #fff;
+
+
+        th, td {
+            border: 0;
+        }
+    }
+
+    thead {
+        th {
+            border-bottom: 0;
+            border-top: 0;
+        }
+    }
+
+
+    tr {
+        &.paid {
+            background-color: #efefef;
+        }
+    }
+
+    tbody tr.odd {
+
+    }
+}
+
+.table-home tr td:last-child {
+    text-align: right;
+    font-weight: bold;
+}

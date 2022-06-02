@@ -1,4 +1,4 @@
-<table width="100%" class="table table-bordered  display responsive table-home" >
+<table class="table display responsive">
     <thead>
     <tr>
         <th class="d-block d-sm-table-cell">Category</th>
@@ -32,10 +32,9 @@
             <td class="d-block d-sm-table-cell">
                 <strong>{{ $recurrent->amount_formatted }}</strong>
             </td>
-            <td class="">
+            <td class="text-right">
                 @if ($use_pay_button)
-                    <a class="btn btn-success pay" href="{{ route('expense.create', ['recurrent_expense' => $recurrent->id]) }}">Pay</a>
-                    <a class="btn btn-primary pay" href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $recurrent->id]) }}">Edit</a>
+                    <a class="btn btn-success pay btn-sm" href="{{ route('expense.create', ['recurrent_expense' => $recurrent->id]) }}">Pay</a>
                 @else
                     <span class="btn btn-info fill-expense" data-expense="{{ $recurrent->getJsonData() }}">Use</span>
                 @endif

@@ -130,11 +130,10 @@
                     </button>
                 </div>
 
-                <table width="100%" class="table table-bordered" >
+                <table width="100%" class="table" >
                     <thead>
                     <tr>
                         <th class=""></th>
-                        <th class="d-block d-sm-table-cell">Category</th>
                         <th class="d-block d-sm-table-cell">Description</th>
                         <th class="d-block d-sm-table-cell">Last Payment</th>
                         <th class="d-block d-sm-table-cell">Amount</th>
@@ -142,14 +141,9 @@
                     </thead>
                     <tbody>
                     @foreach($recurrent_expenses as $recurrent)
-                        <tr @if ($recurrent->usedThisMonth())
-                            style="background-color: rgb(247 247 247 / 22%)"
-                            @endif>
+                        <tr @class(['paid' => $recurrent->usedThisMonth()])>
                             <td class="">
-                                <span class="btn btn-info fill-expense" data-expense="{{ $recurrent->getJsonData() }}">Use</span>
-                            </td>
-                            <td class="d-block d-sm-table-cell">
-                                {{ $recurrent->category->category }}
+                                <span class="btn btn-info fill-expense btn-sm" data-expense="{{ $recurrent->getJsonData() }}">Use</span>
                             </td>
                             <td class="d-block d-sm-table-cell">
                                 {{ $recurrent->description }}

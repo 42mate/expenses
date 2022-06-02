@@ -80,21 +80,17 @@
                     @enderror
                 </div>
 
-                <div class="form-group col-12 text-right">
-                    {!! Form::button('<i class="fas fa-file-excel"></i> Export', ['class' => 'btn btn-success', 'type' => 'submit', 'value' => 'xls', 'name' => 'action']) !!}
-
-
+                <div class="form-group col-12 text-right form-reverse">
+                    {!! Form::button('<i class="fas fa-filter"></i> Filter', ['class' => 'btn btn-primary', 'type' => 'submit', 'value' => 'filter', 'name' => 'action']) !!}
                     <a href="{{ route('expense.index') }}" class="btn btn-secondary"><i class="fas fa-minus-circle"></i> Reset</a>
-
-                    {!! Form::button('<i class="fas fa-filter"></i> Filter', ['class' => 'btn btn-primary', 'type' => 'submit', 'value' => 'filter',  'name' => 'action']) !!}
-
+                    {!! Form::button('<i class="fas fa-file-excel"></i> Export', ['class' => 'btn btn-success', 'type' => 'submit', 'value' => 'xls', 'name' => 'action']) !!}
                 </div>
                 {!! Form::close() !!}
             </div>
-            <div class="table">
+            <div>
                 @forelse ($expenses as $expense)
                     @if ($loop->first)
-                        <table class="table table-bordered"
+                        <table class="table"
                                width="100%"
                                cellspacing="0">
                             <thead>
@@ -125,7 +121,7 @@
                                 </td>
                                 <td class="d-block d-sm-table-cell font-weight-bold text-right">{{ $expense->amount_formatted }}</td>
                                 <td class="text-right">
-                                    <a href="{{ route('expense.edit', [$expense->id]) }}" class="btn btn-primary">
+                                    <a href="{{ route('expense.edit', [$expense->id]) }}" class="btn btn-primary btn-sm">
                                        Edit
                                     </a>
                                 </td>
@@ -147,7 +143,7 @@
                             TOTAL: $ {{ $total }}
                         </span>
                     </div>
-                    {{ $expenses->withQueryString()->links() }}
+                    {{ $expenses->withQueryString()->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>

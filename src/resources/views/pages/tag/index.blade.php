@@ -7,14 +7,22 @@
         </h1>
 
         <div class="">
-            <div class="table ">
                 @forelse ($tags as $tag)
-                    <div class="row mb-1">
-                        <div class="col-md-8">
+                    @if ($loop->first)
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            @endif
+                    <tr class="">
+                        <td class="">
                             {{ $tag->name }}
-                        </div>
-                        <div class="col-md-4 text-right">
-                            <a href="{{ route('tag.edit', ['model' => $tag->id]) }}" class="btn-primary btn">
+                        </td>
+                        <td class="text-right">
+                            <a href="{{ route('tag.edit', ['model' => $tag->id]) }}" class="btn-primary btn btn-sm">
                                 Edit
                             </a>
 
@@ -22,15 +30,23 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
 
-                                <input type="submit" class="btn btn-danger" value="Delete">
+                                <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                             </form>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
+                    @if ($loop->last)
+                        </table>
+                    @endif
                 @empty
-
+                <div class="text-center">
+                    <p>{{ __("You don't have any tag") }}</p>
+                    <div>
+                        <a href="{{ route('tag.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>  {{ __('Add') }}
+                        </a>
+                    </div>
+                </div>
                 @endforelse
-
-            </div>
         </div>
     </div>
 @endsection

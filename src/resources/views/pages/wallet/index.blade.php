@@ -12,36 +12,44 @@
         </h1>
 
         <div class="">
-            <div class="table ">
-                @forelse ($wallets as $wallet)
-                    <div class="row mb-1">
-                        <div class="col-md-8">{{ $wallet->name }}</div>
-                        <div class="col-md-4 text-right">
-                            <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn">
-                                Edit
-                            </a>
+            @forelse ($wallets as $wallet)
+                @if ($loop->first)
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                @endif
+                <tr class="">
+                    <td class="">{{ $wallet->name }}</td>
+                    <td class="text-right">
+                        <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn  btn-sm">
+                            Edit
+                        </a>
 
+                        <form method="POST" action="{{ route('wallet.delete', ['wallet' => $wallet->id]) }}" class="d-inline">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
 
-                            <form method="POST" action="{{ route('wallet.delete', ['wallet' => $wallet->id]) }}" class="d-inline">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-
-                                <input type="submit" class="btn btn-danger" value="Delete">
-                            </form>
-                        </div>
+                            <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+                @if ($loop->last)
+                    </table>
+                @endif
+            @empty
+                <div class="text-center">
+                    <p>{{ __("You don't have any wallet") }}</p>
+                    <div>
+                        <a href="{{ route('wallet.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>  {{ __('Add') }}
+                        </a>
                     </div>
-                @empty
-                    <div class="text-center">
-                        <p>{{ __("You don't have any wallet") }}</p>
-                        <div>
-                            <a href="{{ route('wallet.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i>  {{ __('Add') }}
-                            </a>
-                        </div>
-                    </div>
-                @endforelse
-
-            </div>
+                </div>
+            @endforelse
         </div>
     </div>
 @endsection

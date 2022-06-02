@@ -12,27 +12,27 @@
     <!-- Custom styles for this template-->
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-    <meta property="twitter:creator" content="@42mate" />
-    <meta property="twitter:site" content="@42mate" />
-    <meta property="twitter:domain" content="expenses.42mate.com" />
-    <meta property="twitter:image:src" content="http://expenses.42mate.com/images/login-image.jpg" />
-    <meta property="twitter:title" content="Expenses" />
-    <meta property="og:description" content="Tracking Expanses made easy." />
-    <meta property="twitter:image" content="http://expenses.42mate.com/images/login-image.jpg" />
-    <meta property="twitter:card" content="Tracking expanses made easy" />
-    <meta property="og:image" content="http://expenses.42mate.com/images/login-image.jpg" />
-    <meta property="og:title" content="Expenses" />
-    <meta property="og:url" content="http://expenses.42mate.com" />
-    <meta property="og:site_name" content="Expenses" />
-    <meta property="og:type" content="article" />
-    <meta name="description" content="Tracking expenses made easy" />
-    <meta name="abstract" content="A website to track your expenses, that's it" />
-    <meta name="keywords" content="Expenses Tracking Personal Finances Simple" />
-    <meta name="robots" content="follow, index" />
-    <meta name="generator" content="42mate" />
-    <link rel="image_src" href="" />
-    <link rel="canonical" href="http://expenses.42mate.com" />
-    <link rel="shortlink" href="http://expenses.42mate.com" />
+    <meta property="twitter:creator" content="@42mate"/>
+    <meta property="twitter:site" content="@42mate"/>
+    <meta property="twitter:domain" content="expenses.42mate.com"/>
+    <meta property="twitter:image:src" content="http://expenses.42mate.com/images/login-image.jpg"/>
+    <meta property="twitter:title" content="Expenses"/>
+    <meta property="og:description" content="Tracking Expanses made easy."/>
+    <meta property="twitter:image" content="http://expenses.42mate.com/images/login-image.jpg"/>
+    <meta property="twitter:card" content="Tracking expanses made easy"/>
+    <meta property="og:image" content="http://expenses.42mate.com/images/login-image.jpg"/>
+    <meta property="og:title" content="Expenses"/>
+    <meta property="og:url" content="http://expenses.42mate.com"/>
+    <meta property="og:site_name" content="Expenses"/>
+    <meta property="og:type" content="article"/>
+    <meta name="description" content="Tracking expenses made easy"/>
+    <meta name="abstract" content="A website to track your expenses, that's it"/>
+    <meta name="keywords" content="Expenses Tracking Personal Finances Simple"/>
+    <meta name="robots" content="follow, index"/>
+    <meta name="generator" content="42mate"/>
+    <link rel="image_src" href=""/>
+    <link rel="canonical" href="http://expenses.42mate.com"/>
+    <link rel="shortlink" href="http://expenses.42mate.com"/>
     <meta name="MobileOptimized" content="width">
     <meta name="HandheldFriendly" content="true">
     <meta name="viewport" content="width=device-width">
@@ -58,11 +58,11 @@
         <!-- Main Content -->
         <div id="content">
 
-            @section('toolbar')
-                @include('includes.toolbar')
-            @show
+        @section('toolbar')
+            @include('includes.toolbar')
+        @show
 
-            <!-- Begin Page Content -->
+        <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 @yield('page_titĺe')
@@ -87,7 +87,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer class="sticky-footer bg-white">
+        <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
                     <span>Copyright &copy; 42mate - 2020</span>
@@ -108,7 +108,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             @yield('modal')

@@ -18,13 +18,22 @@
                 </div>
             @endif
 
-            <div class="table ">
+            <div class="">
                 @forelse ($categories as $category)
-                    <div class="row mb-1">
-                        <div class="col-md-8">{{ $category->category }}</div>
-                        <div class="col-md-4 text-right">
+                    @if ($loop->first)
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                    @endif
+                    <tr class="">
+                        <td class="">{{ $category->category }}</td>
+                        <td class=" text-right">
                             <a href="{{ route('category.edit', ['category' => $category->id]) }}"
-                               class="btn-primary btn">
+                               class="btn-primary btn btn-sm">
                                 Edit
                             </a>
 
@@ -34,10 +43,13 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
 
-                                <input type="submit" class="btn btn-danger" value="Delete">
+                                <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                             </form>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
+                    @if ($loop->last)
+                        </table>
+                    @endif
                 @empty
                     <div class="text-center">
                         <p>You don't have any category</p>

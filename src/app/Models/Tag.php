@@ -28,4 +28,8 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Models\Income', 'income_tags');
     }
+
+    public function getNameAttribute() {
+        return ucfirst($this->attributes['name']);
+    }
 }
