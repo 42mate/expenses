@@ -41,7 +41,7 @@ class RecurrentExpense extends Expense
     public function getPastDueAttribute() {
         $next_payment_day = Carbon::parse($this->last_use_date)->addMonths($this->period)->floorMonth();
         $diff = $next_payment_day->diffInMonths(Carbon::now()->floorMonth());
-        return $diff;
+        return round($diff / $this->period);
     }
 
     public function getJsonData() {
