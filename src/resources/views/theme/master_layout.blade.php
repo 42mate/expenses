@@ -90,7 +90,7 @@
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; 42mate - 2020</span>
+                    <span>Copyright &copy; 42mate - 2022</span>
                 </div>
             </div>
         </footer>

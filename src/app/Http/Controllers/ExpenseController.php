@@ -16,7 +16,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $expenses = Expense::filter(Auth::id(), $request->all());
 
         if ($request->get('action') == 'xls') {
@@ -31,7 +32,8 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $expense = new Expense();
         if ($request->get('recurrent_expense', 0) > 0) {
             $recurrent_expense = RecurrentExpense::find($request->get('recurrent_expense'));
@@ -52,11 +54,11 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'amount'=> 'required|numeric',
-            'category_id'=>'required|numeric',
-            'description' => 'required',
+            'amount' => 'required|numeric',
+            'category_id' => 'required|numeric',
         ]);
 
         try {
@@ -65,7 +67,7 @@ class ExpenseController extends Controller
             $expense = Expense::create([
                 'amount' => $request->amount,
                 'date' => ($request->date),
-                'description' => $request->description,
+                'description' => !empty($request->description) ? $request->description : 'Random expense',
                 'user_id' => Auth::id(),
                 'category_id' => $request->category_id,
                 'wallet_id' => $request->wallet_id,
@@ -85,7 +87,7 @@ class ExpenseController extends Controller
                 }
             }
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return redirect('/create')->with('error', 'Error Saving!');
         }
@@ -93,50 +95,51 @@ class ExpenseController extends Controller
         return redirect('/create')->with('success', 'Expense Created!');
     }
 
-    public function edit(Expense $expense) {
+    public function edit(Expense $expense)
+    {
         return view('pages.expense.form', [
             'model' => $expense,
             'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
         ]);
     }
 
-    public function delete(Expense $expense) {
+    public function delete(Expense $expense)
+    {
         $expense->delete();
         return redirect(route('expense.index'))->with('success', 'Expense deleted!');
     }
 
-    public function update(Request $request, Expense $expense) {
+    public function update(Request $request, Expense $expense)
+    {
         $request->validate([
-            'amount'=> 'required|regex:/^\d*(\.\d{2})?$/',
-            'category_id'=>'required|numeric',
-            'description' => 'required',
+            'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'category_id' => 'required|numeric',
         ]);
-
-
 
         try {
             DB::beginTransaction();
             $expense->fill([
                 'amount' => $request->amount,
                 'date' => ($request->date),
-                'description' => $request->description,
+                'description' => !empty($request->description) ? $request->description : 'Random expense',
                 'category_id' => $request->category_id,
             ]);
 
             $expense->updateTags(Auth::id(), $request->tags);
             $expense->save();
             DB::commit();
-            return redirect(route('expense.view', ['expense' => $expense->id]))
+            return redirect(route('expense.index'))
                 ->with('success', 'Expense Updated!');
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return redirect('/expense/' . $expense->id . '/edit')
                 ->with('error', 'Error Saving!');
         }
     }
 
-    public function view(Expense $expense) {
+    public function view(Expense $expense)
+    {
         if ($expense->user_id !== Auth::id()) {
             return redirect(route('home'))
                 ->with('warning', 'Not allowed!');
@@ -152,7 +155,8 @@ class ExpenseController extends Controller
      *
      * @return array
      */
-    public function apiGetTotalByMonth() {
+    public function apiGetTotalByMonth()
+    {
         $data = Expense::getTotalByMonth(Auth::id());
 
         $return = new \stdClass();
@@ -177,11 +181,11 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function apiGetExpenseTable(Request $request) {
+    public function apiGetExpenseTable(Request $request)
+    {
         if ($request->get('month', null) === null) {
             $expenses = Expense::byUser(Auth::id());
-        }
-        else {
+        } else {
             $expenses = Expense::byUserCurrentMonth(Auth::id());
         }
 
