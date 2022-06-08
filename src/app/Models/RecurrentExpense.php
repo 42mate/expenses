@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class RecurrentExpense extends Expense
@@ -19,6 +20,7 @@ class RecurrentExpense extends Expense
 
     protected $appends = [
         'category_name',
+        'past_due'
     ];
 
     protected $fillable = [
@@ -35,6 +37,12 @@ class RecurrentExpense extends Expense
     ];
 
     protected $dateFormat = 'Y-m-d';
+
+    public function getPastDueAttribute() {
+        $next_payment_day = Carbon::parse($this->last_use_date)->addMonths($this->period)->floorMonth();
+        $diff = $next_payment_day->diffInMonths(Carbon::now()->floorMonth());
+        return $diff;
+    }
 
     public function getJsonData() {
         return json_encode([
@@ -65,9 +73,15 @@ class RecurrentExpense extends Expense
                         MOD(MONTH(last_use_date) + period, 12) = 0,
                         12,
                         MOD(MONTH(last_use_date) + period, 12)
-                    ) = MONTH(CURRENT_DATE())
-                )) AND
-                user_id = $userId"
+                    ) <= MONTH(CURRENT_DATE())
+                )) AND (
+                    IF(
+                        period = 12,
+                        YEAR(last_use_date) + 1,
+                        YEAR(last_use_date)
+                    ) <= YEAR(CURRENT_DATE())
+                )
+                AND user_id = $userId"
             )->get();
 
     }

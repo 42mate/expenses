@@ -4,6 +4,7 @@
         <th class="d-block d-sm-table-cell">Category</th>
         <th class="d-block d-sm-table-cell">Description</th>
         <th class="d-block d-sm-table-cell">Last Payment</th>
+        <th class="d-block d-sm-table-cell">Past Due</th>
         <th class="d-block d-sm-table-cell text-right">Amount</th>
         <th class=""></th>
     </tr>
@@ -20,7 +21,7 @@
             <td class="d-block d-sm-table-cell">
                 {{ $recurrent->description }}
             </td>
-            <td class="d-block d-sm-table-cell">
+            <td class="d-block d-sm-table-cell text-center">
                 @if (empty($recurrent->last_use_date))
                     <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $recurrent->id ]) }}">
                         Never
@@ -29,7 +30,10 @@
                     {{ $recurrent->last_use_date->format('Y-m-d') }}
                 @endif
             </td>
-            <td class="d-block d-sm-table-cell">
+            <td class="d-block d-sm-table-cell text-center">
+                {{ $recurrent->past_due }}
+            </td>
+            <td class="d-block d-sm-table-cell text-right">
                 <strong>{{ $recurrent->amount_formatted }}</strong>
             </td>
             <td class="text-right">

@@ -104,7 +104,8 @@ class Expense extends Model
             });
         }
 
-        $q->orderBy('date', 'DESC');
+        $q->orderBy('date', 'DESC')
+            ->orderBy('id', 'DESC');
 
         return $q;
     }
