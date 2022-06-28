@@ -5,7 +5,7 @@
     <div class="">
         <h1>
             @if (empty($model->id)) Add @else Edit @endif Expense
-            <button type="button"  class="btn btn-info float-right sidebarCollapse">
+            <button type="button" class="btn btn-info float-right sidebarCollapse btn-sm">
                 <span><i class="far fa-calendar-alt"></i> Recurrent</span>
             </button>
         </h1>
@@ -24,21 +24,6 @@
             {!! Form::model($model, ['method' => $method, 'url' => $route]) !!}
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                    <div class="form-group">
-                        <div>
-                            <label for="email" class="font-weight-bold">Category: *</label>
-                            <span class="mt-1 mb-1 float-right">
-                        <a href="{{ route('category.create', ['gt=expense.create']) }}"><i class="fas fa-plus"></i> {{ __('Add Category') }}</a>
-                    </span>
-                        </div>
-                        <x-categories-drop-down name="category_id" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
-                        @error('category_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
                     <div class="form-group">
                         {!! Form::label('Date: *', null, ['class' => 'font-weight-bold']) !!}
                         {!! Form::date('date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d') : $model->date->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
@@ -75,17 +60,21 @@
 
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-
-
                     <div class="form-group">
                         <div>
-                            <label for="email" class="font-weight-bold">Wallet:</label>
+                            <label for="email" class="font-weight-bold">Category: *</label>
                             <span class="mt-1 mb-1 float-right">
-                        <a href="{{ route('wallet.create', ['gt=expense.create']) }}"><i class="fas fa-plus"></i> {{ __('Add Wallet') }}</a>
-                    </span>
+                                <a href="{{ route('category.create', ['gt=expense.create']) }}">
+                                    <i class="fas fa-plus"></i> {{ __('Add Category') }}
+                                </a>
+                            </span>
                         </div>
-                        <x-wallet-drop-down name="wallet_id" selected="{{ empty($model) ? 0 : $model->wallet_id }}"/>
-                        @error('wallet_id')
+                        <x-categories-drop-down name="category_id"
+                                                addEmpty="true"
+                                                use_as_label="category"
+                                                selected="{{ empty($model) ? 0 : $model->category_id }}"
+                        />
+                        @error('category_id')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -93,11 +82,21 @@
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label('Tags:', null, ['class' => 'font-weight-bold']) !!}
+                        <div>
+                            <label for="email" class="font-weight-bold">Wallet:</label>
+                            <span class="mt-1 mb-1 float-right">
+                                <a href="{{ route('wallet.create', ['gt=expense.create']) }}">
+                                    <i class="fas fa-plus"></i> {{ __('Add Wallet') }}
+                                </a>
+                            </span>
+                        </div>
 
-                        <tags-input :tags="{{ !empty($request_tags) ? $request_tags : (empty($model->tags) ? '[]' : $model->tags) }}"></tags-input>
+                        <x-wallet-drop-down name="wallet_id"
+                                            selected="{{ empty($model) ? 0 : $model->wallet_id }}"
+                                            add_empty="true"
+                        />
 
-                        @error('tags')
+                        @error('wallet_id')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -110,7 +109,8 @@
                         {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}
                         <a class="btn btn-warning" href="{{ route('expense.index') }}">Cancel</a>
                         @if (!empty($model) and !empty($model->id))
-                            <a href="{{ route('expense.delete', ['expense' => $model->id]) }}" class="btn btn-danger float-right"
+                            <a href="{{ route('expense.delete', ['expense' => $model->id]) }}"
+                               class="btn btn-danger float-right"
                                onclick="event.preventDefault(); document.getElementById('delete-form-{{ $model->id }}').submit();">
                                 Delete
                             </a>
@@ -120,7 +120,8 @@
                 {!! Form::close() !!}
 
                 @if (!empty($model) and !empty($model->id))
-                    <form id="delete-form-{{ $model->id }}" action="{{ route('expense.delete', ['expense' => $model->id]) }}"
+                    <form id="delete-form-{{ $model->id }}"
+                          action="{{ route('expense.delete', ['expense' => $model->id]) }}"
                           method="POST" style="display: none;">
                         {{ method_field('DELETE') }}
                         @csrf
@@ -135,7 +136,7 @@
                     </button>
                 </div>
 
-                <table width="100%" class="table" >
+                <table width="100%" class="table">
                     <thead>
                     <tr>
                         <th class=""></th>
@@ -148,7 +149,8 @@
                     @foreach($recurrent_expenses as $recurrent)
                         <tr @class(['paid' => $recurrent->usedThisMonth()])>
                             <td class="">
-                                <span class="btn btn-info fill-expense btn-sm" data-expense="{{ $recurrent->getJsonData() }}">Use</span>
+                                <span class="btn btn-info fill-expense btn-sm"
+                                      data-expense="{{ $recurrent->getJsonData() }}">Use</span>
                             </td>
                             <td class="d-block d-sm-table-cell">
                                 {{ $recurrent->description }}

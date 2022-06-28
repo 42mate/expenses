@@ -9,7 +9,7 @@
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
     <a class="nav-link" href="{{ route('expense.index') }}">
-        <i class="fas fa-fw fa-cog"></i>
+        <i class="fas fa-money-bill-wave"></i>
         <span>{{ __('Expenses') }}</span>
     </a>
     <a class="nav-link" href="{{ route('recurrent_expense.index') }}">
@@ -24,10 +24,6 @@
     <a class="nav-link " href="{{ route('category.index') }}" >
         <i class="fas fa-tasks"></i>
         <span>{{ __('Categories') }}</span>
-    </a>
-    <a class="nav-link " href="{{ route('tag.index') }}" >
-        <i class="fas fa-tags"></i>
-        <span>{{ __('Tags') }}</span>
     </a>
 </li>
 

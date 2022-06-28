@@ -1,7 +1,7 @@
 @extends('theme.master_layout')
 
 @section('content')
-    <div class="col-md-8">
+    <div class="">
         <h1 class="mb-5">
             <i class="fas fa-wallet"></i> {{ __('Wallets') }}
             <div class="add_control">

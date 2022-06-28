@@ -1,13 +1,13 @@
 <table class="table display responsive">
     <thead>
-    <tr>
-        <th class="d-block d-sm-table-cell">Category</th>
-        <th class="d-block d-sm-table-cell">Description</th>
-        <th class="d-block d-sm-table-cell">Last Payment</th>
-        <th class="d-block d-sm-table-cell">Past Due</th>
-        <th class="d-block d-sm-table-cell text-right">Amount</th>
-        <th class=""></th>
-    </tr>
+        <tr>
+            <th class="d-block d-sm-table-cell">Category</th>
+            <th class="d-block d-sm-table-cell">Description</th>
+            <th class="d-block d-sm-table-cell">Last Payment</th>
+            <th class="d-block d-sm-table-cell">Past Due</th>
+            <th class="d-block d-sm-table-cell text-right">Amount</th>
+            <th class=""></th>
+        </tr>
     </thead>
     <tbody>
     @foreach($recurrent_expenses as $recurrent)

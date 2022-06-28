@@ -27,8 +27,8 @@
                             {{ $expense->date->format('Y-m-d') }}
                         </td>
                         <td class="d-block d-sm-table-cell">
-                            <a href="{{ route('expense.index', ['category_id' => $expense->category->id]) }}">
-                                {{ $expense->category->category }}
+                            <a href="{{ route('expense.index', ['category_id' => $expense->category_idx]) }}">
+                                {{ $expense->category_name }}
                             </a>
                         </td>
                         <td class="d-block d-sm-table-cell font-weight-bold text-right">
@@ -46,16 +46,8 @@
                 @endforeach
             </table>
             @if ($expenses->count() == 0)
-                <div>
-                    <p class="text-center">Good, you don't have any expense in
-                        this
-                        month.</p>
-                    <div class="text-center">
-                        <a href="{{ route('expense.create') }}"
-                           class="btn btn-primary">
-                            Add your first expense
-                        </a>
-                    </div>
+                <div class="text-center">
+                    Good, you don't have any expense in this month.
                 </div>
             @endif
         </div>

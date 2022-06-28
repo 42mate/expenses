@@ -1,8 +1,7 @@
 @extends('theme/logout')
 @section('content')
-    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-    <div class="col-lg-6 p-5">
-        <h2 class="mb-4">Sign in</h2>
+    <div class="col-lg-12 p-5">
+        <h2 class="mb-4 text-center">Login</h2>
 
         <form method="POST" action="{{ route('login') }}" class="mt-5 mb-5">
                 @csrf

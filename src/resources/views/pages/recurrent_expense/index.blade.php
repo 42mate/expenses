@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-3">
+        <h1 class="mb-5">
             <i class="far fa-calendar-alt"></i> {{ __('Recurrent Expenses') }}
             <div class="add_control">
                 <a href="{{ route('recurrent_expense.create') }}">

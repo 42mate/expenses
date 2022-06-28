@@ -12,10 +12,18 @@ class Expense extends Model
 {
     protected $table = 'expenses';
 
+    //The human readable name for the default related Category or Wallet.
+    public const DEFAULT_LABEL = 'Default';
+
+    //In the db will be NULL, but we need a value to represent and use it in the filters
+    public const DEFAULT_IDX = 0;
+
     protected $appends = [
         'amount_formatted',
         'category_name',
-        'wallet',
+        'category_idx',
+        'wallet_name',
+        'wallet_idx',
         'tags_formatted'
     ];
 
@@ -65,12 +73,49 @@ class Expense extends Model
         return implode(', ', $out);
     }
 
-    public function getCategoryNameAttribute() {
-        return $this->category->category;
+    /**
+     * Gets the category id from the database or -1
+     *
+     * We need this special method because if the category_id is null
+     * we need to show the default category that is not a database entry.
+     *
+     * @return integer
+     */
+    public function getCategoryIdxAttribute() {
+        if (!empty($this->attributes['category_id'])) {
+            return $this->category_id;
+        }
+        return self::DEFAULT_IDX;
     }
 
-    public function getWalletAttribute() {
-        return isset($this->wallet()->first()->name) ? $this->wallet()->first()->name : 'No wallet';
+    /**
+     * Gets the category name to be printable to the user.
+     *
+     * We need this special method because if the category_id is null
+     * we need to show the default category that is not a database entry.
+     *
+     * @return string
+     */
+    public function getCategoryNameAttribute() {
+        if (!empty($this->attributes['category_id'])) {
+            return $this->category->category;
+        }
+        return self::DEFAULT_LABEL;
+    }
+
+    public function getWalletNameAttribute() {
+        if (!empty($this->attributes['wallet_id'])) {
+            return $this->wallet->name;
+        }
+        return self::DEFAULT_LABEL;
+    }
+
+
+    public function getWalletIdxAttribute() {
+        if (!empty($this->attributes['wallet_id'])) {
+            return $this->wallet_id;
+        }
+        return self::DEFAULT_IDX;
     }
 
     public static function filter($userId, $args) {
@@ -82,8 +127,16 @@ class Expense extends Model
             $q->where('wallet_id', $args['wallet_id']);
         }
 
+        if (isset($args['wallet_id']) && $args['wallet_id'] === "0") {
+            $q->where('wallet_id', null);
+        }
+
         if (!empty($args['category_id'])) {
             $q->where('category_id', $args['category_id']);
+        }
+
+        if (isset($args['category_id']) && $args['category_id'] === "0") {
+            $q->where('category_id', null);
         }
 
         if (!empty($args['description'])) {
@@ -179,42 +232,17 @@ class Expense extends Model
     }
 
     public static function getExpensesByCategory($userId) {
-        return DB::select('SELECT c.category, SUM(e.amount) as total
-            FROM categories c INNER JOIN expenses e ON e.category_id = c.id
+        return DB::select('SELECT IF(c.category IS NULL, ?, c.category) as category, SUM(e.amount) as total
+            FROM expenses e LEFT JOIN categories c ON e.category_id = c.id
             WHERE e.date BETWEEN ? AND ?
             AND e.user_id = ?
             GROUP BY 1
-            ORDER BY 1 DESC
-            LIMIT 24', [
-            Carbon::now()->startOfMonth()->format('Y-m-d'),
-            Carbon::now()->endOfMonth()->format('Y-m-d'),
-            $userId
+            ORDER BY 1 DESC', [
+                self::DEFAULT_LABEL,
+                Carbon::now()->startOfMonth()->format('Y-m-d'),
+                Carbon::now()->endOfMonth()->format('Y-m-d'),
+                $userId
         ]);
     }
-
-    public function updateTags($userId, $tags) {
-        $iTags = json_decode($tags);
-
-        ExpenseTags::clear($this->id);
-
-        foreach ($iTags as $iTag) {
-            if (!isset($iTag->id)) {
-                $tag = Tag::firstOrNew([
-                    'name' => $iTag->name,
-                    'user_id' => $userId,
-                ]);
-
-                $tag->save();
-            }
-            else {
-                $tag = Tag::find($iTag->id);
-            }
-
-            ExpenseTags::create([
-                'tag_id' => $tag->id,
-                'expense_id' => $this->id,
-                'user_id' => $userId,
-            ]);
-        }
-    }
 }
+

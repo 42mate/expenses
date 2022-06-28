@@ -1,7 +1,7 @@
 @extends('theme.master_layout')
 
 @section('content')
-    <div class="col-md-8">
+    <div class="">
         <h1 class="mb-5">
             <i class="fas fa-tasks"></i> {{ __('Categories') }}
             <div class="add_control">
@@ -10,7 +10,6 @@
                 </a>
             </div>
         </h1>
-
         <div class="">
             @if (session('status'))
                 <div class="alert alert-success" role="alert">
