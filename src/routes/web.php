@@ -66,15 +66,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/wallet/{wallet}', 'WalletController@delete')->name('wallet.delete');
 
-
-    Route::get('/tag', 'TagController@index')->name('tag.index');
-
-    Route::get('/tag/{model}/edit', 'TagController@edit')->name('tag.edit');
-
-    Route::put('/tag/{model}/edit', 'TagController@update')->name('tag.update');
-
-    Route::delete('/tag/{model}', 'TagController@delete')->name('tag.delete');
-
     Route::get('/recurrent_expense/create', 'RecurrentExpenseController@create')
         ->name('recurrent_expense.create');
 

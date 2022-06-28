@@ -11,7 +11,7 @@ class WalletController extends Controller
 
     public function create()
     {
-        return view('pages.wallet.create');
+        return view('pages.wallet.form');
     }
 
     public function store(Request $request)

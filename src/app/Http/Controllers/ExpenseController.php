@@ -58,7 +58,6 @@ class ExpenseController extends Controller
     {
         $request->validate([
             'amount' => 'required|numeric',
-            'category_id' => 'required|numeric',
         ]);
 
         try {
@@ -66,14 +65,13 @@ class ExpenseController extends Controller
 
             $expense = Expense::create([
                 'amount' => $request->amount,
-                'date' => ($request->date),
-                'description' => !empty($request->description) ? $request->description : 'Random expense',
+                'date' => $request->date,
+                'description' => !empty($request->description) ? $request->description : '',
                 'user_id' => Auth::id(),
-                'category_id' => $request->category_id,
+                'category_id' => !empty($request->category_id) ? $request->category_id : null,
                 'wallet_id' => $request->wallet_id,
             ]);
 
-            $expense->updateTags(Auth::id(), $request->tags);
             DB::commit();
 
             //If there is a recurrent expense realted will update the recurrent expense amount and will set the last used date
@@ -113,19 +111,17 @@ class ExpenseController extends Controller
     {
         $request->validate([
             'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
-            'category_id' => 'required|numeric',
         ]);
 
         try {
             DB::beginTransaction();
             $expense->fill([
                 'amount' => $request->amount,
-                'date' => ($request->date),
-                'description' => !empty($request->description) ? $request->description : 'Random expense',
-                'category_id' => $request->category_id,
+                'date' => $request->date,
+                'description' => !empty($request->description) ? $request->description : '',
+                'category_id' =>  !empty($request->category_id) ? $request->category_id : null,
             ]);
 
-            $expense->updateTags(Auth::id(), $request->tags);
             $expense->save();
             DB::commit();
             return redirect(route('expense.index'))

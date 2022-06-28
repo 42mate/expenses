@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Support\Str;
 
 return [
@@ -142,6 +143,14 @@ return [
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
 
+    ],
+
+    'dbal' => [
+        'types' => [
+            //Needed to allow migration changes on timestamp fields
+            //https://laravel.com/docs/9.x/migrations#prerequisites
+            'timestamp' => TimestampType::class,
+        ],
     ],
 
 ];

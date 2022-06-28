@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-3">
-            <i class="fas fa-fw fa-cog"></i> {{ __('Expenses') }}
+        <h1 class="mb-5">
+            <i class="fas fa-money-bill-wave"></i> {{ __('Expenses') }}
             <div class="add_control">
                 <a href="{{ route('expense.create') }}">
                     <i class="fas fa-plus"></i> {{ __("Add expense") }}
@@ -17,7 +17,12 @@
                 <div class="form-group col-md-3">
                     <label for="category">Category:</label>
 
-                    <x-categories-drop-down name="category_id" selected="{{ request()->get('category_id', null) }}" addEmpty="true"/>
+                    <x-categories-drop-down name="category_id"
+                                            use_as_label="category"
+                                            selected="{{ request()->get('category_id', null) }}"
+                                            addEmpty="true"
+                                            addDefault="true"
+                    />
 
                     @error('category_id')
                     <div class="invalid-feedback">
@@ -29,7 +34,11 @@
                 <div class="form-group col-md-3">
                     <label for="category">Wallet:</label>
 
-                    <x-wallet-drop-down name="wallet_id" selected="{{ request()->get('wallet_id', null) }}" addEmpty="true"/>
+                    <x-wallet-drop-down name="wallet_id"
+                                        use_as_label="name"
+                                        selected="{{ request()->get('wallet_id', null) }}"
+                                        addDefault="true"
+                                        addEmpty="true"/>
 
                     @error('wallet_id')
                     <div class="invalid-feedback">
@@ -38,17 +47,7 @@
                     @enderror
                 </div>
 
-                <div class="form-group col-md-3">
-                    <label for="category">Tag:</label>
-                    {!! Form::text('tags', request()->get('tags', null), ['class' => [ 'form-control',  ($errors->has('tags') ? 'is-invalid' : '')]]) !!}
-                    @error('tags')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
-
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-6">
                     <label for="category">Description:</label>
                     {!! Form::text('description', request()->get('description', null), ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
                     @error('description')
@@ -58,8 +57,7 @@
                     @enderror
                 </div>
 
-
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="category">Date From:</label>
                     {!! Form::date('date_from', (empty(request()->get('date_from', null)) ? '' : request()->get('date_from')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
 
@@ -70,7 +68,7 @@
                     @enderror
                 </div>
 
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="category">Date To:</label>
                     {!! Form::date('date_to',  (empty(request()->get('date_to', null)) ? '' : request()->get('date_to')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
                     @error('date_to')
@@ -99,33 +97,35 @@
                                 <th class="d-block d-sm-table-cell">Category</th>
                                 <th class="d-block d-sm-table-cell">Wallet</th>
                                 <th class="d-block d-sm-table-cell">Description</th>
-                                <th class="d-block d-sm-table-cell">Tags</th>
                                 <th class="d-block d-sm-table-cell text-right">Total</th>
                                 <th class="d-block d-sm-table-cell text-right"></th>
                             </tr>
                             </thead>
                     @endif
-                            <tr>
-                                <td>
-                                    <span class="font-weight-bold">
-                                        {{ $expense->date->format('Y-m-d') }}
-                                    </span>
-                                </td>
-                                <td class="d-block d-sm-table-cell"><a href="{{ route('expense.index', ['category_id' => $expense->category->id]) }}">{{ $expense->category->category }}</a></td>
-                                <td class="d-block d-sm-table-cell"><a href="{{ route('expense.index', ['wallet_id' => $expense->wallet_id]) }}">{{ $expense->wallet }}</a></td>
-                                <td class="d-block d-sm-table-cell">{{ $expense->description }}</td>
-                                <td class="d-block d-sm-table-cell">
-                                    @foreach($expense->tags as $tag)
-                                        <a href="{{ route('expense.index', ['tags' => $tag->name]) }}">{{ $tag->name }}</a>&nbsp;
-                                    @endforeach
-                                </td>
-                                <td class="d-block d-sm-table-cell font-weight-bold text-right">{{ $expense->amount_formatted }}</td>
-                                <td class="text-right">
-                                    <a href="{{ route('expense.edit', [$expense->id]) }}" class="btn btn-primary btn-sm">
-                                       Edit
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <span class="font-weight-bold">
+                                    {{ $expense->date->format('Y-m-d') }}
+                                </span>
+                            </td>
+                            <td class="d-block d-sm-table-cell">
+                                <a href="{{ route('expense.index', ['category_id' => $expense->category_idx]) }}">
+                                    {{ $expense->category_name }}
+                                </a>
+                            </td>
+                            <td class="d-block d-sm-table-cell">
+                                <a href="{{ route('expense.index', ['wallet_id' => $expense->wallet_idx]) }}">
+                                    {{ $expense->wallet_name }}
+                                </a>
+                            </td>
+                            <td class="d-block d-sm-table-cell">{{ $expense->description }}</td>
+                            <td class="d-block d-sm-table-cell font-weight-bold text-right">{{ $expense->amount_formatted }}</td>
+                            <td class="text-right">
+                                <a href="{{ route('expense.edit', [$expense->id]) }}" class="btn btn-primary btn-sm">
+                                   Edit
+                                </a>
+                            </td>
+                        </tr>
                     @if ($loop->last)
                         </table>
                     @endif

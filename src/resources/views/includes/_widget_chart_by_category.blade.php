@@ -1,10 +1,12 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 ">Expenses by categories</h6>
+        <h6 class="m-0">{{ __("Expenses by categories") }}</h6>
     </div>
     <div class="card-body">
         @if (count($expenses) === 0)
-            <div>Good, you don't have any expense in this month.</div>
+            <div class="text-center">
+                {{  __("Good, you don't have any expense in this month.") }}
+            </div>
         @else
             <canvas class="chart" type="pie"
                     data="/api/v1/charts/categories"

@@ -2,8 +2,9 @@
 
 @section('content')
     <!-- Page Heading -->
-    <div class="">
-        <h1> @if (empty($model)) Add @else Edit @endif Category</h1>
+    <h1> @if (empty($model)) Add @else Edit @endif Category</h1>
+
+    <div class="col-md-8">
 
         @if (empty($model))
             {!! Form::open(['url' => route('category.store')]) !!}

@@ -1,9 +1,8 @@
 @extends('theme/logout')
 
 @section('content')
-    <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
-    <div class="col-lg-6 p-5">
-        <h2 class="mb-4">Create an account</h2>
+    <div class="col-lg-12 p-5">
+        <h2 class="mb-4  text-center">Create an account</h2>
 
         <form method="POST" action="{{ route('register') }}" class="mb-5 mt-5">
             @csrf
@@ -78,7 +77,7 @@
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
                     <a href="{{ route('login') }}">
-                        Sign In
+                        Login
                     </a>
                 </div>
             </div>
