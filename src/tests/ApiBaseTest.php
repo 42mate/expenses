@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Tests;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiBaseTest extends  TestCase
+class ApiBaseTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -19,7 +18,8 @@ class ApiBaseTest extends  TestCase
      */
     protected $store = [];
 
-    public function settUp(): void {
+    public function settUp(): void
+    {
         parent::setUp();
     }
 
@@ -34,6 +34,7 @@ class ApiBaseTest extends  TestCase
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ];
+
         return $headers;
     }
 
@@ -45,21 +46,21 @@ class ApiBaseTest extends  TestCase
     public function getAuthHeader()
     {
         $headers = $this->getHeaders();
-        $headers['Authorization'] = 'Bearer ' . $this->store['auth']['token'];
+        $headers['Authorization'] = 'Bearer '.$this->store['auth']['token'];
+
         return $headers;
     }
 
     /**
      * Authenticates the a User by email.
      *
-     * @param array $credentials an array with email and password.
-     *
+     * @param  array  $credentials an array with email and password.
      * @return array The user Response
      */
     public function authenticateUser(array $credentials): object
     {
         $response = $this->postJson(
-            self::$baseApi . '/login',
+            self::$baseApi.'/login',
             $credentials,
             $this->getHeaders()
         );
@@ -69,8 +70,8 @@ class ApiBaseTest extends  TestCase
         $response->assertJsonStructure([
             'data' => [
                 'token',
-                'user'
-            ]
+                'user',
+            ],
         ]);
 
         $responseContent = json_decode($response->getContent());
@@ -85,14 +86,16 @@ class ApiBaseTest extends  TestCase
     public function getAuthHeaderFail(): array
     {
         $headers = $this->getHeaders();
-        $headers['Authorization'] = 'Bearer ' . ' ';
+        $headers['Authorization'] = 'Bearer '.' ';
+
         return $headers;
     }
 
-    public function factoryUser() : \App\Models\User {
+    public function factoryUser(): User
+    {
         $user = \App\Models\User::factory()->create();
         $user->save();
+
         return $user;
     }
-
 }

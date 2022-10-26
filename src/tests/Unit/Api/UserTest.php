@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests\Unit\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,25 +9,26 @@ class UserTest extends ApiBaseTest
 {
     use RefreshDatabase;
 
-    public function testLogin() {
+    public function testLogin()
+    {
         $user = $this->factoryUser();
 
         $this->authenticateUser([
             'email' => $user->email,
-            'password' => 'secret'
+            'password' => 'secret',
         ]);
     }
 
-    public function testCreateUser() {
-
-        $userData =  [
+    public function testCreateUser()
+    {
+        $userData = [
             'email' => 'test@test.com',
             'name' => 'create test account',
-            'password' => 'secret'
+            'password' => 'secret',
         ];
 
         $response = $this->postJson(
-            self::$baseApi . '/user',
+            self::$baseApi.'/user',
             $userData,
             $this->getHeaders()
         );
@@ -37,30 +37,30 @@ class UserTest extends ApiBaseTest
 
         $response->assertJsonStructure([
             'data' => [
-                'user'
-            ]
+                'user',
+            ],
         ]);
 
         //Retry using the same email, it must fail
         $response = $this->postJson(
-            self::$baseApi . '/user',
+            self::$baseApi.'/user',
             $userData,
             $this->getHeaders()
         );
 
         $response->assertJsonValidationErrors(['email']);
-
     }
 
-    public function testUpdateUser() {
+    public function testUpdateUser()
+    {
         $user = $this->factoryUser();
 
         $user = $this->authenticateUser([
             'email' => $user->email,
-            'password' => 'secret'
+            'password' => 'secret',
         ]);
 
-        $response = $this->putJson(self::$baseApi . '/user/' . $user->id , [
+        $response = $this->putJson(self::$baseApi.'/user/'.$user->id, [
             'email' => 'foo@barupdate.com',
             $this->getAuthHeader(),
         ]);
@@ -69,21 +69,21 @@ class UserTest extends ApiBaseTest
 
         $response->assertJsonStructure([
             'data' => [
-                'user'
-            ]
+                'user',
+            ],
         ]);
 
         $newUser = $this->factoryUser();
 
         $this->authenticateUser([
             'email' => $newUser->email,
-            'password' => 'secret'
+            'password' => 'secret',
         ]);
 
         //Will try to update another user.
         $response = $this->putJson(
-            self::$baseApi . '/user/' . $user->id, [
-                'email' => $user->email
+            self::$baseApi.'/user/'.$user->id, [
+                'email' => $user->email,
             ],
             $this->getHeaders()
         );

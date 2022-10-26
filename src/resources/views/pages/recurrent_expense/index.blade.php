@@ -18,11 +18,11 @@
                            cellspacing="0">
                         <thead>
                         <tr>
-                            <th class="d-block d-sm-table-cell">Description</th>
-                            <th class="d-block d-sm-table-cell">Category</th>
-                            <th class="d-block d-sm-table-cell">Last Payment</th>
-                            <th class="d-block d-sm-table-cell">Periodicity</th>
-                            <th class="d-block d-sm-table-cell text-right">Total</th>
+                            <th class="d-block d-sm-table-cell">{{ __('Description') }}</th>
+                            <th class="d-block d-sm-table-cell">{{ __('Category') }}</th>
+                            <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
+                            <th class="d-block d-sm-table-cell">{{ __('Periodicity') }}</th>
+                            <th class="d-block d-sm-table-cell text-right">{{ __('Total') }}</th>
                             <th class="d-block d-sm-table-cell"></th>
                         </tr>
                         </thead>
@@ -38,7 +38,7 @@
                     <td class="d-block d-sm-table-cell">
                         @if (empty($expense->last_use_date))
                             <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $expense->id ]) }}">
-                                Never
+                                {{ __('Never') }}
                             </a>
                         @else
                             {{ $expense->last_use_date->format('Y-m-d') }}
@@ -46,11 +46,11 @@
                     </td>
                     <td class="d-block d-sm-table-cell">
                         @switch($expense->period)
-                            @case(1) Monthly @break
-                            @case(2) Bimonthly @break
-                            @case(3) Trimonthly @break
-                            @case(6) Bianual @break
-                            @case(12) Anual @break
+                            @case(1) {{ __('Monthly') }} @break
+                            @case(2) {{ __('Bimonthly') }} @break
+                            @case(3) {{ __('Trimonthly') }} @break
+                            @case(6) {{ __('Bianual') }} @break
+                            @case(12) {{ __('Anual') }}@break
                         @endswitch
                     </td>
                     <td class="d-block d-sm-table-cell font-weight-bold text-right">
@@ -59,7 +59,7 @@
                     <td class="text-right">
                         <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"
                            class="btn btn-primary btn-sm">
-                            Edit
+                           {{ __('Edit') }}
                         </a>
                     </td>
                 </tr>
@@ -70,7 +70,7 @@
             @empty
                 <div class="text-center">
                     <a href="{{ route('recurrent_expense.create') }}" class="btn btn-primary">
-                        Add a recurrent Expense
+                        {{ __('Add a recurrent Expense') }}
                     </a>
                 </div>
             @endforelse

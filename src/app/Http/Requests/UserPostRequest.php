@@ -16,7 +16,7 @@ class UserPostRequest extends FormRequest
         return [
             'email' => 'required|email:rfc,dns',
             'name' => 'required',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
         ];
     }
 }

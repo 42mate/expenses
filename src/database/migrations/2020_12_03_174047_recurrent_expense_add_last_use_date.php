@@ -14,7 +14,7 @@ class RecurrentExpenseAddLastUseDate extends Migration
     public function up()
     {
         if (Schema::hasTable('recurrent_expense')) {
-            if (!Schema::hasColumn('recurrent_expense', 'last_use_date')) {
+            if (! Schema::hasColumn('recurrent_expense', 'last_use_date')) {
                 Schema::table('recurrent_expense', function (Blueprint $table) {
                     $table->date('last_use_date')->nullable();
                 });

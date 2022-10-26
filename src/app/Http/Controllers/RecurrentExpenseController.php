@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Expense;
 use App\Models\RecurrentExpense;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class RecurrentExpenseController extends Controller
 {
@@ -28,15 +25,15 @@ class RecurrentExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'amount'=> 'required|numeric',
-            'category_id'=>'required|numeric',
+            'amount' => 'required|numeric',
+            'category_id' => 'required|numeric',
             'description' => 'required',
             'period' => 'required|numeric',
         ]);
 
         $redirect = redirect('/recurrent_expense/create');
 
-         RecurrentExpense::create([
+        RecurrentExpense::create([
             'amount' => $request->amount,
             'description' => $request->description,
             'user_id' => Auth::id(),
@@ -58,8 +55,8 @@ class RecurrentExpenseController extends Controller
     public function update(Request $request, RecurrentExpense $recurrent_expense)
     {
         $request->validate([
-            'amount'=> 'required|regex:/^\d*(\.\d{2})?$/',
-            'category_id'=>'required|numeric',
+            'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'category_id' => 'required|numeric',
             'description' => 'required',
             'period' => 'required|numeric',
         ]);
@@ -78,8 +75,10 @@ class RecurrentExpenseController extends Controller
             ->with('success', 'Recurrent Expense Updated!');
     }
 
-    public function delete(RecurrentExpense $recurrent_expense) {
+    public function delete(RecurrentExpense $recurrent_expense)
+    {
         $recurrent_expense->delete();
+
         return redirect(route('recurrent_expense.index'))
             ->with('success', 'Expense deleted!');
     }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Category;
 use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +26,9 @@ class CategoryController extends Controller
     /**
      * Fills attributes on the given entity and stores it in database.
      *
-     * @param Request $request
-     * @param Model $post
-     * @param array $attributes
+     * @param  Request  $request
+     * @param  Model  $post
+     * @param  array  $attributes
      */
     protected function performStore(
         Request $request,

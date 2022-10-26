@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -90,7 +90,7 @@
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; 42mate - 2022</span>
+                    Made with <i class="fas fa-heart"></i> in <a href="https://www.42mate.com">42mate</a>
                 </div>
             </div>
         </footer>

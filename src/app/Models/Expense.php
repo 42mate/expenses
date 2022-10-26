@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class Expense extends Model
@@ -24,7 +23,6 @@ class Expense extends Model
         'category_idx',
         'wallet_name',
         'wallet_idx',
-        'tags_formatted'
     ];
 
     protected $fillable = [
@@ -33,7 +31,7 @@ class Expense extends Model
         'category_id',
         'user_id',
         'description',
-        'wallet_id'
+        'wallet_id',
     ];
 
     protected $casts = [
@@ -41,10 +39,6 @@ class Expense extends Model
     ];
 
     protected $dateFormat = 'Y-m-d';
-
-    public function tags() {
-        return $this->belongsToMany('App\Models\Tag', 'expense_tags');
-    }
 
     public function user()
     {
@@ -56,21 +50,14 @@ class Expense extends Model
         return $this->belongsTo('App\Models\Wallet');
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo('App\Models\Category');
     }
 
-    public function getAmountFormattedAttribute() {
-        return '$ ' . $this->attributes['amount'];
-    }
-
-    public function getTagsFormattedAttribute() {
-
-        $out = [];
-        foreach ($this->tags()->get() as $tag) {
-            $out[] = $tag->name;
-        }
-        return implode(', ', $out);
+    public function getAmountFormattedAttribute()
+    {
+        return '$ '.$this->attributes['amount'];
     }
 
     /**
@@ -79,12 +66,14 @@ class Expense extends Model
      * We need this special method because if the category_id is null
      * we need to show the default category that is not a database entry.
      *
-     * @return integer
+     * @return int
      */
-    public function getCategoryIdxAttribute() {
-        if (!empty($this->attributes['category_id'])) {
+    public function getCategoryIdxAttribute()
+    {
+        if (! empty($this->attributes['category_id'])) {
             return $this->category_id;
         }
+
         return self::DEFAULT_IDX;
     }
 
@@ -96,63 +85,77 @@ class Expense extends Model
      *
      * @return string
      */
-    public function getCategoryNameAttribute() {
-        if (!empty($this->attributes['category_id'])) {
+    public function getCategoryNameAttribute()
+    {
+        if (! empty($this->attributes['category_id'])) {
             return $this->category->category;
         }
+
         return self::DEFAULT_LABEL;
     }
 
-    public function getWalletNameAttribute() {
-        if (!empty($this->attributes['wallet_id'])) {
+    public function getWalletNameAttribute()
+    {
+        if (! empty($this->attributes['wallet_id'])) {
             return $this->wallet->name;
         }
+
         return self::DEFAULT_LABEL;
     }
 
-
-    public function getWalletIdxAttribute() {
-        if (!empty($this->attributes['wallet_id'])) {
+    public function getWalletIdxAttribute()
+    {
+        if (! empty($this->attributes['wallet_id'])) {
             return $this->wallet_id;
         }
+
         return self::DEFAULT_IDX;
     }
 
-    public static function filter($userId, $args) {
+    public static function filter($userId, $args)
+    {
         $q = self::query();
 
         $q->where('user_id', $userId);
 
-        if (!empty($args['wallet_id'])) {
+        if (! empty($args['wallet_id'])) {
             $q->where('wallet_id', $args['wallet_id']);
         }
 
-        if (isset($args['wallet_id']) && $args['wallet_id'] === "0") {
+        if (isset($args['wallet_id']) && $args['wallet_id'] === '0') {
             $q->where('wallet_id', null);
         }
 
-        if (!empty($args['category_id'])) {
+        if (! empty($args['category_id'])) {
             $q->where('category_id', $args['category_id']);
         }
 
-        if (isset($args['category_id']) && $args['category_id'] === "0") {
+        if (isset($args['category_id']) && $args['category_id'] === '0') {
             $q->where('category_id', null);
         }
 
-        if (!empty($args['description'])) {
-            $q->where('description', 'LIKE', '%'. $args['description'] . '%');
+        if (! empty($args['income_source_id'])) {
+            $q->where('income_source_id', $args['income_source_id']);
         }
 
-        if (!empty($args['date_from'])) {
-            $q->where('date', '>=',  $args['date_from']);
+        if (isset($args['income_source_id']) && $args['income_source_id'] === '0') {
+            $q->where('income_source_id', null);
         }
 
-        if (!empty($args['date_to'])) {
-            $q->where('date', '<=',  $args['date_to']);
+        if (! empty($args['description'])) {
+            $q->where('description', 'LIKE', '%'.$args['description'].'%');
         }
 
-        if (!empty($args['tags'])) {
-            $q->whereHas('tags', function(Builder $q) use ($args) {
+        if (! empty($args['date_from'])) {
+            $q->where('date', '>=', $args['date_from']);
+        }
+
+        if (! empty($args['date_to'])) {
+            $q->where('date', '<=', $args['date_to']);
+        }
+
+        if (! empty($args['tags'])) {
+            $q->whereHas('tags', function (Builder $q) use ($args) {
                 $q->where('name', $args['tags']);
             });
         }
@@ -179,6 +182,15 @@ class Expense extends Model
             ->where('user_id', $userId)
             ->orderBy('id', 'desc')
             ->get();
+    }
+
+    public static function getTotals($userId) {
+        return [
+            'today' => self::todayTotal($userId),
+            'month' => self::monthTotal($userId),
+            'week' => self::weekTotal($userId),
+            'last_month' => self::lastMonthTotal($userId),
+        ];
     }
 
     public static function todayTotal($userId)
@@ -221,28 +233,29 @@ class Expense extends Model
         return $expenses->sum('amount');
     }
 
-    public static function getTotalByMonth($userId) {
+    public static function getTotalByMonth($userId)
+    {
         return DB::select('SELECT DATE_FORMAT(e.date, "%Y-%c") as `month`,  SUM(e.amount) as total
             FROM  expenses e
             WHERE e.user_id = ?
             GROUP BY 1
             ORDER BY STR_TO_DATE(1, "%d-%m-%Y") ASC', [
-            $userId
+            $userId,
         ]);
     }
 
-    public static function getExpensesByCategory($userId) {
+    public static function getExpensesByCategory($userId)
+    {
         return DB::select('SELECT IF(c.category IS NULL, ?, c.category) as category, SUM(e.amount) as total
             FROM expenses e LEFT JOIN categories c ON e.category_id = c.id
             WHERE e.date BETWEEN ? AND ?
             AND e.user_id = ?
             GROUP BY 1
             ORDER BY 1 DESC', [
-                self::DEFAULT_LABEL,
-                Carbon::now()->startOfMonth()->format('Y-m-d'),
-                Carbon::now()->endOfMonth()->format('Y-m-d'),
-                $userId
+            self::DEFAULT_LABEL,
+            Carbon::now()->startOfMonth()->format('Y-m-d'),
+            Carbon::now()->endOfMonth()->format('Y-m-d'),
+            $userId,
         ]);
     }
 }
-

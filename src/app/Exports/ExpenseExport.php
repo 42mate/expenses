@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\Expense;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
@@ -14,8 +13,8 @@ class ExpenseExport implements FromCollection
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->data;

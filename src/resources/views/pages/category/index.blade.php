@@ -23,7 +23,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>{{ __('Name') }}</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -33,16 +33,14 @@
                         <td class=" text-right">
                             <a href="{{ route('category.edit', ['category' => $category->id]) }}"
                                class="btn-primary btn btn-sm">
-                                Edit
+                               {{ __('Edit') }}
                             </a>
-
-
-                            <form method="POST" action="{{ route('category.delete', ['category' => $category->id]) }}"
-                                  class="d-inline">
+                            <form method="POST" action="{{ 
+                                    route('category.delete', ['category' => $category->id]) }}"
+                                    class="d-inline">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
-
-                                <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                <input type="submit" class="btn btn-danger btn-sm" value="{{ __('Delete') }}">
                             </form>
                         </td>
                     </tr>
@@ -51,15 +49,14 @@
                     @endif
                 @empty
                     <div class="text-center">
-                        <p>You don't have any category</p>
+                        <p>{{ __("You don't have any category") }}</p>
                         <div>
                             <a href="{{ route('category.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add
+                                <i class="fas fa-plus"></i> {{ __('Add') }}
                             </a>
                         </div>
                     </div>
                 @endforelse
-
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@ class CategoryRequest extends Request
     public function storeRules(): array
     {
         return [
-            'category' => 'required|string|unique:categories,category,user_id' . Auth::user()->id .'|max:255',
+            'category' => 'required|string|unique:categories,category,user_id'.Auth::user()->id.'|max:255',
         ];
     }
 
@@ -27,7 +27,7 @@ class CategoryRequest extends Request
     public function updateRules(): array
     {
         return [
-            'category' => 'required|string|unique:categories,category,user_id' . Auth::user()->id .'|max:255',
+            'category' => 'required|string|unique:categories,category,user_id'.Auth::user()->id.'|max:255',
         ];
     }
 }

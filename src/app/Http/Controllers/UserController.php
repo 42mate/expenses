@@ -8,19 +8,21 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function edit() {
+    public function edit()
+    {
         return view('pages.user.form', [
             'model' => Auth::user(),
         ]);
     }
 
-    public function update(UserPostRequest $request) {
+    public function update(UserPostRequest $request)
+    {
         $user = Auth::user();
 
         $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password'))
+            'password' => Hash::make($request->input('password')),
         ]);
 
         return redirect(route('user.edit'))

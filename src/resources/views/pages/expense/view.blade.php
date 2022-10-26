@@ -2,27 +2,32 @@
 
 @section('content')
         <h1>
-            Expense
+            {{ __("Expense") }}
         </h1>
         <div class="mb-2">
             <div>
-                <label class="font-weight-bold">Date: </label> {{ \Carbon\Carbon::parse($expense->date)->format('Y-m-d') }}
+                <label class="font-weight-bold">{{ __("Date") }}: </label> 
+                    {{ \Carbon\Carbon::parse($expense->date)->format('Y-m-d') }}
             </div>
             <div>
-                <label class="font-weight-bold">Amount: </label> $ {{ $expense->amount }}
+                <label class="font-weight-bold">{{ __("Amount") }}: </label> 
+                    $ {{ $expense->amount }}
             </div>
 
             <div>
-                <label class="font-weight-bold">Category: </label> {{ $expense->category->category}}
+                <label class="font-weight-bold">{{ __("Category") }}: </label> 
+                    {{ $expense->category->category}}
             </div>
             <div>
-                <label class="font-weight-bold">Wallet: </label> {{ isset($expense->wallet->name) ? $expense->wallet->name : __('No wallet') }}
+                <label class="font-weight-bold">{{ __("Wallet") }}: </label> 
+                    {{ isset($expense->wallet->name) ? $expense->wallet->name : __('No wallet') }}
             </div>
             <div>
-                <label class="font-weight-bold">Description: </label> {{ $expense->description }}
+                <label class="font-weight-bold">{{ __("Description") }}: </label> 
+                    {{ $expense->description }}
             </div>
             <div>
-                <label class="font-weight-bold">Tags: </label>
+                <label class="font-weight-bold">{{ __("Tags") }}: </label>
                 <span class="tags">
                     @foreach($expense->tags as $tag)
                         <span class="tag">{{ $tag->name }}</span>
@@ -31,8 +36,16 @@
             </div>
         </div>
         <div>
-            <a href="{{ route('expense.index') }}" class="btn btn-success">Back</a>
-            <a href="{{ route('expense.edit', ['expense' => $expense->id]) }}" class="btn btn-primary">Edit</a>
-            <a href="{{ route('home') }}" class="btn btn-danger float-right">Delete</a>
+            <a href="{{ route('expense.index') }}" class="btn btn-success">
+                {{ __("Back") }}
+            </a>
+            <a href="{{ route('expense.edit', ['expense' => $expense->id]) }}" 
+                class="btn btn-primary">
+                {{ __("Edit") }}
+            </a>
+            <a href="{{ route('home') }}" 
+                class="btn btn-danger float-right">
+                {{ __("Delete") }}
+            </a>
         </div>
 @endsection

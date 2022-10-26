@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,19 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::post('login', 'Api\UserController@login')
     ->name('user.login');
 
 Route::post('user', 'Api\UserController@store')
     ->name('user.create');
 
-Route::group(['as' => 'api.', 'middleware' => 'auth:api' ], function() {
-
+Route::group(['as' => 'api.', 'middleware' => 'auth:api'], function () {
     Route::put('user/{user}', 'Api\UserController@update')
         ->name('user.update');
 
-    Route::get('user',  'Api\UserController@index')
+    Route::get('user', 'Api\UserController@index')
         ->name('user.index');
 
     Orion::resource('category', Api\CategoryController::class);
