@@ -23,7 +23,7 @@
 
         <div class="form-group">
             <label for="name">{{ __('Balance') }}:</label>
-            {!! Form::number('balance', null, ['class' => [ 'form-control',  ($errors->has('balance') ? 'is-invalid' : '')]]) !!}
+            {!! Form::number('balance', null, ['step' => '.01', 'class' => [ 'form-control',  ($errors->has('balance') ? 'is-invalid' : '')]]) !!}
             @error('balance')
             <div class="invalid-feedback">
                 {{ $message }}
