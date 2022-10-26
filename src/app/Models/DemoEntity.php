@@ -11,6 +11,6 @@ class DemoEntity extends Model
     protected $fillable = [
         'name',
         'description',
-        'birth_date'
+        'birth_date',
     ];
 }

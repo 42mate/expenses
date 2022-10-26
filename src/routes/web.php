@@ -19,16 +19,14 @@ Route::get('/', 'HomeController@public_home')
     ->name('public_home');
 
 Route::middleware(['auth'])->group(function () {
-
     Route::get('/dashboard', 'HomeController@dashboard')
         ->name('home');
-
-    Route::get('/api/v1/charts/categories', 'HomeController@getChartByCategory')
-        ->name('api.chart.category');
 
     Route::get('/create', 'ExpenseController@create')->name('expense.create');
 
     Route::post('/create', 'ExpenseController@store')->name('expense.store');
+
+    Route::get('/expense/pending', 'HomeController@pending')->name('expense.pending');
 
     Route::get('/expense/{expense}', 'ExpenseController@view')->name('expense.view');
 
@@ -37,7 +35,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/expense/{expense}', 'ExpenseController@update')->name('expense.update');
 
     Route::delete('/expense/{expense}', 'ExpenseController@delete')->name('expense.delete');
-
 
     Route::get('/expense', 'ExpenseController@index')->name('expense.index');
 
@@ -56,7 +53,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/wallet/create', 'WalletController@create')->name('wallet.create');
 
     Route::post('/wallet/create', 'WalletController@store')->name('wallet.store');
-
 
     Route::get('/wallet', 'WalletController@index')->name('wallet.index');
 
@@ -84,6 +80,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recurrent_expense', 'RecurrentExpenseController@index')
         ->name('recurrent_expense.index');
 
+    Route::resource('incomes', \App\Http\Controllers\IncomeController::class);
+
+    Route::resource('income_source', \App\Http\Controllers\IncomeSourceController::class);
+
     Route::get('/me', 'UserController@edit')->name('user.edit');
 
     Route::put('/me', 'UserController@update')->name('user.update');
@@ -91,9 +91,12 @@ Route::middleware(['auth'])->group(function () {
     Route::name('reports.')->group(function () {
         Route::prefix('reports')->group(function () {
             Route::get('/month_flow', 'ReportsController@monthFlow')->name('month_flow');
-
+            Route::get('/expenses_by_category', 'ReportsController@expensesByCategory')->name('expenses_by_category');
         });
     });
+
+    Route::get('/api/v1/charts/categories', 'HomeController@getChartByCategory')
+        ->name('api.chart.category');
 
     Route::get('/api/v1/expenses/table', 'ExpenseController@apiGetExpenseTable')
         ->name('api.expense.table');

@@ -2,8 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
@@ -22,10 +20,10 @@ abstract class BaseDropDown extends Component
         $useAsLabel = 'name',
         $addEmpty = false,
         $addDefault = false
-    ){
+    ) {
         $this->name = $name;
         $this->selected = $selected;
-        $this->id = empty($id) ? 'rid_' . Str::random(10) : $id;
+        $this->id = empty($id) ? 'rid_'.Str::random(10) : $id;
         $this->addEmpty = $addEmpty;
         $this->addDefault = $addDefault;
         $this->use_as_value = $useAsValue;

@@ -8,27 +8,31 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $categories = Category::allForUser();
 
-        return view('pages.category.index',[
+        return view('pages.category.index', [
             'categories' => $categories->get(),
         ]);
     }
 
-    public function create() {
+    public function create()
+    {
         return view('pages.category.form');
     }
 
-    public function edit(Category $category) {
+    public function edit(Category $category)
+    {
         return view('pages.category.form', [
-            'model' => $category
+            'model' => $category,
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'category'=> 'required|max:100',
+            'category' => 'required|max:100',
         ]);
 
         Category::create([
@@ -39,9 +43,10 @@ class CategoryController extends Controller
         return redirect('/category')->with('success', 'Category created!');
     }
 
-    public function update(Request $request, Category $category) {
+    public function update(Request $request, Category $category)
+    {
         $request->validate([
-            'category'=> 'required|max:100',
+            'category' => 'required|max:100',
         ]);
 
         $category->fill([
@@ -53,16 +58,15 @@ class CategoryController extends Controller
         return redirect('/category')->with('success', 'Category Updated!');
     }
 
-    public function delete(Category $category) {
+    public function delete(Category $category)
+    {
         if ($category->expenses()->count() > 0) {
             return redirect('/category')
                 ->with('warning', 'This category has related expenses, it can\'t be deleted!');
-
         }
 
         $category->delete();
 
         return redirect('/category')->with('success', 'Category Deleted!');
-
     }
 }

@@ -1,6 +1,6 @@
 @extends('theme/full-page')
 @section('title')
-    Welcome!
+   {{ __('Welcome') }}!
 @endsection
 @section('content')
     <div class="mkt">
@@ -8,28 +8,27 @@
             <div class="col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6">
                 <!-- Heading -->
                 <h1 class="display-3 text-center text-md-left">
-                    <span class="text-primary">Expenses</span>
+                    <span class="text-primary">{{ __('Expenses') }}</span>
                 </h1>
 
                 <!-- Text -->
                 <p class="lead text-center text-md-left text-muted mb-6 mb-lg-8 ">
-                    The most simple web application to keep track of your expenses in order to get insights to
-                    optimize your money.
+                    {{ __('The most simple web application to keep track of your expenses in order to get insights to optimize your money.') }}
                 </p>
 
                 <!-- Buttons -->
                 <div class="text-center text-md-left mb-5">
                     @guest
                         <a href="/register" class="btn btn-primary shadow lift mr-1">
-                            Create an account!
+                            {{ __('Create an account!') }}
                         </a>
                         <a href="/login" class="btn btn-primary-soft lift">
-                            Login
+                            {{ __('Login') }}
                         </a>
                     @endguest
                     @auth
                         <a href="/dashboard" class="btn btn-primary shadow lift mr-1">
-                            Welcome back {{ Auth::user()->name}}, Go to the dashboard.
+                            {{ __('Welcome back') }} {{ Auth::user()->name}}, {{ __('Go to the dashboard') }}.
                         </a>
                     @endauth
 
@@ -43,25 +42,24 @@
             <div class="col-12 col-md-4 aos-init aos-animate mb-5" data-aos="fade-up">
                 <!-- Heading -->
                 <h3 class="mb-3">
-                    <i class="fas fa-lightbulb mr-2"></i> What is it?
+                    <i class="fas fa-lightbulb mr-2"></i> {{ __('What is it?') }}
                 </h3>
 
                 <!-- Text -->
                 <p class="text-muted mb-6 mb-md-0">
-                    It's a web application to track expenses in order to have control of your money.
+                    {{ __("It's a web application to track expenses in order to have control of your money.") }}
                 </p>
             </div>
             <div class="col-12 col-md-4 aos-init aos-animate mb-5" data-aos="fade-up" data-aos-delay="50">
 
                 <!-- Heading -->
                 <h3 class="mb-3">
-                    <i class="fas fa-cog mr-2"></i> How it works?
+                    <i class="fas fa-cog mr-2"></i> {{ __('How it works?') }}
                 </h3>
 
                 <!-- Text -->
                 <p class="text-muted mb-6 mb-md-0">
-                    This tool will help you to keep you on budget, know your history of expenses, and get detailed
-                    insights to optimize your money.
+                    {{ __('This tool will help you to keep you on budget, know your history of expenses, and get detailed insights to optimize your money.') }}
                 </p>
 
             </div>
@@ -69,13 +67,12 @@
 
                 <!-- Heading -->
                 <h3 class="mb-3">
-                    <i class="fas fa-vial mr-2"></i> Simple as it should be
+                    <i class="fas fa-vial mr-2"></i> {{ __('Simple as it should be') }}
                 </h3>
 
                 <!-- Text -->
                 <p class="text-muted mb-0">
-                    There isn't any extra feature, just expense tracking and reporting. We want to make it simple, not
-                    fancy.
+                    {{ __("There isn't any extra feature, just expense tracking and reporting. We want to make it simple, not fancy.") }}
                 </p>
 
             </div>

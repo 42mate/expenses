@@ -17,16 +17,20 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>{{ __('Name') }}</th>
+                                <th>{{ __('Balance') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
                 @endif
                 <tr class="">
                     <td class="">{{ $wallet->name }}</td>
+                    <td>
+                        $ {{ $wallet->balance }}
+                    </td>
                     <td class="text-right">
                         <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn  btn-sm">
-                            Edit
+                            {{ __('Edit') }}
                         </a>
 
                         <form method="POST" action="{{ route('wallet.delete', ['wallet' => $wallet->id]) }}" class="d-inline">

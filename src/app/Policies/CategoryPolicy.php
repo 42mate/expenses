@@ -2,8 +2,8 @@
 
 namespace App\Models\Policies;
 
-use App\Models\User;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
@@ -55,7 +55,7 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category)
     {
-        return ($user->id === $category->user_id); //Only the onwner can update
+        return $user->id === $category->user_id; //Only the onwner can update
     }
 
     /**
@@ -67,6 +67,6 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category)
     {
-        return ($user->id === $category->user_id); //Only the onwner can delete
+        return $user->id === $category->user_id; //Only the onwner can delete
     }
 }

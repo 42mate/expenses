@@ -28,7 +28,7 @@ class DemoEntityRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required',
-            'birth_date' => 'required'
+            'birth_date' => 'required',
         ];
     }
 
@@ -43,7 +43,7 @@ class DemoEntityRequest extends FormRequest
     {
         return [
             'name.required' => 'A name is required',
-            'description.required'  => 'A description is required',
+            'description.required' => 'A description is required',
         ];
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Expense;
 use App\Exports\ExpenseExport;
+use App\Models\Expense;
 use App\Models\RecurrentExpense;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -66,11 +67,16 @@ class ExpenseController extends Controller
             $expense = Expense::create([
                 'amount' => $request->amount,
                 'date' => $request->date,
-                'description' => !empty($request->description) ? $request->description : '',
+                'description' => ! empty($request->description) ? $request->description : '',
                 'user_id' => Auth::id(),
-                'category_id' => !empty($request->category_id) ? $request->category_id : null,
+                'category_id' => ! empty($request->category_id) ? $request->category_id : null,
                 'wallet_id' => $request->wallet_id,
             ]);
+
+            //Updates balance in blance.
+            if (!empty($expense->wallet)) {
+                $expense->wallet->newOperation(-($request->amount));
+            }
 
             DB::commit();
 
@@ -84,9 +90,9 @@ class ExpenseController extends Controller
                     ])->save();
                 }
             }
-
         } catch (Exception $e) {
             DB::rollBack();
+
             return redirect('/create')->with('error', 'Error Saving!');
         }
 
@@ -104,6 +110,7 @@ class ExpenseController extends Controller
     public function delete(Expense $expense)
     {
         $expense->delete();
+
         return redirect(route('expense.index'))->with('success', 'Expense deleted!');
     }
 
@@ -115,21 +122,29 @@ class ExpenseController extends Controller
 
         try {
             DB::beginTransaction();
+
+            //Updates balance in blance.
+            if (!empty($expense->wallet)) {
+                $expense->wallet->updateOperation($expense->amount, -($request->amount));
+            }
+
             $expense->fill([
                 'amount' => $request->amount,
                 'date' => $request->date,
-                'description' => !empty($request->description) ? $request->description : '',
-                'category_id' =>  !empty($request->category_id) ? $request->category_id : null,
+                'description' => ! empty($request->description) ? $request->description : '',
+                'category_id' => ! empty($request->category_id) ? $request->category_id : null,
+                'wallet_id' => ! empty($request->wallet_id) ? $request->wallet_id : null,
             ]);
 
             $expense->save();
             DB::commit();
+
             return redirect(route('expense.index'))
                 ->with('success', 'Expense Updated!');
-
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect('/expense/' . $expense->id . '/edit')
+
+            return redirect('/expense/'.$expense->id.'/edit')
                 ->with('error', 'Error Saving!');
         }
     }
@@ -173,7 +188,7 @@ class ExpenseController extends Controller
         $return->datasets[] = $dataset;
 
         return response()->json([
-            'data' => $return
+            'data' => $return,
         ]);
     }
 
@@ -192,10 +207,8 @@ class ExpenseController extends Controller
     public function export(Collection $data)
     {
         $date = Carbon::now();
-        $name = 'expenses-' . $date . '.xlsx';
+        $name = 'expenses-'.$date.'.xlsx';
+
         return Excel::download(new ExpenseExport($data), $name);
     }
-
 }
-
-

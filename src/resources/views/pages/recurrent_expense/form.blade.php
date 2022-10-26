@@ -50,7 +50,7 @@
                         <a href="{{ route('category.create', ['gt=expense.create']) }}"><i class="fas fa-plus"></i> {{ __('Add Category') }}</a>
                     </span>
                     </div>
-                    <x-categories-drop-down name="category_id" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
+                    <x-categories-drop-down name="category_id" useAsLabel="category" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
                     @error('category_id')
                     <div class="invalid-feedback">
                         {{ $message }}

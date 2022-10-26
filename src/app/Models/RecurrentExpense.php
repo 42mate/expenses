@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class RecurrentExpense extends Expense
 {
     const PERIOD_MONTHLY = 1;
+
     const PERIOD_BIMONTHLY = 2;
+
     const PERIOD_TRIMONTHLY = 3;
+
     const PERIOD_BIANUAL = 6;
+
     const PERIOD_ANUAL = 12;
 
     protected $table = 'recurrent_expense';
@@ -20,7 +22,7 @@ class RecurrentExpense extends Expense
 
     protected $appends = [
         'category_name',
-        'past_due'
+        'past_due',
     ];
 
     protected $fillable = [
@@ -29,7 +31,7 @@ class RecurrentExpense extends Expense
         'user_id',
         'description',
         'last_use_date',
-        'period'
+        'period',
     ];
 
     protected $casts = [
@@ -38,13 +40,16 @@ class RecurrentExpense extends Expense
 
     protected $dateFormat = 'Y-m-d';
 
-    public function getPastDueAttribute() {
+    public function getPastDueAttribute()
+    {
         $next_payment_day = Carbon::parse($this->last_use_date)->addMonths($this->period)->floorMonth();
         $diff = $next_payment_day->diffInMonths(Carbon::now()->floorMonth());
+
         return round($diff / $this->period);
     }
 
-    public function getJsonData() {
+    public function getJsonData()
+    {
         return json_encode([
             'id' => $this->id,
             'description' => $this->description,
@@ -53,18 +58,21 @@ class RecurrentExpense extends Expense
         ]);
     }
 
-    public function usedThisMonth() {
-        return (!is_null($this->last_use_date) && date('m') === $this->last_use_date->format('m'));
+    public function usedThisMonth()
+    {
+        return ! is_null($this->last_use_date) && date('m') === $this->last_use_date->format('m');
     }
 
-    public static function getAllNotUsedFirst($userId) {
+    public static function getAllNotUsedFirst($userId)
+    {
         return self::query()
             ->where('user_id', '=', $userId)
             ->orderBy('last_use_date')
             ->get();
     }
 
-    public static function getPendingToPayThisMonth($userId) {
+    public static function getPendingToPayThisMonth($userId)
+    {
         return self::query()
             ->whereRaw("
                 (last_use_date IS NULL
@@ -83,6 +91,5 @@ class RecurrentExpense extends Expense
                 )
                 AND user_id = $userId"
             )->get();
-
     }
 }

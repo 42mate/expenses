@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
-
     protected $table = 'categories';
 
     protected $fillable = [
@@ -23,10 +22,10 @@ class Category extends Model
         return $this->hasMany('App\Models\Expense');
     }
 
-    static public function allForUser() {
+    public static function allForUser()
+    {
         return self::query()
             ->where('user_id', Auth::user()->id)
             ->orderBy('category');
     }
-
 }

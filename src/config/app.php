@@ -175,8 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        Yajra\DataTables\DataTablesServiceProvider::class,
-        Yajra\DataTables\ButtonsServiceProvider::class,
+        // Yajra\DataTables\DataTablesServiceProvider::class,
+        // Yajra\DataTables\ButtonsServiceProvider::class,
     ],
 
     /*

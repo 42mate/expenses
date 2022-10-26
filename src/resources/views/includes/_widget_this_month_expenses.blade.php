@@ -1,6 +1,6 @@
 <div class="card shadow mb-4">
     <div class="card-header">
-        This month expenses
+        {{ __("This month expenses") }}
     </div>
     <div class="card-body">
         <div>
@@ -11,10 +11,10 @@
                     @if ($loop->first)
                         <thead>
                         <tr>
-                            <th>Date</th>
-                            <th class="d-block d-sm-table-cell">Category</th>
+                            <th>{{ __('Date') }}</th>
+                            <th class="d-block d-sm-table-cell">{{ __('Category') }}</th>
                             <th class="d-block d-sm-table-cell font-weight-bold text-right">
-                                Amount
+                                {{ __('Amount') }}
                             </th>
                             <th>
 
@@ -37,7 +37,7 @@
                         <td>
                             <a href="{{ route('expense.edit', [$expense->id]) }}"
                                class="btn btn-sm btn-primary">
-                                Edit
+                               {{ __('Edit') }}
                             </a>
                         </td>
                     </tr>
@@ -47,7 +47,7 @@
             </table>
             @if ($expenses->count() == 0)
                 <div class="text-center">
-                    Good, you don't have any expense in this month.
+                    {{ __('Good, you don\'t have any expense in this month.') }}
                 </div>
             @endif
         </div>

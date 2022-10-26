@@ -48,7 +48,6 @@ class WalletTagsIncome extends Migration
             $table->unsignedBigInteger('tag_id');
             $table->foreign('expense_id')->references('id')->on('expenses');
             $table->foreign('tag_id')->references('id')->on('tags');
-
         });
 
         Schema::create('income_tags', function (Blueprint $table) {
@@ -61,7 +60,7 @@ class WalletTagsIncome extends Migration
         });
 
         if (Schema::hasTable('expenses')) {
-            if (!Schema::hasColumn('expenses', 'wallet_id')) {
+            if (! Schema::hasColumn('expenses', 'wallet_id')) {
                 Schema::table('expenses', function (Blueprint $table) {
                     $table->unsignedBigInteger('wallet_id')->nullable();
                 });
@@ -84,7 +83,7 @@ class WalletTagsIncome extends Migration
      */
     public function down()
     {
-        if  (Schema::hasColumn('expenses', 'wallet_id')) {
+        if (Schema::hasColumn('expenses', 'wallet_id')) {
             Schema::table('expenses', function (Blueprint $table) {
                 $table->dropForeign('expenses_wallet_id_foreign');
                 $table->dropColumn('wallet_id');

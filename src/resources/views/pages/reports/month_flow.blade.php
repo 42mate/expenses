@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Month Flow</h1>
+    <h1>{{ __('Month Flow') }}</h1>
     <div class="card-body">
         <canvas class="chart" type="bar"
                 data="/api/v1/charts/expense/month"

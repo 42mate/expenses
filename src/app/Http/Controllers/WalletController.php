@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
-
     public function create()
     {
         return view('pages.wallet.form');
@@ -23,6 +22,7 @@ class WalletController extends Controller
         Wallet::create([
             'name' => $request->name,
             'user_id' => Auth::id(),
+            'balance' => $request->balance,
         ]);
 
         return back()->with('success', 'Wallet created!');
@@ -31,17 +31,19 @@ class WalletController extends Controller
     public function edit(Wallet $wallet)
     {
         return view('pages.wallet.form', [
-            'model' => $wallet
+            'model' => $wallet,
         ]);
     }
 
-    public function update(Request $request, Wallet $wallet) {
+    public function update(Request $request, Wallet $wallet)
+    {
         $request->validate([
-            'name'=> 'required|max:100',
+            'name' => 'required|max:100',
         ]);
 
         $wallet->fill([
             'name' => $request->name,
+            'balance' => $request->balance,
         ]);
 
         $wallet->save();
@@ -55,7 +57,6 @@ class WalletController extends Controller
             return redirect('/wallet')
                 ->with('warning',
                     'This wallet has related expenses, it can\'t be deleted!');
-
         }
 
         $wallet->delete();

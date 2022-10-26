@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         if (Schema::hasTable('expenses')) {
-
             if (Schema::hasColumn('expenses', 'category_id')) {
                 Schema::table('expenses', function (Blueprint $table) {
                     $table->dropForeign(['category_id']);

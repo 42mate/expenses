@@ -29,10 +29,11 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        if ($user->id == $model->id)
+        if ($user->id == $model->id) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -55,10 +56,11 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        if ($user->id == $model->id)
+        if ($user->id == $model->id) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -70,9 +72,10 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        if ($user->id == $model->id)
+        if ($user->id == $model->id) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 }

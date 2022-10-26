@@ -2,27 +2,47 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Income extends Model
+class Income extends Expense
 {
     protected $table = 'incomes';
 
-    protected function tags() {
-        return $this->belongsToMany('App\Tags', 'income_tags');
-    }
+    protected $fillable = [
+        'amount',
+        'date',
+        'income_source_id',
+        'user_id',
+        'description',
+        'wallet_id',
+    ];
 
-    public function user()
+    protected $appends = [
+        'amount_formatted',
+        'income_source_name',
+        'income_source_idx',
+        'wallet_name',
+        'wallet_idx',
+    ];
+
+    public function getIncomeSourceNameAttribute()
     {
-        return $this->belongsTo('App\Models\User');
+        if (! empty($this->attributes['income_source_id'])) {
+            return $this->incomeSource->source;
+        }
+
+        return self::DEFAULT_LABEL;
     }
 
-    public function wallet()
+    public function getIncomeSourceIdxAttribute()
     {
-        return $this->belongsTo('App\Models\Wallet');
+        if (! empty($this->attributes['income_source_id'])) {
+            return $this->income_source_id;
+        }
+
+        return self::DEFAULT_IDX;
     }
 
-    public function category() {
-        return $this->belongsTo('App\Models\Category');
+    public function incomeSource()
+    {
+        return $this->belongsTo('App\Models\IncomeSource');
     }
 }

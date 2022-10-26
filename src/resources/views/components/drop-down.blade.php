@@ -11,7 +11,7 @@
 
     @foreach($options as $option)
         <option value="{{ $option->$use_as_value }}"
-                @if ($selected == $option->id) selected @endif>
+            @if ($selected == $option->id) selected @endif>
             {{ $option->$use_as_label }}
         </option>
     @endforeach
