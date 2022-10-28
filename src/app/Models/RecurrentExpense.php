@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
 use App\Models\Scopes\OwnerScope;
+use Illuminate\Support\Carbon;
 
 class RecurrentExpense extends Expense
 {
@@ -73,7 +73,7 @@ class RecurrentExpense extends Expense
 
     public function usedThisMonth()
     {
-        return ! is_null($this->last_use_date) 
+        return ! is_null($this->last_use_date)
             && date('m') === $this->last_use_date->format('m');
     }
 
@@ -87,7 +87,7 @@ class RecurrentExpense extends Expense
     public static function getPendingToPayThisMonth($userId)
     {
         return self::query()
-            ->whereRaw("
+            ->whereRaw('
                 (last_use_date IS NULL
                 OR (
                     IF(
@@ -101,7 +101,7 @@ class RecurrentExpense extends Expense
                         YEAR(last_use_date) + 1,
                         YEAR(last_use_date)
                     ) <= YEAR(CURRENT_DATE())
-                )"
+                )'
             )->get();
     }
 }

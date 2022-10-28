@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         if (Schema::hasTable('wallets')) {
-            if (!Schema::hasColumn('wallets', 'balance')) {
+            if (! Schema::hasColumn('wallets', 'balance')) {
                 Schema::table('wallets', function (Blueprint $table) {
                     $table->decimal('balance', 10, 2)->default(0);
                 });

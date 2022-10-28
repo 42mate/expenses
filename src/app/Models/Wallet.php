@@ -10,7 +10,7 @@ class Wallet extends Model
     protected $table = 'wallets';
 
     protected $fillable = [
-        'name', 'user_id', 'balance'
+        'name', 'user_id', 'balance',
     ];
 
     /**
@@ -35,21 +35,24 @@ class Wallet extends Model
         return $this->hasMany('App\Models\Expense');
     }
 
-    public function newOperation(float $amount) {
+    public function newOperation(float $amount)
+    {
         $this->balance = $this->balance + $amount;
         $this->save();
     }
 
-    public function updateOperation(float $originalAmount, float $newAmount) {;
+    public function updateOperation(float $originalAmount, float $newAmount)
+    {
         $this->balance = $this->balance + ($originalAmount + $newAmount);
         $this->save();
     }
 
-    public static function getBalance(int $userId) : array {
+    public static function getBalance(int $userId): array
+    {
         $wallets = self::orderBy('name')->get();
         $balances = [];
         $total = 0;
-        
+
         foreach ($wallets as $wallet) {
             $balances[] = [
                 'wallet' => $wallet->name,
@@ -65,5 +68,4 @@ class Wallet extends Model
 
         return $balances;
     }
-
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\ExpenseExport;
 use App\Models\Expense;
 use App\Models\RecurrentExpense;
-use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -74,7 +73,7 @@ class ExpenseController extends Controller
             ]);
 
             //Updates balance in blance.
-            if (!empty($expense->wallet)) {
+            if (! empty($expense->wallet)) {
                 $expense->wallet->newOperation(-($request->amount));
             }
 
@@ -124,7 +123,7 @@ class ExpenseController extends Controller
             DB::beginTransaction();
 
             //Updates balance in blance.
-            if (!empty($expense->wallet)) {
+            if (! empty($expense->wallet)) {
                 $expense->wallet->updateOperation($expense->amount, -($request->amount));
             }
 

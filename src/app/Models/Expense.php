@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Models\Scopes\OwnerScope;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Expense extends Model
 {
@@ -154,7 +154,7 @@ class Expense extends Model
         if (! empty($args['description'])) {
             $q->where('description', 'LIKE', '%'.$args['description'].'%');
         }
-        
+
         if (! empty($args['date_from'])) {
             $q->where('date', '>=', $args['date_from']);
         }
@@ -191,7 +191,8 @@ class Expense extends Model
             ->get();
     }
 
-    public static function getTotals() {
+    public static function getTotals()
+    {
         return [
             'today' => self::todayTotal(),
             'month' => self::monthTotal(),
@@ -245,7 +246,7 @@ class Expense extends Model
             ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,  SUM(amount) as total'))
             ->groupBy(DB::raw('1'))
             ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'));
-        
+
         return $q->get();
     }
 
@@ -255,17 +256,16 @@ class Expense extends Model
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         $q = self::select(DB::raw(
-                "IF (categories.category IS NULL, 
-                    '" . self::DEFAULT_LABEL . "', 
+            "IF (categories.category IS NULL, 
+                    '".self::DEFAULT_LABEL."', 
                     categories.category) as category,
                  SUM(expenses.amount) as total"
-            ))
+        ))
             ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
             ->whereBetween('expenses.date', [$start, $end])
             ->groupBy(DB::raw('1'))
             ->orderBy(DB::raw('1'), 'DESC');
-    
+
         return $q->get();
-        
     }
 }

@@ -61,8 +61,8 @@ class IncomeSourceController extends Controller
     public function destroy(IncomeSource $income_source)
     {
         if ($income_source->income()->count() > 0) {
-             return redirect('/income_source')
-                 ->with('warning', 'This income source has related expenses, it can\'t be deleted!');
+            return redirect('/income_source')
+                ->with('warning', 'This income source has related expenses, it can\'t be deleted!');
         }
 
         $income_source->delete();

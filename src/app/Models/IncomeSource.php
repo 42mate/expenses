@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use App\Models\Scopes\OwnerScope;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class IncomeSource extends Model
 {
@@ -15,7 +14,7 @@ class IncomeSource extends Model
         'source',
         'user_id',
     ];
-    
+
     /**
      * The "booted" method of the model.
      *
@@ -35,5 +34,4 @@ class IncomeSource extends Model
     {
         return self::query()->orderBy('source');
     }
-
 }

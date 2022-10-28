@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Scopes\OwnerScope;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model

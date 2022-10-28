@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Income;
-use App\Models\Wallet;
 use App\Models\Expense;
+use App\Models\Income;
 use App\Models\RecurrentExpense;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -42,8 +42,10 @@ class HomeController extends Controller
         ]);
     }
 
-    public function pending() {
+    public function pending()
+    {
         $recurrentExpensePendingPayment = RecurrentExpense::getPendingToPayThisMonth(Auth::id());
+
         return view('pages/expense/pending', [
             'recurrent_expense_pending_payment' => $recurrentExpensePendingPayment,
         ]);

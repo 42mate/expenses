@@ -2,10 +2,10 @@
 
 namespace App\Models\Scopes;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class OwnerScope implements Scope
@@ -24,7 +24,7 @@ class OwnerScope implements Scope
         if (empty($userId)) {
             throw new UserNotDefinedException('User not logged in');
         }
-        
-        $builder->where($model->getTable() . '.user_id', $userId);
+
+        $builder->where($model->getTable().'.user_id', $userId);
     }
 }

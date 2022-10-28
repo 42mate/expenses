@@ -74,7 +74,7 @@ class IncomeController extends Controller
             ]);
 
             //Updates balance in blance.
-            if (!empty($income->wallet)) {
+            if (! empty($income->wallet)) {
                 $income->wallet->newOperation($request->amount);
             }
 
@@ -120,9 +120,9 @@ class IncomeController extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             //Updates balance in blance.
-            if (!empty($income->wallet)) {
+            if (! empty($income->wallet)) {
                 $income->wallet->updateOperation($income->amount, -($request->amount));
             }
 
