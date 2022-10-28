@@ -66,7 +66,7 @@ class WalletController extends Controller
 
     public function index()
     {
-        $wallets = Auth::user()->wallets()->get();
+        $wallets = Auth::user()->wallets()->orderBy('name')->get();
 
         return view('pages.wallet.index', [
             'wallets' => $wallets,

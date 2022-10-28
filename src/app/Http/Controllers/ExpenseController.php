@@ -19,7 +19,7 @@ class ExpenseController extends Controller
 {
     public function index(Request $request)
     {
-        $expenses = Expense::filter(Auth::id(), $request->all());
+        $expenses = Expense::filter($request->all());
 
         if ($request->get('action') == 'xls') {
             return $this->export($expenses->get());
@@ -168,7 +168,7 @@ class ExpenseController extends Controller
      */
     public function apiGetTotalByMonth()
     {
-        $data = Expense::getTotalByMonth(Auth::id());
+        $data = Expense::getTotalByMonth();
 
         $return = new \stdClass();
 

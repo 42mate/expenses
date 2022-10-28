@@ -54,7 +54,7 @@ class HomeController extends Controller
      */
     public function getChartByCategory()
     {
-        $models = Expense::getExpensesByCategory(Auth::id());
+        $models = Expense::getExpensesByCategory();
 
         $return = new \stdClass();
 

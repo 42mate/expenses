@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\OwnerScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class IncomeSource extends Model
 {
@@ -14,6 +15,16 @@ class IncomeSource extends Model
         'source',
         'user_id',
     ];
+    
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OwnerScope);
+    }
 
     public function income()
     {
@@ -22,9 +33,7 @@ class IncomeSource extends Model
 
     public static function allForUser()
     {
-        return self::query()
-            ->where('user_id', Auth::user()->id)
-            ->orderBy('source');
+        return self::query()->orderBy('source');
     }
 
 }

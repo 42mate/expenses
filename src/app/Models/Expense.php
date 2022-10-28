@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\OwnerScope;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Expense extends Model
 {
@@ -33,6 +34,16 @@ class Expense extends Model
         'description',
         'wallet_id',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OwnerScope);
+    }
 
     protected $casts = [
         'date' => 'datetime:Y-m-d',
@@ -112,11 +123,9 @@ class Expense extends Model
         return self::DEFAULT_IDX;
     }
 
-    public static function filter($userId, $args)
+    public static function filter($args)
     {
         $q = self::query();
-
-        $q->where('user_id', $userId);
 
         if (! empty($args['wallet_id'])) {
             $q->where('wallet_id', $args['wallet_id']);
@@ -145,7 +154,7 @@ class Expense extends Model
         if (! empty($args['description'])) {
             $q->where('description', 'LIKE', '%'.$args['description'].'%');
         }
-
+        
         if (! empty($args['date_from'])) {
             $q->where('date', '>=', $args['date_from']);
         }
@@ -166,96 +175,97 @@ class Expense extends Model
         return $q;
     }
 
-    public static function byUser($userId)
+    public static function byUser()
     {
-        return self::where('user_id', $userId)
-            ->orderBy('date', 'desc')
+        return self::orderBy('date', 'desc')
             ->get();
     }
 
-    public static function byUserCurrentMonth($userId)
+    public static function byUserCurrentMonth()
     {
         $from = Carbon::now()->startOfMonth()->format('Y-m-d');
         $to = Carbon::now()->endOfMonth('Y-m-d');
 
         return self::whereBetween('date', [$from, $to])
-            ->where('user_id', $userId)
             ->orderBy('id', 'desc')
             ->get();
     }
 
-    public static function getTotals($userId) {
+    public static function getTotals() {
         return [
-            'today' => self::todayTotal($userId),
-            'month' => self::monthTotal($userId),
-            'week' => self::weekTotal($userId),
-            'last_month' => self::lastMonthTotal($userId),
+            'today' => self::todayTotal(),
+            'month' => self::monthTotal(),
+            'week' => self::weekTotal(),
+            'last_month' => self::lastMonthTotal(),
         ];
     }
 
-    public static function todayTotal($userId)
+    public static function todayTotal()
     {
         $from = Carbon::now()->format('Y-m-d');
         $to = Carbon::tomorrow()->format('Y-m-d');
 
-        return self::totalByDateRange($userId, $from, $to);
+        return self::totalByDateRange($from, $to);
     }
 
-    public static function weekTotal($userId)
+    public static function weekTotal()
     {
         $from = Carbon::now()->startOfWeek()->format('Y-m-d');
         $to = Carbon::now()->endOfWeek()->format('Y-m-d');
 
-        return self::totalByDateRange($userId, $from, $to);
+        return self::totalByDateRange($from, $to);
     }
 
-    public static function monthTotal($userId)
+    public static function monthTotal()
     {
         $from = Carbon::now()->startOfMonth()->format('Y-m-d');
         $to = Carbon::now()->endOfMonth()->format('Y-m-d');
 
-        return self::totalByDateRange($userId, $from, $to);
+        return self::totalByDateRange($from, $to);
     }
 
-    public static function lastMonthTotal($userId)
+    public static function lastMonthTotal()
     {
         $from = Carbon::now()->startOfMonth()->sub('1 month')->startOfMonth()->format('Y-m-d');
         $to = Carbon::now()->startOfMonth()->sub('1 day')->endOfMonth()->format('Y-m-d');
 
-        return self::totalByDateRange($userId, $from, $to);
+        return self::totalByDateRange($from, $to);
     }
 
-    public static function totalByDateRange($userId, $from, $to)
+    public static function totalByDateRange($from, $to)
     {
-        $expenses = self::whereBetween('date', [$from, $to])
-            ->where('user_id', $userId);
+        $expenses = self::whereBetween('date', [$from, $to]);
 
         return $expenses->sum('amount');
     }
 
-    public static function getTotalByMonth($userId)
+    public static function getTotalByMonth()
     {
-        return DB::select('SELECT DATE_FORMAT(e.date, "%Y-%c") as `month`,  SUM(e.amount) as total
-            FROM  expenses e
-            WHERE e.user_id = ?
-            GROUP BY 1
-            ORDER BY STR_TO_DATE(1, "%d-%m-%Y") ASC', [
-            $userId,
-        ]);
+        $q = self::query()
+            ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,  SUM(amount) as total'))
+            ->groupBy(DB::raw('1'))
+            ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'));
+        
+        return $q->get();
     }
 
-    public static function getExpensesByCategory($userId)
+    public static function getExpensesByCategory()
     {
-        return DB::select('SELECT IF(c.category IS NULL, ?, c.category) as category, SUM(e.amount) as total
-            FROM expenses e LEFT JOIN categories c ON e.category_id = c.id
-            WHERE e.date BETWEEN ? AND ?
-            AND e.user_id = ?
-            GROUP BY 1
-            ORDER BY 1 DESC', [
-            self::DEFAULT_LABEL,
-            Carbon::now()->startOfMonth()->format('Y-m-d'),
-            Carbon::now()->endOfMonth()->format('Y-m-d'),
-            $userId,
-        ]);
+        $start = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $end = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        $q = self::select(DB::raw(
+                "IF (categories.category IS NULL, 
+                    '" . self::DEFAULT_LABEL . "', 
+                    categories.category) as category,
+                 SUM(expenses.amount) as total"
+            ))
+            ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
+            ->whereBetween('expenses.date', [$start, $end])
+            ->groupBy(DB::raw('1'))
+            ->orderBy(DB::raw('1'), 'DESC');
+    
+        return $q->get();
+        
     }
 }

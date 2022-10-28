@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Wallet extends Model
@@ -11,6 +12,16 @@ class Wallet extends Model
     protected $fillable = [
         'name', 'user_id', 'balance'
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OwnerScope);
+    }
 
     public $timestamps = false;
 
@@ -35,7 +46,7 @@ class Wallet extends Model
     }
 
     public static function getBalance(int $userId) : array {
-        $wallets = self::where('user_id', $userId)->get();
+        $wallets = self::orderBy('name')->get();
         $balances = [];
         $total = 0;
         

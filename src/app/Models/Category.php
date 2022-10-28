@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\OwnerScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
@@ -13,6 +14,16 @@ class Category extends Model
         'category',
         'user_id',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OwnerScope);
+    }
 
     /**
      * Get the expenses for the category.
@@ -25,7 +36,6 @@ class Category extends Model
     public static function allForUser()
     {
         return self::query()
-            ->where('user_id', Auth::user()->id)
             ->orderBy('category');
     }
 }

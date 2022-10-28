@@ -21,7 +21,7 @@ class IncomeController extends Controller
      */
     public function index(Request $request)
     {
-        $incomes = Income::filter(Auth::id(), $request->all());
+        $incomes = Income::filter($request->all());
 
         if ($request->get('action') == 'xls') {
             return $this->export($incomes->get());

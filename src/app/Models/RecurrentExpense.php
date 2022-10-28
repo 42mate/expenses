@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
+use App\Models\Scopes\OwnerScope;
 
 class RecurrentExpense extends Expense
 {
@@ -40,9 +41,21 @@ class RecurrentExpense extends Expense
 
     protected $dateFormat = 'Y-m-d';
 
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OwnerScope);
+    }
+
     public function getPastDueAttribute()
     {
-        $next_payment_day = Carbon::parse($this->last_use_date)->addMonths($this->period)->floorMonth();
+        $next_payment_day = Carbon::parse($this->last_use_date)
+            ->addMonths($this->period)
+            ->floorMonth();
         $diff = $next_payment_day->diffInMonths(Carbon::now()->floorMonth());
 
         return round($diff / $this->period);
@@ -60,13 +73,13 @@ class RecurrentExpense extends Expense
 
     public function usedThisMonth()
     {
-        return ! is_null($this->last_use_date) && date('m') === $this->last_use_date->format('m');
+        return ! is_null($this->last_use_date) 
+            && date('m') === $this->last_use_date->format('m');
     }
 
     public static function getAllNotUsedFirst($userId)
     {
         return self::query()
-            ->where('user_id', '=', $userId)
             ->orderBy('last_use_date')
             ->get();
     }
@@ -88,8 +101,7 @@ class RecurrentExpense extends Expense
                         YEAR(last_use_date) + 1,
                         YEAR(last_use_date)
                     ) <= YEAR(CURRENT_DATE())
-                )
-                AND user_id = $userId"
+                )"
             )->get();
     }
 }
