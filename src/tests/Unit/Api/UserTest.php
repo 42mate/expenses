@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Api;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\ApiBaseTest;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends ApiBaseTest
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function testLogin()
     {
