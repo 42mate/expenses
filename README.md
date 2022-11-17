@@ -1,6 +1,6 @@
 # My Expenses
 
-A simple app to keep track of expenses and iconmes.
+A simple app to keep track of expenses and incomes.
 
 # Development
 
@@ -12,16 +12,39 @@ In order to develop you'll need to have installed Lando and Docker.
 
 ## Environment setup
 
-Once you cloned the repo the .env in the src folder will be all set to run in local with lando, for others
-environment you'll have to setup the configuration varialbes on the .env file.
+Once you cloned the repo the .env in the src folder will be all set 
+to run in local with lando, for others environment you'll have 
+to setup the configuration variables on the .env file.
 
-Once is cloned, run lando start to launch the environment 
+`
+cd src
+cp .env.local .env
+`
 
-`lando start` 
+Run lando start to launch the environment 
 
-Once lando has started, run migrate to install the database schema.
+`lando start`
 
-`lando migrate` 
+Once lando has started, install all dependencies (inside of src/ directory)
+
+`lando composer install`
+`lando npm install`
+
+Run migrate to install the database schema.
+
+`lando artisan migrate`
+
+Seed the database to have sample data.
+
+`lando artisan db:seed`
+
+Create the currencies
+
+`lando artisan db:seed CurrenciesSeeder`
+
+Done!, access to the site and start playing.
+
+## Toolkit
 
 To use composer, run
 
@@ -33,14 +56,20 @@ To use artisan, run
 
 To use npm, run 
 
-`lando npm COMMAND` 
+`lando npm COMMAND`
 
-To Compile scss and js, use
+## Fronted Development
 
-`lando npm run dev` 
+To Compile scss and js, use for development
+
+`lando npm run dev`
+
+## Database
 
 To access to mysql, use
 
 `lando mysql laravel`
 
-To tests emails, enter to the Mailhog service.
+## Email
+
+To tests emails, enter to the Mailhog service with your browser.

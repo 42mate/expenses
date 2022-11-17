@@ -1,4 +1,4 @@
-name: myexpenses-2
+name: expenses
 recipe: laravel
 
 config:
@@ -14,7 +14,7 @@ services:
     webroot: ./src/public
     xdebug: true
     run:
-      - cd $LANDO_MOUNT/src && php artisan migrate -v --no-interaction && php artisan vendor:publish --all -v --no-interaction && php artisan cache:clear -v --no-interaction
+      - cd $LANDO_MOUNT/src && composer install && php artisan migrate -v --no-interaction && php artisan vendor:publish --all -v --no-interaction && php artisan cache:clear -v --no-interaction
   mail:
     type: mailhog:v1.0.0
     portforward: false
