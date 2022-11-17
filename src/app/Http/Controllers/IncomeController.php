@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExpenseExport;
+use App\Models\Expense;
 use App\Models\Income;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,11 +28,11 @@ class IncomeController extends Controller
             return $this->export($incomes->get());
         }
 
-        $total = $incomes->sum('amount');
+        $totals = Income::aggregateByCurrency($incomes->get());
 
         return view('pages.incomes.index', [
             'incomes' => $incomes->paginate(50),
-            'total' => $total,
+            'totals' => $totals,
         ]);
     }
 
@@ -85,7 +86,7 @@ class IncomeController extends Controller
             return redirect(route('incomes.create'))->with('error', __('Error Saving!'));
         }
 
-        return redirect(route('incomes.create'))->with('success', __('Income Created!'));
+        return redirect(route('incomes.index'))->with('success', __('Income Created!'));
     }
 
     /**

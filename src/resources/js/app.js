@@ -9,7 +9,6 @@ require('bootstrap');
 require('./sb-admin-2');
 require('chart.js');
 require('./charts/charts');
-require('./datatable/datatable');
 
 window.Vue = require('vue');
 

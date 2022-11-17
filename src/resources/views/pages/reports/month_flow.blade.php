@@ -5,7 +5,7 @@
     <h1>{{ __('Month Flow') }}</h1>
     <div class="card-body">
         <canvas class="chart" type="bar"
-                data="/api/v1/charts/expense/month"
+                data="{{ route('api.transactions.expense.month') }}"
                 width="100%"
                 height="80px"
                 show_legend="0">

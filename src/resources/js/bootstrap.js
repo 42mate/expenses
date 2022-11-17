@@ -15,12 +15,6 @@ window.Popper = require('popper.js');
 
 require('pdfmake');
 
-require('datatables.net');
-require('datatables.net-dt');
-require('datatables.net-buttons');
-require('datatables.net-buttons-dt');
-require('datatables.net-buttons/js/buttons.html5.js')();
-require('datatables.net-responsive-dt');
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

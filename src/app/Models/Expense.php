@@ -6,14 +6,19 @@ use App\Models\Scopes\OwnerScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Expense extends Model
 {
     protected $table = 'expenses';
+    protected $with = ['currency'];
 
     //The human readable name for the default related Category or Wallet.
     public const DEFAULT_LABEL = 'Default';
+    public const DEFAULT_CATEGORY_LABEL = 'No category';
+    public const DEFAULT_SOURCE_LABEL = 'No source';
+    public const DEFAULT_WALLET_LABEL = 'No wallet';
 
     //In the db will be NULL, but we need a value to represent and use it in the filters
     public const DEFAULT_IDX = 0;
@@ -24,6 +29,7 @@ class Expense extends Model
         'category_idx',
         'wallet_name',
         'wallet_idx',
+        'currency_code',
     ];
 
     protected $fillable = [
@@ -66,9 +72,22 @@ class Expense extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
+    public function currency()
+    {
+        return $this->belongsTo('App\Models\Currency');
+    }
+
+    public function getCurrencyCodeAttribute() {
+        return  $this->currency->code;
+    }
+
     public function getAmountFormattedAttribute()
     {
-        return '$ '.$this->attributes['amount'];
+        return $this->currency->symbol . ' '. floatval($this->attributes['amount']);
+    }
+
+    public function getAmountAttribute() {
+        return !empty($this->attributes['amount']) ? floatval( $this->attributes['amount']) : '';
     }
 
     /**
@@ -102,7 +121,7 @@ class Expense extends Model
             return $this->category->category;
         }
 
-        return self::DEFAULT_LABEL;
+        return self::DEFAULT_CATEGORY_LABEL;
     }
 
     public function getWalletNameAttribute()
@@ -111,7 +130,7 @@ class Expense extends Model
             return $this->wallet->name;
         }
 
-        return self::DEFAULT_LABEL;
+        return self::DEFAULT_WALLET_LABEL;
     }
 
     public function getWalletIdxAttribute()
@@ -163,11 +182,12 @@ class Expense extends Model
             $q->where('date', '<=', $args['date_to']);
         }
 
-        if (! empty($args['tags'])) {
-            $q->whereHas('tags', function (Builder $q) use ($args) {
-                $q->where('name', $args['tags']);
-            });
+        if (! empty($args['currency_id'])) {
+            $q->where('currency_id', '=', $args['currency_id']);
         }
+
+
+        $q->with(['category', 'wallet', 'currency']);
 
         $q->orderBy('date', 'DESC')
             ->orderBy('id', 'DESC');
@@ -193,12 +213,7 @@ class Expense extends Model
 
     public static function getTotals()
     {
-        return [
-            'today' => self::todayTotal(),
-            'month' => self::monthTotal(),
-            'week' => self::weekTotal(),
-            'last_month' => self::lastMonthTotal(),
-        ];
+        return self::monthTotal();
     }
 
     public static function todayTotal()
@@ -235,37 +250,86 @@ class Expense extends Model
 
     public static function totalByDateRange($from, $to)
     {
-        $expenses = self::whereBetween('date', [$from, $to]);
+        $expenses = self::whereBetween('date', [$from, $to])
+            ->selectRaw('DATE_FORMAT(date, "%Y-%c") as `month`,
+                    currencies.code as code,
+                    currencies.symbol as symbol, SUM(amount) as total')
+            ->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
+            ->groupBy(DB::raw('1, 2, 3'));
 
-        return $expenses->sum('amount');
+        return $expenses->get();
     }
 
     public static function getTotalByMonth()
     {
         $q = self::query()
-            ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,  SUM(amount) as total'))
-            ->groupBy(DB::raw('1'))
+            ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,
+                    currencies.code as code, currencies.symbol as symbol, SUM(amount) as total'))
+            ->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
+            ->where('user_id', '=', Auth::id())
+            ->groupBy(DB::raw('1, 2, 3'))
             ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'));
 
         return $q->get();
     }
 
-    public static function getExpensesByCategory()
+    public static function getExpensesByCategory($currencyId = 1)
     {
         $start = Carbon::now()->startOfMonth()->format('Y-m-d');
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         $q = self::select(DB::raw(
-            "IF (categories.category IS NULL, 
-                    '".self::DEFAULT_LABEL."', 
+            "IF (categories.category IS NULL,
+                    '" . self::DEFAULT_CATEGORY_LABEL . "',
                     categories.category) as category,
                  SUM(expenses.amount) as total"
         ))
             ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
+            ->where('user_id', '=', Auth::id())
             ->whereBetween('expenses.date', [$start, $end])
+            ->where('currency_id', $currencyId)
             ->groupBy(DB::raw('1'))
             ->orderBy(DB::raw('1'), 'DESC');
 
         return $q->get();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function setWalletIdAttribute($value) {
+
+        if ($value === null) {
+            $this->attributes['currency_id'] = 1;
+        } else {
+            $wallet = Wallet::findOrFail($value);
+            $this->attributes['currency_id'] = $wallet->currency->id;
+        }
+
+        $this->attributes['wallet_id'] = $value;
+    }
+
+    public static function aggregateByCurrency($expenses) {
+        $aggregate = [];
+        foreach ($expenses as $expense) {
+            if (empty($aggregate[$expense->currency_id])) {
+                $aggregate[$expense->currency_id] = [
+                    'currency' => $expense->currency,
+                    'sum' => 0,
+                ];
+            }
+            $aggregate[$expense->currency_id]['sum'] += $expense->amount;
+
+        }
+        return $aggregate;
+    }
+
+    static public function isEmpty() {
+        $oneRecord = DB::table((with(new static)->getTable()))
+            ->where('user_id', '=', Auth::id())
+            ->select(['id'])
+            ->limit(1)
+            ->get();
+        return $oneRecord->isEmpty();
     }
 }

@@ -90,17 +90,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::name('reports.')->group(function () {
         Route::prefix('reports')->group(function () {
-            Route::get('/month_flow', 'ReportsController@monthFlow')->name('month_flow');
-            Route::get('/expenses_by_category', 'ReportsController@expensesByCategory')->name('expenses_by_category');
+            Route::get('/month_flow', 'ReportsController@monthFlow')
+                ->name('month_flow');
+            Route::get('/expenses_by_category', 'ReportsController@expensesByCategory')
+                ->name('expenses_by_category');
         });
     });
 
-    Route::get('/api/v1/charts/categories', 'HomeController@getChartByCategory')
-        ->name('api.chart.category');
+    Route::get('/api/transactions/expense/category', 'Api\TransactionsData@expenseByCategory')
+        ->name('api.transactions.expense.category');
 
-    Route::get('/api/v1/expenses/table', 'ExpenseController@apiGetExpenseTable')
-        ->name('api.expense.table');
-
-    Route::get('/api/v1/charts/expense/month', 'ExpenseController@apiGetTotalByMonth')
-        ->name('api.chart.report.month');
+    Route::get('/api/transactions/expense/month', 'Api\TransactionsData@expenseTotalByMonth')
+        ->name('api.transactions.expense.month');
 });

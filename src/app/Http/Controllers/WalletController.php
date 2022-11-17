@@ -16,16 +16,18 @@ class WalletController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'currency_id' => 'required',
             'name' => 'required|max:100',
         ]);
 
         Wallet::create([
             'name' => $request->name,
             'user_id' => Auth::id(),
-            'balance' => $request->balance,
+            'currency_id' => $request->currency_id,
+            'balance' => $request->balance ?? 0,
         ]);
 
-        return back()->with('success', 'Wallet created!');
+        return redirect(route('wallet.index'))->with('success', 'Wallet created!');
     }
 
     public function edit(Wallet $wallet)
@@ -38,17 +40,20 @@ class WalletController extends Controller
     public function update(Request $request, Wallet $wallet)
     {
         $request->validate([
+            'currency_id' => 'required',
             'name' => 'required|max:100',
+            'balance' => 'required'
         ]);
 
         $wallet->fill([
             'name' => $request->name,
             'balance' => $request->balance,
+            'currency_id' => $request->currency_id,
         ]);
 
         $wallet->save();
 
-        return redirect('/wallet')->with('success', 'Wallet updated!');
+        return redirect(route('wallet.index'))->with('success', 'Wallet updated!');
     }
 
     public function delete(Wallet $wallet)
@@ -61,7 +66,7 @@ class WalletController extends Controller
 
         $wallet->delete();
 
-        return redirect('/wallet')->with('success', 'Wallet Deleted!');
+        return redirect(route('wallet.index'))->with('success', 'Wallet Deleted!');
     }
 
     public function index()

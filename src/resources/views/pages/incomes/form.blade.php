@@ -4,10 +4,19 @@
     <!-- Page Heading -->
     <div class="">
         <h1>
-            @if (empty($model->id)) {{ __('Add') }} 
-            @else {{ __('Edit') }} 
+            @if (empty($model->id)) {{ __('Add') }}
+            @else {{ __('Edit') }}
             @endif {{ __('Income') }}
         </h1>
+
+        <x-help>
+            {{ __('Incomes are transactions where get money.') }} <br />
+            {{ __('A income can have a specific source, this helps to have better reports.') }} <br />
+            {{ __('A income can be related to a Wallet, if you select a wallet the expense amount will be added the wallet balance.') }} <br />
+            {{ __('The wallet currency will be applied to the income, So if the wallets is of US dollars and the income amount is 100, it will represent 100 US Dolars') }} <br />
+            {{ __('If you do not select a wallet, the default currency will be used.') }}
+        </x-help>
+
         <div class="side-wrapper">
             @if (empty($model) or empty($model->id))
                 @php
@@ -21,15 +30,16 @@
                 @endphp
             @endif
             {!! Form::model($model, ['method' => $method, 'url' => $route]) !!}
+
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
                         {!! Form::label(__('Date') . ': *', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::date('date', 
-                            (empty($model->date) 
-                            ? Carbon\Carbon::now()->format('Y-m-d') 
-                            : $model->date->format('Y-m-d')), 
-                            ['class' => [ 'form-control',  
+                        {!! Form::date('date',
+                            (empty($model->date)
+                            ? Carbon\Carbon::now()->format('Y-m-d')
+                            : $model->date->format('Y-m-d')),
+                            ['class' => [ 'form-control',
                                 ($errors->has('date') ? 'is-invalid' : '')]]) !!}
                         @error('date')
                         <div class="invalid-feedback">
@@ -40,9 +50,9 @@
 
                     <div class="form-group">
                         {!! Form::label(__('Amount') . ': *', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::number('amount', null, 
-                            ['step' => '.01', 
-                             'class' => [ 'form-control',  
+                        {!! Form::number('amount', null,
+                            ['step' => '.01',
+                             'class' => [ 'form-control',
                                 ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
                         @error('amount')
                         <div class="invalid-feedback">
@@ -53,8 +63,8 @@
 
                     <div class="form-group">
                         {!! Form::label(__('Description') . ':', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::text('description', null, 
-                            ['class' => [ 'form-control',  
+                        {!! Form::text('description', null,
+                            ['class' => [ 'form-control',
                                 ($errors->has('description') ? 'is-invalid' : '')]]) !!}
                         @error('description')
                         <div class="invalid-feedback">
@@ -117,7 +127,7 @@
                         @if (!empty($model) and !empty($model->id))
                             <a href="{{ route('incomes.destroy', ['income' => $model->id]) }}"
                                class="btn btn-danger float-right"
-                               onclick="event.preventDefault(); 
+                               onclick="event.preventDefault();
                                document.getElementById('delete-form-{{ $model->id }}').submit();">
                                 {{ __('Delete') }}
                             </a>

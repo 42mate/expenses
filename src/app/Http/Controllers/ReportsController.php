@@ -14,8 +14,6 @@ class ReportsController extends Controller
 
     public function expensesByCategory()
     {
-        $expenses = Expense::byUserCurrentMonth(Auth::id());
-
-        return view('pages.reports.expenses_by_category', ['expenses' => $expenses]);
+        return view('pages.reports.expenses_by_category');
     }
 }

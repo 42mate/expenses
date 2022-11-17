@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Expense;
 use App\Models\Income;
+use App\Models\IncomeSource;
 use App\Models\RecurrentExpense;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
@@ -31,15 +33,18 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        $expenses = Expense::getTotals(Auth::id());
-        $incomes = Income::getTotals(Auth::id());
-        $balances = Wallet::getBalance(Auth::id());
+        if (Auth::user()->isANewUser()) {
+            $status = [
+                'category' => Category::isEmpty(),
+                'source' => IncomeSource::isEmpty(),
+                'wallet' => Wallet::isEmpty(),
+                'expense' => Expense::isEmpty(),
+                'income' => Income::isEmpty(),
+            ];
+            return view('welcome', ['status' => $status]);
+        }
 
-        return view('home', [
-            'expenses' => $expenses,
-            'incomes' => $incomes,
-            'balances' => $balances,
-        ]);
+        return view('home');
     }
 
     public function pending()
@@ -48,34 +53,6 @@ class HomeController extends Controller
 
         return view('pages/expense/pending', [
             'recurrent_expense_pending_payment' => $recurrentExpensePendingPayment,
-        ]);
-    }
-
-    /**
-     * Returns data for the chart of expenses by category
-     */
-    public function getChartByCategory()
-    {
-        $models = Expense::getExpensesByCategory();
-
-        $return = new \stdClass();
-
-        $return->labels = [];
-        $return->datasets = [];
-
-        $dataset = new \stdClass();
-        $dataset->label = 'Total by category';
-        $dataset->data = [];
-
-        foreach ($models as $model) {
-            $return->labels[] = $model->category;
-            $dataset->data[] = $model->total;
-        }
-
-        $return->datasets[] = $dataset;
-
-        return response()->json([
-            'data' => $return,
         ]);
     }
 }

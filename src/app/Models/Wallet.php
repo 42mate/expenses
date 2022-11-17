@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use App\Models\Scopes\OwnerScope;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Wallet extends Model
 {
     protected $table = 'wallets';
+    protected $with = ['currency'];
 
     protected $fillable = [
-        'name', 'user_id', 'balance',
+        'name', 'user_id', 'balance', 'currency_id'
     ];
 
     /**
@@ -30,6 +34,11 @@ class Wallet extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function currency()
+    {
+        return $this->belongsTo('App\Models\Currency');
+    }
+
     public function expenses()
     {
         return $this->hasMany('App\Models\Expense');
@@ -47,25 +56,19 @@ class Wallet extends Model
         $this->save();
     }
 
-    public static function getBalance(int $userId): array
+    public static function getBalance(): Collection
     {
-        $wallets = self::orderBy('name')->get();
-        $balances = [];
-        $total = 0;
+        return self::orderBy('balance')
+            ->where('balance', '<>', 0)
+            ->get();
+    }
 
-        foreach ($wallets as $wallet) {
-            $balances[] = [
-                'wallet' => $wallet->name,
-                'balance' => $wallet->balance,
-            ];
-            $total += $wallet->balance;
-        }
-
-        $balances['total'] = [
-            'wallet' => __('Total'),
-            'balance' => $total,
-        ];
-
-        return $balances;
+    static public function isEmpty() {
+        $oneRecord = DB::table((with(new static)->getTable()))
+            ->where('user_id', '=', Auth::id())
+            ->select(['id'])
+            ->limit(1)
+            ->get();
+        return $oneRecord->isEmpty();
     }
 }

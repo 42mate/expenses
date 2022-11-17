@@ -3,8 +3,11 @@ require('chart.js');
 import 'chartjs-plugin-colorschemes';
 import { Aspect6 } from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.office';
 
-$(document).ready(function() {
+// type="pie"
+//
+var currentPieChart = null;
 
+$(document).ready(function() {
   $('canvas.chart').each(function(i, e) {
     var ctx = e.getContext('2d');
     var $e = $(e);
@@ -29,5 +32,39 @@ $(document).ready(function() {
             }
           });
         });
+  });
+
+  $('.categoryPie').each(function(i, e) {
+      var currencyDropDown = $("select[name=currency_id]", e);
+      var chart = $(".pie", e)[0];
+
+      currencyDropDown.on('change', function(e2) {
+          const currency_id = currencyDropDown.val();
+
+          if (currentPieChart !== null) {
+              currentPieChart.destroy();
+          }
+          var ctx = chart.getContext('2d');
+          var apiDataSource = $(chart).attr('data') + '?currency_id=' + currency_id;
+
+          axios.get(apiDataSource)
+              .then(function(response) {
+                  currentPieChart = new Chart(ctx, {
+                      type: 'pie',
+                      data: response.data.data,
+
+                      options: {
+                          legend: {
+                              display: $(chart).attr('show_legend')
+                          },
+                          plugins: {
+                              colorschemes: {
+                                  scheme: Aspect6
+                              }
+                          }
+                      }
+                  });
+              });
+      });
   });
 });

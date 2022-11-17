@@ -3,7 +3,7 @@
 @section('content')
     <div class="">
         <h1 class="mb-5">
-            {{ __('Income Source') }}
+            <i class="fa-brands fa-sourcetree"></i> {{ __('Income Source') }}
             <div class="add_control">
                 <a href="{{ route('income_source.create') }}">
                     <i class="fas fa-plus"></i> {{ __("Add income source") }}
@@ -51,10 +51,22 @@
                     @endif
                 @empty
                     <div class="text-center">
-                        <p>{{ __('You don\'t have any income source') }}</p>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    {{ __('Income sources are from where you get the money, it can be for example salary, rent, loan and others') }}
+                                </div>
+                                <div class="mb-2">
+                                    {{ __('Income sources are optional, however, it will be useful to get better information in the reports') }}
+                                </div>
+                                <div class="mb-2">
+                                    {{ __('Income sources are set when you create a Income entry.') }}
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <a href="{{ route('income_source.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> {{ __('Add') }}
+                                <i class="fas fa-plus"></i> {{ __('Add your first income source') }}
                             </a>
                         </div>
                     </div>

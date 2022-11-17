@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class Income extends Expense
 {
     protected $table = 'incomes';
@@ -29,7 +32,7 @@ class Income extends Expense
             return $this->incomeSource->source;
         }
 
-        return self::DEFAULT_LABEL;
+        return self::DEFAULT_SOURCE_LABEL;
     }
 
     public function getIncomeSourceIdxAttribute()

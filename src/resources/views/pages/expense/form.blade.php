@@ -1,7 +1,6 @@
 @extends('theme/master_layout')
 
 @section('content')
-    <!-- Page Heading -->
     <div class="">
         <h1>
             @if (empty($model->id)) {{ __('Add') }} @else {{ __('Edit') }} @endif  {{ __('Expense') }}
@@ -9,6 +8,23 @@
                 <span><i class="far fa-calendar-alt"></i>  {{ __('Recurrent') }}</span>
             </button>
         </h1>
+        <x-help>
+            <div class="mb-2">
+                {{ __('Expenses are transactions where you spend money.') }}
+            </div>
+            <div class="mb-2">
+                {{ __('A expense can have a specific category, this helps to have better expense reports.') }}
+            </div>
+            <div class="mb-2">
+                {{ __('A expense can be related to a Wallet, if you select a wallet the expense amount will be discounted from the wallet balance.') }}
+            </div>
+            <div class="mb-2">
+                {{ __('The wallet currency will be applied to the expense, So if the wallets is of US dollars and the expense amount is 100, it will represent 100 US Dolars') }}
+            </div>
+            <div class="mb-2">
+                {{ __('If you do not select a wallet, the default currency will be used.') }}
+            </div>
+        </x-help>
         <div class="side-wrapper">
             @if (empty($model) or empty($model->id))
                 @php
@@ -26,12 +42,12 @@
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
                         {!! Form::label(__('Date') . ': *', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::date('date', 
-                            (empty($model->date) 
-                                ? Carbon\Carbon::now()->format('Y-m-d') 
-                                : $model->date->format('Y-m-d')), 
+                        {!! Form::date('date',
+                            (empty($model->date)
+                                ? Carbon\Carbon::now()->format('Y-m-d')
+                                : $model->date->format('Y-m-d')),
                             ['class' => [
-                                'form-control',  
+                                'form-control',
                                 ($errors->has('date') ? 'is-invalid' : '')]]) !!}
 
                         @error('date')
@@ -42,15 +58,13 @@
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label(__('Amount') . ': *', null, 
+                        {!! Form::label(__('Amount') . ': *', null,
                             ['class' => 'font-weight-bold']) !!}
 
-                        {!! Form::number('amount', null, 
-                            ['step' => '.01', 
-                            'class' => [ 
-                                'form-control',  
+                        {!! Form::number('amount', null,
+                            ['step' => '0.00000001', 'class' => [
+                                'form-control',
                                 ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
-                                
                         @error('amount')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -59,9 +73,9 @@
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label(__('Description') . ':', null, 
+                        {!! Form::label(__('Description') . ':', null,
                             ['class' => 'font-weight-bold']) !!}
-                        {!! Form::text('description', null, 
+                        {!! Form::text('description', null,
                             ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
                         @error('description')
                         <div class="invalid-feedback">
@@ -71,8 +85,8 @@
                     </div>
 
                     <div>
-                        {{ Form::hidden('recurrent_expense_id', 
-                            (empty($model->recurrent_expense_id) 
+                        {{ Form::hidden('recurrent_expense_id',
+                            (empty($model->recurrent_expense_id)
                             ? 0 : $model->recurrent_expense_id)) }}
                     </div>
 
@@ -133,7 +147,7 @@
                         @if (!empty($model) and !empty($model->id))
                             <a href="{{ route('expense.delete', ['expense' => $model->id]) }}"
                                class="btn btn-danger float-right"
-                               onclick="event.preventDefault(); 
+                               onclick="event.preventDefault();
                                document.getElementById('delete-form-{{ $model->id }}').submit();">
                                {{ __('Delete') }}
                             </a>
@@ -154,7 +168,7 @@
             <div class="sidepanel" id="fill-from-recurrent">
                 <div class="mb-4">
                     <label class="font-weight-bold"> {{ __('Use a recurrent expense.') }}</label>
-                    <button type="button" 
+                    <button type="button"
                             class="btn btn-danger font-weight-bold float-right sidebarCollapse">
                         <span>X</span>
                     </button>
@@ -182,10 +196,10 @@
                                 {{ $recurrent->description }}
                             </td>
                             <td class="d-block d-sm-table-cell">
-                                {{ 
-                                    empty($recurrent->last_use_date) 
-                                        ? __('Never') : 
-                                        $recurrent->last_use_date->format('m/d/Y') 
+                                {{
+                                    empty($recurrent->last_use_date)
+                                        ? __('Never') :
+                                        $recurrent->last_use_date->format('m/d/Y')
                                 }}
                             </td>
                             <td class="d-block d-sm-table-cell">

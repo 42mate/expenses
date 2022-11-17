@@ -3,7 +3,18 @@
 @section('content')
     <!-- Page Heading -->
     <div class="">
-        <h1> @if (empty($model)) Add @else Edit @endif Recurrent Expense</h1>
+        <h1>
+            @if (empty($model->id)) {{ __('Add') }}
+            @else {{ __('Edit') }}
+            @endif {{ __('Recurrent Expense') }}
+        </h1>
+
+        <x-help>
+            {{ __('Recurrent expenses are expenses that you do on a given period of time.') }} <br />
+            {{ __('For example the power bill, the water service, the credit card payment, the social club membership.') }} <br />
+            {{ __('You just need to set all the expense data, the last payment and the periodicity of the expense') }} <br />
+            {{ __('In pending payment you can see the month agenda of pending payment and from there create the expense record') }}
+        </x-help>
 
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">

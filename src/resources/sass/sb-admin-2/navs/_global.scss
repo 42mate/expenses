@@ -14,12 +14,13 @@
           border: 0;
           font-weight: 900;
           content: '\f105';
-          font-family: 'Font Awesome 5 Free';
+          font-family: 'Font Awesome 6 Free';
         }
       }
       &.show {
         .dropdown-toggle::after {
           content: '\f107';
+          font-weight: 900;
         }
       }
     }

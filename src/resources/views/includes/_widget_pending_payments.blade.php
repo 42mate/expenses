@@ -15,8 +15,8 @@
                 {{ __("You don't have any pending payments :)") }}
             </div>
         @else
-            @include('includes._recurrent_expense_table', 
-                ['recurrent_expenses' => $recurrent_expense_pending_payment, 
+            @include('includes._recurrent_expense_table',
+                ['recurrent_expenses' => $recurrent_expense_pending_payment,
                 'use_pay_button' => true])
         @endif
     </div>

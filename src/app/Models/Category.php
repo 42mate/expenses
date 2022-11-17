@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
@@ -36,5 +38,14 @@ class Category extends Model
     {
         return self::query()
             ->orderBy('category');
+    }
+
+    static public function isEmpty() {
+        $oneRecord = DB::table((with(new static)->getTable()))
+            ->where('user_id', '=', Auth::id())
+            ->select(['id'])
+            ->limit(1)
+            ->get();
+        return $oneRecord->isEmpty();
     }
 }

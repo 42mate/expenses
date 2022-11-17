@@ -1,4 +1,5 @@
-<select id="{{ $id }}" name="{{ $name }}" class="form-control">
+<select id="{{ $id }}" name="{{ $name }}"
+        class="form-control @if ($errors->has($name)) {{ 'is-invalid' }} @endif">
     @if ($add_empty == true)
         <option></option>
     @endif
@@ -12,7 +13,13 @@
     @foreach($options as $option)
         <option value="{{ $option->$use_as_value }}"
             @if ($selected == $option->id) selected @endif>
-            {{ $option->$use_as_label }}
+            {{ $option->$use_as_label}}
         </option>
     @endforeach
 </select>
+
+@error($name)
+<div class="invalid-feedback">
+    {{ $message }}
+</div>
+@enderror

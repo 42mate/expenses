@@ -85,4 +85,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany('App\Models\Wallet');
     }
+
+    /**
+     * If the user has no transactions created,
+     *   we consider that is a new user.
+     * @return bool
+     */
+    public function isANewUser() : bool {
+        if (Income::isEmpty() || Expense::isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 }

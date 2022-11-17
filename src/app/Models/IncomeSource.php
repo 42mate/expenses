@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Scopes\OwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class IncomeSource extends Model
 {
@@ -33,5 +35,14 @@ class IncomeSource extends Model
     public static function allForUser()
     {
         return self::query()->orderBy('source');
+    }
+
+    static public function isEmpty() {
+        $oneRecord = DB::table((with(new static)->getTable()))
+            ->where('user_id', '=', Auth::id())
+            ->select(['id'])
+            ->limit(1)
+            ->get();
+        return $oneRecord->isEmpty();
     }
 }

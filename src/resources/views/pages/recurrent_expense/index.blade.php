@@ -69,8 +69,18 @@
                 @endif
             @empty
                 <div class="text-center">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                {{ __('Recurrent expenses are expenses that you do on a given period of time.') }} <br />
+                                {{ __('You can preconfigure all the values of the expense so it makes easy to record the expense') }}<br />
+                                {{ __('In pending payment you can see the month agenda of pending payment and from there create the expense record') }}
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="{{ route('recurrent_expense.create') }}" class="btn btn-primary">
-                        {{ __('Add a recurrent Expense') }}
+                        <i class="fas fa-plus"></i> {{ __('Add your first recurrent Expense') }}
                     </a>
                 </div>
             @endforelse

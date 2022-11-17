@@ -66,7 +66,7 @@ class RecurrentExpense extends Expense
         return json_encode([
             'id' => $this->id,
             'description' => $this->description,
-            'category_id' => $this->category->id,
+            'category_id' => $this->category_id,
             'amount' => $this->amount,
         ]);
     }

@@ -18,6 +18,7 @@
                         <thead>
                             <tr>
                                 <th>{{ __('Name') }}</th>
+                                <th>{{ __('Currency') }}</th>
                                 <th>{{ __('Balance') }}</th>
                                 <th></th>
                             </tr>
@@ -25,8 +26,9 @@
                 @endif
                 <tr class="">
                     <td class="">{{ $wallet->name }}</td>
+                    <td class="">{{ $wallet->currency->name }}</td>
                     <td>
-                        $ {{ $wallet->balance }}
+                        $ {{ floatval($wallet->balance) }}
                     </td>
                     <td class="text-right">
                         <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn  btn-sm">
@@ -46,10 +48,34 @@
                 @endif
             @empty
                 <div class="text-center">
-                    <p>{{ __("You don't have any wallet") }}</p>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                {{ __('Wallets are where you have the money, a bank account, a digital wallet, a crypto wallet, or a box with money in your house.') }}
+                            </div>
+                            <div class="mb-2">
+                                {{ __('Each wallet have a given currency') }}
+                            </div>
+                            <div class="mb-2">
+                                {{ __('When you create a wallet, you have to set how many money you have on that wallet') }}
+                            </div>
+                            <div class="mb-2">
+                                {{ __('Every time you add an Expense and you select a wallet, the money will be discounted from the wallet') }}
+                            </div>
+                            <div class="mb-2">
+                                {{ __('Every time you add an Income and you select a wallet, the money will be added from the wallet') }}
+                            </div>
+                            <div class="mb-2">
+                                {{ __('This will help you the have the wallet balance') }}
+                            </div>
+                            <div class="mb-2">
+                                {{ __('On a Expense or an Income, if you set a wallet on the transaction, the currency of the wallet will be set to the transaction.') }}
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <a href="{{ route('wallet.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i>  {{ __('Add') }}
+                            <i class="fas fa-plus"></i>  {{ __('Add your first wallet') }}
                         </a>
                     </div>
                 </div>

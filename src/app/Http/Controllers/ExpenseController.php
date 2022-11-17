@@ -24,11 +24,11 @@ class ExpenseController extends Controller
             return $this->export($expenses->get());
         }
 
-        $total = $expenses->sum('amount');
+        $totals = Expense::aggregateByCurrency($expenses->get());
 
         return view('pages.expense.index', [
             'expenses' => $expenses->paginate(50),
-            'total' => $total,
+            'totals' => $totals,
         ]);
     }
 
@@ -72,7 +72,7 @@ class ExpenseController extends Controller
                 'wallet_id' => $request->wallet_id,
             ]);
 
-            //Updates balance in blance.
+            //Updates balance in balance.
             if (! empty($expense->wallet)) {
                 $expense->wallet->newOperation(-($request->amount));
             }
@@ -92,10 +92,50 @@ class ExpenseController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect('/create')->with('error', 'Error Saving!');
+            return redirect(route('expense.create'))->with('error', 'Error Saving!');
         }
 
-        return redirect('/create')->with('success', 'Expense Created!');
+        return redirect(route('expense.index'))->with('success', 'Expense Created!');
+    }
+
+    public function update(Request $request, Expense $expense)
+    {
+        $request->validate([
+            'amount' => 'required|numeric',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            //Rollbacks the previous operation from the wallet balance
+            if (! empty($expense->wallet)) {
+                $expense->wallet->updateOperation($expense->amount, -($request->amount));
+            }
+
+            $expense->fill([
+                'amount' => $request->amount,
+                'date' => $request->date,
+                'description' => ! empty($request->description) ? $request->description : '',
+                'category_id' => ! empty($request->category_id) ? $request->category_id : null,
+                'wallet_id' => ! empty($request->wallet_id) ? $request->wallet_id : null,
+            ]);
+
+            //Sets the movement in the balance of the wallet.
+            if (! empty($expense->wallet)) {
+                $expense->wallet->newOperation(-($request->amount));
+            }
+
+            $expense->save();
+            DB::commit();
+
+            return redirect(route('expense.index'))
+                ->with('success', 'Expense Updated!');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect(route('expense.edit', ['id' => $expense->id]))
+                ->with('error', 'Error Saving!');
+        }
     }
 
     public function edit(Expense $expense)
@@ -113,41 +153,6 @@ class ExpenseController extends Controller
         return redirect(route('expense.index'))->with('success', 'Expense deleted!');
     }
 
-    public function update(Request $request, Expense $expense)
-    {
-        $request->validate([
-            'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            //Updates balance in blance.
-            if (! empty($expense->wallet)) {
-                $expense->wallet->updateOperation($expense->amount, -($request->amount));
-            }
-
-            $expense->fill([
-                'amount' => $request->amount,
-                'date' => $request->date,
-                'description' => ! empty($request->description) ? $request->description : '',
-                'category_id' => ! empty($request->category_id) ? $request->category_id : null,
-                'wallet_id' => ! empty($request->wallet_id) ? $request->wallet_id : null,
-            ]);
-
-            $expense->save();
-            DB::commit();
-
-            return redirect(route('expense.index'))
-                ->with('success', 'Expense Updated!');
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            return redirect('/expense/'.$expense->id.'/edit')
-                ->with('error', 'Error Saving!');
-        }
-    }
-
     public function view(Expense $expense)
     {
         if ($expense->user_id !== Auth::id()) {
@@ -158,49 +163,6 @@ class ExpenseController extends Controller
         return view('pages.expense.view', [
             'expense' => $expense,
         ]);
-    }
-
-    /**
-     * Returns the total by month of the expenses.
-     *
-     * @return array
-     */
-    public function apiGetTotalByMonth()
-    {
-        $data = Expense::getTotalByMonth();
-
-        $return = new \stdClass();
-
-        $return->labels = [];
-        $return->datasets = [];
-
-        $dataset = new \stdClass();
-        $dataset->label = 'Total by month';
-        $dataset->data = [];
-        $dataset->borderColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
-
-        foreach ($data as $model) {
-            $return->labels[] = $model->month;
-            $dataset->data[] = $model->total;
-        }
-
-        $return->datasets[] = $dataset;
-
-        return response()->json([
-            'data' => $return,
-        ]);
-    }
-
-    public function apiGetExpenseTable(Request $request)
-    {
-        if ($request->get('month', null) === null) {
-            $expenses = Expense::byUser(Auth::id());
-        } else {
-            $expenses = Expense::byUserCurrentMonth(Auth::id());
-        }
-
-        return DataTables::collection($expenses)
-            ->toJson();
     }
 
     public function export(Collection $data)
