@@ -8,14 +8,14 @@
                 <label for="category"> {{ __('Currency') }}:</label>
 
                 <x-currencies-drop-down name="currency_id"
-                                        addEmpty="true"
                                         use_as_label="name"
+                                        onlyInUse="yes"
                                         selected="{{ (empty(request()->get('currency_id', null)) ? '' : request()->get('currency_id'))}}"
                 />
             </div>
         </div>
         <div class="row">
-            <div class="card-body col-4">
+            <div class="card-body col-10">
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         <canvas class="pie"

@@ -38,7 +38,7 @@ $(document).ready(function() {
       var currencyDropDown = $("select[name=currency_id]", e);
       var chart = $(".pie", e)[0];
 
-      currencyDropDown.on('change', function(e2) {
+      function drawChart() {
           const currency_id = currencyDropDown.val();
 
           if (currentPieChart !== null) {
@@ -65,6 +65,12 @@ $(document).ready(function() {
                       }
                   });
               });
+      }
+
+      currencyDropDown.on('change', function(e2) {
+          drawChart();
       });
+
+      drawChart();
   });
 });

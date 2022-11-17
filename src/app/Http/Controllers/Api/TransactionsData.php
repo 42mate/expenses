@@ -18,6 +18,7 @@ class TransactionsData extends Controller
     public function expenseTotalByMonth()
     {
         $data = Expense::getTotalByMonth();
+
         $chartData = new class{};
         $chartData->datasets = [];
         $chartData->labels = [];

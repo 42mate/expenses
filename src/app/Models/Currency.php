@@ -32,4 +32,16 @@ class Currency extends Model
             ->get();
         return $oneRecord->isEmpty();
     }
+
+    static function onlyInUse() {
+        $inUse = self::query()
+            ->join('expenses', 'expenses.currency_id', '=', 'currencies.id')
+            ->select(['currencies.*'])
+            ->distinct()
+            ->get();
+
+        return $inUse;
+
+
+    }
 }

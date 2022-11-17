@@ -263,17 +263,16 @@ class Expense extends Model
 
     public static function getTotalByMonth()
     {
-        $q = self::query()
+        return self::query()
             ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,
                     currencies.name as name,
                     currencies.code as code,
-                    currencies.symbol as symbol, SUM(amount) as total'))
-            ->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
-            ->where('user_id', '=', Auth::id())
+                    currencies.symbol as symbol,
+                    SUM(amount) as total')
+            )->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
             ->groupBy(DB::raw('1, 2, 3, 4'))
-            ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'));
-
-        return $q->get();
+            ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'))
+            ->get();
     }
 
     public static function getExpensesByCategory($currencyId = 1)
@@ -288,7 +287,6 @@ class Expense extends Model
                  SUM(expenses.amount) as total"
         ))
             ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
-            ->where('user_id', '=', Auth::id())
             ->whereBetween('expenses.date', [$start, $end])
             ->where('currency_id', $currencyId)
             ->groupBy(DB::raw('1'))
