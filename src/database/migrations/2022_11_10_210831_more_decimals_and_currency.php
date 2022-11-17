@@ -21,10 +21,11 @@ return new class extends Migration
                 $table->char('symbol', 5);
             });
 
+            //Default Currency
             DB::table('currencies')->insert([
-                'name' => 'Default',
+                'name' => 'Default Currency',
                 'symbol' => '$',
-                'code' => '$'
+                'code' => 'DEF'
             ]);
         }
 

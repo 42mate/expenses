@@ -4,8 +4,8 @@
         <div class="card">
             <div class="card-body">
                 @forelse ($data as $transaction)
-                    <span class=" font-weight-bold text-primary text-uppercase mb-1">
-                        {{ $transaction->code }}
+                    <span class=" font-weight-bold text-primary small mb-1">
+                        {{ __($transaction->name) }}
                     </span>
                     <span class=" mb-0 font-weight-bold text-gray-800 text-right float-right">
                         {{ $transaction->symbol }} {{ floatval($transaction->total) }}

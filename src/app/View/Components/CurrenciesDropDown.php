@@ -8,6 +8,6 @@ class CurrenciesDropDown extends BaseDropDown
 {
     public function getOptions(): \Illuminate\Database\Eloquent\Collection|array
     {
-        return Currency::all();
+        return Currency::orderBy('name')->get();
     }
 }

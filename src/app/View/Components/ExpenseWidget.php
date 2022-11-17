@@ -22,13 +22,13 @@ class ExpenseWidget extends Component
         $this->indexRoute = null;
 
         if ($title == 'Expenses') {
-            $this->data = Expense::getTotals(Auth::id());
+            $this->data = Expense::getTotals();
             $this->createRoute = route('expense.create');
             $this->indexRoute = route('expense.index');
         }
 
         if ($title == 'Incomes') {
-            $this->data = Income::getTotals(Auth::id());
+            $this->data = Income::getTotals();
             $this->createRoute = route('incomes.create');
             $this->indexRoute = route('incomes.index');
         }

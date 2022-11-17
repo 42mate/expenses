@@ -21,7 +21,7 @@ class Currency extends Model
     use HasFactory;
 
     public function getNameAttribute() {
-        return "({$this->attributes['symbol']}) " .$this->attributes['name'];
+        return $this->attributes['name'] . " [{$this->attributes['code']} - {$this->attributes['symbol']}]";
     }
 
     static public function isEmpty() {

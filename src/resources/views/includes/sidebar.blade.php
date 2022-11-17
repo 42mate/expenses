@@ -60,10 +60,10 @@
                 <i class="fas fa-wallet"></i>
                 <span>{{ __('Wallets') }}</span>
             </a>
-            <a class="collapse-item" href="{{ route('wallet.index') }}" >
-                <i class="fa-solid fa-money-bill-transfer"></i>
-                <span>{{ __('Transfer') }}</span>
-            </a>
+{{--            <a class="collapse-item" href="{{ route('wallet.index') }}" >--}}
+{{--                <i class="fa-solid fa-money-bill-transfer"></i>--}}
+{{--                <span>{{ __('Transfer') }}</span>--}}
+{{--            </a>--}}
         </div>
     </div>
 </li>
@@ -75,12 +75,12 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link " href="{{ route('wallet.index') }}">
-        <i class="fa-solid fa-building-columns"></i>
-        <span>{{ __('Loans') }}</span>
-    </a>
-</li>
+{{--<li class="nav-item">--}}
+{{--    <a class="nav-link " href="{{ route('wallet.index') }}">--}}
+{{--        <i class="fa-solid fa-building-columns"></i>--}}
+{{--        <span>{{ __('Loans') }}</span>--}}
+{{--    </a>--}}
+{{--</li>--}}
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">

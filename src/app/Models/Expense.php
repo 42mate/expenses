@@ -252,10 +252,11 @@ class Expense extends Model
     {
         $expenses = self::whereBetween('date', [$from, $to])
             ->selectRaw('DATE_FORMAT(date, "%Y-%c") as `month`,
+                    currencies.name as name,
                     currencies.code as code,
                     currencies.symbol as symbol, SUM(amount) as total')
             ->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
-            ->groupBy(DB::raw('1, 2, 3'));
+            ->groupBy(DB::raw('1, 2, 3, 4'));
 
         return $expenses->get();
     }
@@ -264,10 +265,12 @@ class Expense extends Model
     {
         $q = self::query()
             ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,
-                    currencies.code as code, currencies.symbol as symbol, SUM(amount) as total'))
+                    currencies.name as name,
+                    currencies.code as code,
+                    currencies.symbol as symbol, SUM(amount) as total'))
             ->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
             ->where('user_id', '=', Auth::id())
-            ->groupBy(DB::raw('1, 2, 3'))
+            ->groupBy(DB::raw('1, 2, 3, 4'))
             ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'));
 
         return $q->get();
