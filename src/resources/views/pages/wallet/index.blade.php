@@ -26,7 +26,7 @@
                 @endif
                 <tr class="">
                     <td class="">{{ $wallet->name }}</td>
-                    <td class="">{{ $wallet->currency->name }}</td>
+                    <td class="">{{ $wallet->currency->code }}</td>
                     <td>
                         $ {{ floatval($wallet->balance) }}
                     </td>

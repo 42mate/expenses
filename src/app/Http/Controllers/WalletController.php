@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expense;
+use App\Models\Income;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class WalletController extends Controller
 {
@@ -51,8 +54,21 @@ class WalletController extends Controller
             'currency_id' => $request->currency_id,
         ]);
 
-        $wallet->save();
+        try {
+            DB::beginTransaction();
+            $wallet->save();
 
+
+            if ($request->input('update_transactions', false) == 'on') {
+                Expense::updateCurrency($wallet);
+                Income::updateCurrency($wallet);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect(route('wallet.edit'))->with('error', 'Error, can not update!');
+        }
+
+        DB::commit();
         return redirect(route('wallet.index'))->with('success', 'Wallet updated!');
     }
 

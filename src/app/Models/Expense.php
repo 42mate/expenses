@@ -333,4 +333,17 @@ class Expense extends Model
             ->get();
         return $oneRecord->isEmpty();
     }
+
+    /**
+     * It will change on all transactions related to the wallet, the
+     * new currency of the wallet.
+     *
+     * @param Wallet $wallet
+     *
+     * @return void
+     */
+    static public function updateCurrency(Wallet $wallet) : void {
+        self::where('wallet_id', $wallet->id)
+            ->update(['currency_id' => $wallet->currency_id]);
+    }
 }

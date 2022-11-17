@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <span class="text-primary text-uppercase font-weight-bold text-xs">
                             <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}">
-                                {{ $wallet->name }} ({{ $wallet->currency->symbol }})
+                                {{ $wallet->name }} ({{ $wallet->currency->code }})
                             </a>
                         </span>
                         <span class="font-weight-bold text-right float-right">$ {{ floatval($wallet->balance) }}</span>

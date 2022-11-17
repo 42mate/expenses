@@ -57,6 +57,16 @@
             @enderror
         </div>
 
+        @if (!empty($model))
+            <label for="name">{{ __('Update related transactions to the new currency?') }}:</label>
+            {!! Form::checkbox('update_transactions', null, ['class' => [ 'form-control',  ($errors->has('update_transactions') ? 'is-invalid' : '')]]) !!}
+            @error('update_transactions')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        @endif
+
         <div class="form-group mt-5">
             {!! Form::submit(__('Send'), ['class' => 'btn btn-primary']) !!}
             <a class="btn btn-warning" href="{{ route('wallet.index') }}">{{ __('Cancel') }}</a>
