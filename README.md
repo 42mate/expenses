@@ -1,4 +1,4 @@
-# My Expenses
+# Expenses
 
 A simple app to keep track of expenses and incomes.
 
