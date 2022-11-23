@@ -72,11 +72,19 @@ If no wallet is involved in the transaction, the default currency will be used.
 ## Guides Index
 
 [Onboarding](./onboarding.md)
+
 [Default currency](./)
+
 [Category](./category.md)
+
 [Expense](./)
+
 [Wallets](./)
+
 [Income source](./)
+
 [Income](./)
+
 [Recurrent Expenses](./)
+
 [Loans](./)
