@@ -86,22 +86,10 @@ class RecurrentExpense extends Expense
 
     public static function getPendingToPayThisMonth($userId)
     {
+        $time = Carbon::now()->endOfMonth()->format('Y-m-d');
+
         return self::query()
-            ->whereRaw('
-                (last_use_date IS NULL
-                OR (
-                    IF(
-                        MOD(MONTH(last_use_date) + period, 12) = 0,
-                        12,
-                        MOD(MONTH(last_use_date) + period, 12)
-                    ) <= MONTH(CURRENT_DATE())
-                )) AND (
-                    IF(
-                        period = 12,
-                        YEAR(last_use_date) + 1,
-                        YEAR(last_use_date)
-                    ) <= YEAR(CURRENT_DATE())
-                )'
-            )->get();
+            ->whereRaw('DATE_ADD(last_use_date, INTERVAL period MONTH) < "' . $time . '"')
+            ->get();
     }
 }

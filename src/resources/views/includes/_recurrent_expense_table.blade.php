@@ -3,9 +3,10 @@
         <tr>
             <th class="d-block d-sm-table-cell">{{ __('Category') }}</th>
             <th class="d-block d-sm-table-cell">{{ __('Description') }}</th>
+            <th class="d-block d-sm-table-cell">{{ __('Periodicity') }}</th>
             <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
             <th class="d-block d-sm-table-cell">{{ __('Past Due') }}</th>
-            <th class="d-block d-sm-table-cell text-right">{{ __('Amount') }}</th>
+            <th class="d-block d-sm-table-cell text-right">{{ __('Last amount') }}</th>
             <th class=""></th>
         </tr>
     </thead>
@@ -20,7 +21,16 @@
             <td class="d-block d-sm-table-cell">
                 {{ $recurrent->description }}
             </td>
-            <td class="d-block d-sm-table-cell text-center">
+            <td class="d-block d-sm-table-cell">
+                @switch($recurrent->period)
+                    @case(1) {{ __('Monthly') }} @break
+                    @case(2) {{ __('Bimonthly') }} @break
+                    @case(3) {{ __('Trimonthly') }} @break
+                    @case(6) {{ __('Bianual') }} @break
+                    @case(12) {{ __('Anual') }}@break
+                @endswitch
+            </td>
+            <td class="d-block d-sm-table-cell">
                 @if (empty($recurrent->last_use_date))
                     <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $recurrent->id ]) }}">
                        {{ __('Never') }}
@@ -29,7 +39,7 @@
                     {{ $recurrent->last_use_date->format('Y-m-d') }}
                 @endif
             </td>
-            <td class="d-block d-sm-table-cell text-center">
+            <td class="d-block d-sm-table-cell">
                 {{ $recurrent->past_due }}
             </td>
             <td class="d-block d-sm-table-cell text-right">
@@ -37,12 +47,12 @@
             </td>
             <td class="text-right">
                 @if ($use_pay_button)
-                    <a class="btn btn-success pay btn-sm" 
+                    <a class="btn btn-success pay btn-sm"
                         href="{{ route('expense.create', ['recurrent_expense' => $recurrent->id]) }}">
                         {{ __('Pay') }}
                     </a>
                 @else
-                    <span class="btn btn-info fill-expense" 
+                    <span class="btn btn-info fill-expense"
                         data-expense="{{ $recurrent->getJsonData() }}">
                         {{ __('Use') }}
                     </span>
