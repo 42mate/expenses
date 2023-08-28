@@ -69,6 +69,21 @@
                 </div>
             </div>
 
+            <div class="form-group row">
+                <label for="name" class="col-md-4 col-form-label text-md-right">
+                    {{ __('Default Currency') }}:
+                </label>
+
+                <div class="col-md-6">
+                    <x-currencies-drop-down name="default_currency_id"
+                                            addEmpty="true"
+                                            use_as_label="name"
+                                            errors="{{ $errors->has('default_currency_id') }}"
+                                            selected="0"
+                    />
+                </div>
+            </div>
+
             <div class="form-group row mb-2">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">
