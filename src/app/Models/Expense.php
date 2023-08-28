@@ -301,7 +301,11 @@ class Expense extends Model
     public function setWalletIdAttribute($value) {
 
         if ($value === null) {
-            $this->attributes['currency_id'] = 1;
+            $defaultCurrencyId = Auth::user()->default_currency_id;
+            if ($defaultCurrencyId === null) {
+                $defaultCurrencyId = 1;
+            }
+            $this->attributes['currency_id'] = $defaultCurrencyId;
         } else {
             $wallet = Wallet::findOrFail($value);
             $this->attributes['currency_id'] = $wallet->currency->id;
@@ -345,5 +349,10 @@ class Expense extends Model
     static public function updateCurrency(Wallet $wallet) : void {
         self::where('wallet_id', $wallet->id)
             ->update(['currency_id' => $wallet->currency_id]);
+    }
+
+    static public function updateCurrencyOfNoWallets(int $currencyId) : void {
+        self::where('wallet_id', null)
+            ->update(['currency_id' => $currencyId]);
     }
 }
