@@ -47,9 +47,13 @@
             </td>
             <td class="text-right">
                 @if ($use_pay_button)
-                    <a class="btn btn-success pay btn-sm"
+                    <a class="btn-primary btn pay btn-sm"
                         href="{{ route('expense.create', ['recurrent_expense' => $recurrent->id]) }}">
                         {{ __('Pay') }}
+                    </a>
+                    <a class="btn @if ($recurrent->paused) btn-success @else btn-danger @endif pay btn-sm"
+                       href="{{ route('recurrent_expense.state_toggle', ['recurrent_expense' => $recurrent->id]) }}">
+                        @if ($recurrent->paused) {{ __('Unpause') }} @else {{ __('Pause') }} @endif
                     </a>
                 @else
                     <span class="btn btn-info fill-expense"

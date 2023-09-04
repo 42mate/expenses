@@ -28,6 +28,23 @@
             </strong>
         @endif
     </div>
+    <div class="">
+        @if (count($recurrent_expenses_paused) > 0)
+            <h1 class="mb-4 "><i class="fa-solid fa-bell"></i> {{ __('Paused Pending Payments') }}</h1>
+
+            @include('includes._recurrent_expense_table',
+                ['recurrent_expenses' => $recurrent_expenses_paused,
+                'use_pay_button' => true])
+        @endif
+    </div>
+    <div class="mt-4 mb-3 text-right">
+        @if (count($recurrent_expenses_paused) > 0)
+            <strong>
+                {{ __('Pending Payments Paused:') }} ({{ count($recurrent_expenses_paused) }}) -
+                $ {{$recurrent_expenses_paused->sum('amount')}}
+            </strong>
+        @endif
+    </div>
 </div>
 
 @endsection

@@ -80,6 +80,7 @@ class RecurrentExpense extends Expense
     public static function getAllNotUsedFirst($userId)
     {
         return self::query()
+            ->where('paused', false)
             ->orderBy('last_use_date')
             ->get();
     }
@@ -89,6 +90,17 @@ class RecurrentExpense extends Expense
         $time = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         return self::query()
+            ->where('paused', false)
+            ->whereRaw('DATE_ADD(last_use_date, INTERVAL period MONTH) < "' . $time . '"')
+            ->get();
+    }
+
+    public static function getPendingPausedToPayThisMonth($userId)
+    {
+        $time = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        return self::query()
+            ->where('paused', true)
             ->whereRaw('DATE_ADD(last_use_date, INTERVAL period MONTH) < "' . $time . '"')
             ->get();
     }
