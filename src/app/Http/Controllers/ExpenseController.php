@@ -42,6 +42,9 @@ class ExpenseController extends Controller
                 $expense->description = $recurrent_expense->description;
                 $expense->category_id = $recurrent_expense->category_id;
                 $expense->recurrent_expense_id = $recurrent_expense->id;
+
+                // Save the referer in the session to redirect back to it after saving the expense
+                $request->session()->put('back_to', request()->headers->get('referer'));
             }
         }
 
@@ -95,7 +98,19 @@ class ExpenseController extends Controller
             return redirect(route('expense.create'))->with('error', 'Error Saving!');
         }
 
-        return redirect(route('expense.index'))->with('success', 'Expense Created!');
+        $back_to = $request->session()
+            ->get('back_to', route('expense.index'));
+
+        $request->session()->forget('back_to');
+        return redirect($back_to)->with('success', 'Expense Created!');
+    }
+
+    public function edit(Expense $expense)
+    {
+        return view('pages.expense.form', [
+            'model' => $expense,
+            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
+        ]);
     }
 
     public function update(Request $request, Expense $expense)
@@ -136,14 +151,6 @@ class ExpenseController extends Controller
             return redirect(route('expense.edit', ['id' => $expense->id]))
                 ->with('error', 'Error Saving!');
         }
-    }
-
-    public function edit(Expense $expense)
-    {
-        return view('pages.expense.form', [
-            'model' => $expense,
-            'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
-        ]);
     }
 
     public function delete(Expense $expense)

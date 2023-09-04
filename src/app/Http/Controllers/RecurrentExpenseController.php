@@ -82,4 +82,10 @@ class RecurrentExpenseController extends Controller
         return redirect(route('recurrent_expense.index'))
             ->with('success', 'Expense deleted!');
     }
+
+    public function stateToggle(RecurrentExpense $recurrent_expense) {
+        $recurrent_expense->paused = !$recurrent_expense->paused;
+        $recurrent_expense->save();
+        return back()->with('success', 'Recurrent Expense Updated!');
+    }
 }

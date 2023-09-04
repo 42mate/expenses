@@ -50,9 +50,11 @@ class HomeController extends Controller
     public function pending()
     {
         $recurrentExpensePendingPayment = RecurrentExpense::getPendingToPayThisMonth(Auth::id());
+        $recurrentExpensesPaused = RecurrentExpense::getPendingPausedToPayThisMonth(Auth::id());
 
         return view('pages/expense/pending', [
             'recurrent_expense_pending_payment' => $recurrentExpensePendingPayment,
+            'recurrent_expenses_paused' => $recurrentExpensesPaused,
         ]);
     }
 }

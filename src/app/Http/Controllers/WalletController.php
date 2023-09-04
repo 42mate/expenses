@@ -35,6 +35,9 @@ class WalletController extends Controller
 
     public function edit(Wallet $wallet)
     {
+        // Save the referer in the session to redirect back to it after saving the expense
+        request()->session()->put('back_to', request()->headers->get('referer'));
+
         return view('pages.wallet.form', [
             'model' => $wallet,
         ]);
@@ -58,7 +61,6 @@ class WalletController extends Controller
             DB::beginTransaction();
             $wallet->save();
 
-
             if ($request->input('update_transactions', false) == 'on') {
                 Expense::updateCurrency($wallet);
                 Income::updateCurrency($wallet);
@@ -69,7 +71,12 @@ class WalletController extends Controller
         }
 
         DB::commit();
-        return redirect(route('wallet.index'))->with('success', 'Wallet updated!');
+
+        $back_to = $request->session()
+            ->get('back_to', route('wallet.index'));
+
+        $request->session()->forget('back_to');
+        return redirect($back_to)->with('success', 'Wallet updated!');
     }
 
     public function delete(Wallet $wallet)
