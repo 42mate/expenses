@@ -270,6 +270,7 @@ class Expense extends Model
                     currencies.symbol as symbol,
                     SUM(amount) as total')
             )->join('currencies', (with(new static)->getTable()) . '.currency_id', '=', 'currencies.id')
+            ->whereBetween('date', [date('Y-m-d', strtotime('now -12 months')), date('Y-m-d')])
             ->groupBy(DB::raw('1, 2, 3, 4'))
             ->orderBy(DB::raw('STR_TO_DATE(1, "%d-%m-%Y")'))
             ->get();

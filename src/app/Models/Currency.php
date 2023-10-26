@@ -41,7 +41,5 @@ class Currency extends Model
             ->get();
 
         return $inUse;
-
-
     }
 }

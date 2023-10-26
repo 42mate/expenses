@@ -47,23 +47,28 @@ $(document).ready(function() {
           var ctx = chart.getContext('2d');
           var apiDataSource = $(chart).attr('data') + '?currency_id=' + currency_id;
 
+          $('.result-message').hide();
           axios.get(apiDataSource)
               .then(function(response) {
-                  currentPieChart = new Chart(ctx, {
-                      type: 'pie',
-                      data: response.data.data,
+                  if (response.data.data.datasets[0].data.length == 0) {
+                      $('.result-message').html('There is no expenses for this currency').fadeIn(300);
+                  } else {
+                      currentPieChart = new Chart(ctx, {
+                          type: 'pie',
+                          data: response.data.data,
 
-                      options: {
-                          legend: {
-                              display: $(chart).attr('show_legend')
-                          },
-                          plugins: {
-                              colorschemes: {
-                                  scheme: Aspect6
+                          options: {
+                              legend: {
+                                  display: $(chart).attr('show_legend')
+                              },
+                              plugins: {
+                                  colorschemes: {
+                                      scheme: Aspect6
+                                  }
                               }
                           }
-                      }
-                  });
+                      });
+                  }
               });
       }
 

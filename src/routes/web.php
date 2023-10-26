@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@edit')
         ->name('recurrent_expense.edit');
 
-    Route::get('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@stateToggle')
+    Route::get('/recurrent_expense/{recurrent_expense}/toggle', 'RecurrentExpenseController@stateToggle')
         ->name('recurrent_expense.state_toggle');
 
     Route::get('/recurrent_expense', 'RecurrentExpenseController@index')
