@@ -166688,6 +166688,56 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/js/anchor-submit.js":
+/*!***************************************!*\
+  !*** ./resources/js/anchor-submit.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Allows to set methods to anchor links or other elements.
+ *
+ * Usage
+ *   Set the href for the route to hit, any query parameter will be sent in the form as input.
+ *   Set the class `as-submit` to the element
+ *   Set the method attribute to use DELETE or PUT, by default will be POST
+ *
+ */
+var anchorSubmit = function anchorSubmit() {
+  var links = $('.as-submit');
+  var token = $('meta[name="csrf-token"]').attr('content');
+  var body = $('body');
+  links.each(function (i, link) {
+    console.log(link);
+    $(link).click(function (e) {
+      e.preventDefault();
+      var link = $(this);
+      var url = link.attr('href').split('?');
+      var params = url.length > 1 ? url[1].split('&') : [];
+      var method = link.attr('method');
+      var form = $('<form>').attr('method', 'POST').attr('action', url[0]).hide();
+      for (var i = 0; i < params.length; i++) {
+        var value = params[i].split('=');
+        form.append($('<input>').attr('type', 'text').attr('name', value[0]).attr('value', value[1]).attr('autocomplete', 'off'));
+      }
+      if (token !== undefined) {
+        form.append($('<input>').attr('type', 'hidden').attr('name', '_token').attr('value', token).attr('autocomplete', 'off'));
+      }
+      if (method !== undefined && method !== 'POST') {
+        form.append($('<input>').attr('type', 'hidden').attr('name', '_method').attr('value', method));
+      }
+      body.append(form);
+      form.submit();
+    });
+  });
+};
+$(document).ready(function () {
+  anchorSubmit();
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -166706,6 +166756,7 @@ __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap
 __webpack_require__(/*! ./sb-admin-2 */ "./resources/js/sb-admin-2.js");
 __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist/Chart.js");
 __webpack_require__(/*! ./charts/charts */ "./resources/js/charts/charts.js");
+__webpack_require__(/*! ./anchor-submit */ "./resources/js/anchor-submit.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component('tags-input', __webpack_require__(/*! ./vue/components/tags.vue */ "./resources/js/vue/components/tags.vue")["default"]);
 var app = new Vue({

@@ -14,30 +14,13 @@
     </x-help>
 
     <div class="col-md-8">
-
-        @if (empty($model))
-            {!! forms()->open(['url' => route('income_source.store')]) !!}
-        @else
-            {!! forms()->model($model,
-                ['method' => 'put',
-                 'url' => route('income_source.update', ['income_source' => $model->id])]) !!}
-        @endif
-
+        {!! forms()->create('income_source', !empty($model) ? $model : null) !!}
         <div class="form-group">
-            <label for="source">{{ __('Name') }}:</label>
-            {!! forms()->text('source', null,
-                ['class' => [
-                    'form-control',
-                    ($errors->has('source') ? 'is-invalid' : '')]]) !!}
-            @error('source')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
+            {!! forms()->field( __('Name'), 'source') !!}
         </div>
 
         <div class="form-group mt-5">
-            {!! forms()->submit(__('Send'), ['class' => 'btn btn-primary']) !!}
+            {!! forms()->submit(__('Send')) !!}
             <a class="btn btn-warning"
                 href="{{ route('income_source.index') }}">
                 {{ __('Cancel') }}

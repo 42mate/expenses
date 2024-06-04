@@ -74,6 +74,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@edit')
         ->name('recurrent_expense.edit');
 
+    Route::delete('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@delete')
+        ->name('recurrent_expense.delete');
+
     Route::get('/recurrent_expense/{recurrent_expense}/toggle', 'RecurrentExpenseController@stateToggle')
         ->name('recurrent_expense.state_toggle');
 

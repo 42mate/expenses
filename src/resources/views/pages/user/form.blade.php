@@ -7,58 +7,21 @@
     </h1>
     <div class="row justify-content-left">
         <div class="col-md-8 no-gutters">
-            @if (!$errors->isEmpty())
-                <div class="alert alert-danger">
-                    {{ __('The form contains some errors, please verify') }}
-                </div>
-            @endif
-
-            {!! forms()->model($model,
-                ['method' => 'put',
-                'url' => route('user.update', ['model' => $model->id])]) !!}
-
+            {!! forms()->create('user', !empty($model) ? $model : null) !!}
             <div class="form-group">
-                {!! forms()->label(__('Name')) !!}
-                {!! forms()->text('name', null,
-                    ['class' => [ 'form-control',  ($errors->has('name') ? 'is-invalid' : '')]]) !!}
-                @error('name')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                {!! forms()->field(__('Name'), 'name') !!}
             </div>
 
             <div class="form-group">
-                {!! forms()->label(__('Email')) !!}
-                {!! forms()->email('email', null,
-                    ['class' => [ 'form-control',  ($errors->has('email') ? 'is-invalid' : '')]]) !!}
-                @error('email')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                {!! forms()->field(__('Email'), 'email') !!}
             </div>
 
             <div class="form-group">
-                {!! forms()->label(__('Password')) !!}
-                {!! forms()->password('password',
-                    ['class' => [ 'form-control',  ($errors->has('password') ? 'is-invalid' : '')]]) !!}
-                @error('password')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                {!! forms()->field(__('Password'), 'password', 'password') !!}
             </div>
 
             <div class="form-group">
-                {!! forms()->label(__('Password Confirm')) !!}
-                {!! forms()->password('password_confirmation',
-                    ['class' => [ 'form-control',  ($errors->has('password_confirmation') ? 'is-invalid' : '')]]) !!}
-                @error('password_confirmation')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                {!! forms()->field(__('Password Confirm'), 'password_confirmation', 'password') !!}
             </div>
 
             <div class="form-group">
@@ -72,7 +35,7 @@
             </div>
 
             <div>
-                {!! forms()->submit(__('Send'), ['class' => 'btn btn-primary']) !!}
+                {!! forms()->submit(__('Send')) !!}
                 <a class="btn btn-warning" href="{{ route('home') }}">{{ __('Cancel') }}</a>
             </div>
             {!! forms()->close() !!}

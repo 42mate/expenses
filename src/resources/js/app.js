@@ -9,6 +9,7 @@ require('bootstrap');
 require('./sb-admin-2');
 require('chart.js');
 require('./charts/charts');
+require('./anchor-submit');
 
 window.Vue = require('vue');
 
@@ -29,9 +30,7 @@ $('.fill-expense').click(function(e) {
 });
 
 $(document).ready(function () {
-
     $('.sidebarCollapse').on('click', function () {
         $('.sidepanel').toggleClass('active');
     });
-
 });

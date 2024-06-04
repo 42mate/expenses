@@ -18,80 +18,42 @@
 
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                @if (empty($model))
-                    {!! forms()->open(['url' => route('recurrent_expense.store')]) !!}
-                @else
-                    {!! forms()->model($model, ['method' => 'put', 'url' => route('recurrent_expense.update', ['recurrent_expense' => $model->id])]) !!}
-                @endif
+                {!! forms()->create('recurrent_expense', !empty($model)? $model : null) !!}
 
                 <div class="form-group">
-                    {!! forms()->label('Amount:', null, ['class' => 'font-weight-bold']) !!}
-                    {!! forms()->number('amount', null, ['step' => '.01', 'class' => [ 'form-control',  ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
-                    @error('amount')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    {!! forms()->field(__('Amount'), 'amount', 'number')->attribute('step', '.01') !!}
                 </div>
 
                 <div class="form-group">
-                    {!! forms()->label('Description:', null, ['class' => 'font-weight-bold']) !!}
-                    {!! forms()->text('description', null, ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
-                    @error('description')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    {!! forms()->field(__('Description'), 'description') !!}
                 </div>
 
                 <div class="form-group">
-                    {!! forms()->label('Last payment date:', null, ['class' => 'font-weight-bold']) !!}
-                    {!! forms()->date('last_use_date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
-                    @error('last_use_date')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    {!! forms()->field(__('Last payment date'), 'last_use_date', 'date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d'))) !!}
                 </div>
 
                 <div class="form-group">
                     <div>
-                        <label for="email" class="font-weight-bold">Category:</label>
+                        <label for="email" class="font-weight-bold">{{ __('Category') }}</label>
                         <span class="mt-1 mb-1 float-right">
                         <a href="{{ route('category.create', ['gt=expense.create']) }}"><i class="fas fa-plus"></i> {{ __('Add Category') }}</a>
                     </span>
                     </div>
                     <x-categories-drop-down name="category_id" useAsLabel="category" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
-                    @error('category_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
                 </div>
 
                 <div class="form-group">
-                    <div>
-                        <label for="period" class="font-weight-bold">Periodicity:</label>
-                    </div>
-
                     {{
-                        forms()->select('period',
+                        forms()->field(__('Periodicity'), 'period', 'select', null,
                             [
                                 '1' => 'Monthly',
                                 '2' => 'Bimonthly',
                                 '3' => 'Trimonthly',
                                 '6' => 'Bianual',
                                 '12' => 'Anual',
-                            ],
-                            (empty($model->period) ? 1 : $model->period),
-                            ['class' => [ 'form-control',  ($errors->has('period') ? 'is-invalid' : '')]]
+                            ]
                         )
                     }}
-                    @error('period')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
                 </div>
 
                 <div class="form-group mt-5">

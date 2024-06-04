@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta property="twitter:creator" content="@42mate"/>
     <meta property="twitter:site" content="@42mate"/>

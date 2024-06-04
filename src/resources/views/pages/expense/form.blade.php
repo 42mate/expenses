@@ -26,7 +26,7 @@
             </div>
         </x-help>
         <div class="side-wrapper">
-            {!! forms()->create('expense', $model) !!}
+            {!! forms()->create('expense', !empty($model) ? $model : null) !!}
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
@@ -34,21 +34,15 @@
                     </div>
 
                     <div class="form-group">
-                        {!!
-                            forms()->field(__('Amount') , 'amount', 'number', null)->attribute('step','0.00000001')
-                        !!}
+                        {!! forms()->field(__('Amount') , 'amount', 'number')->attribute('step','0.00000001') !!}
                     </div>
 
                     <div class="form-group">
-                        {!!
-                            forms()->field(__('Description') , 'description')
-                        !!}
+                        {!! forms()->field(__('Description') , 'description') !!}
                     </div>
 
                     <div>
-                        {{ forms()->hidden('recurrent_expense_id',
-                            (empty($model->recurrent_expense_id)
-                            ? 0 : $model->recurrent_expense_id)) }}
+                        {{ forms()->hidden('recurrent_expense_id', (empty($model->recurrent_expense_id) ? 0 : $model->recurrent_expense_id)) }}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
@@ -95,25 +89,15 @@
                         </a>
                         @if (!empty($model) and !empty($model->id))
                             <a href="{{ route('expense.delete', ['expense' => $model->id]) }}"
-                               class="btn btn-danger float-right"
-                               onclick="event.preventDefault();
-                               document.getElementById('delete-form-{{ $model->id }}').submit();">
+                               class="btn btn-danger float-right as-submit" method="DELETE">
                                {{ __('Delete') }}
                             </a>
                         @endif
                     </div>
                 </div>
                 {!! forms()->close() !!}
-
-                @if (!empty($model) and !empty($model->id))
-                    <form id="delete-form-{{ $model->id }}"
-                          action="{{ route('expense.delete', ['expense' => $model->id]) }}"
-                          method="POST" style="display: none;">
-                        {{ method_field('DELETE') }}
-                        @csrf
-                    </form>
-                @endif
             </div>
+
             <div class="sidepanel" id="fill-from-recurrent">
                 <div class="mb-4">
                     <label class="font-weight-bold"> {{ __('Use a recurrent expense.') }}</label>
