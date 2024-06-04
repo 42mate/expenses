@@ -1,5 +1,5 @@
 <div class="filter">
-    {!! Form::open(['url' => route($type . '.index'), 'class' => 'row', 'method' => 'GET']) !!}
+    {!! html()->form('GET', route($type . '.index'))->attribute('class', 'row')->open() !!}
     @if ($type == 'incomes')
     <div class="form-group col-md-3">
         <label for="income_source_id">{{ __('Income source') }}:</label>
@@ -18,7 +18,6 @@
     @else
         <div class="form-group col-md-3">
             <label for="category"> {{ __('Category') }}:</label>
-
             <x-categories-drop-down name="category_id"
                                     use_as_label="category"
                                     selected="{{ request()->get('category_id', null) }}"
@@ -49,8 +48,7 @@
         @enderror
     </div>
     <div class="form-group col-md-6">
-        <label for="category">{{ __('Description') }}:</label>
-        {!! Form::text('description',
+        {!! forms()->field(__('Description'), 'description', 'text',
             request()->get('description', null),
             ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
         @error('description')
@@ -60,8 +58,7 @@
         @enderror
     </div>
     <div class="form-group col-md-3">
-        <label for="category">{{__('Date from')}}:</label>
-        {!! Form::date('date_from',
+        {!! forms()->field(__('Date from'), 'date_from', 'date',
             (empty(request()->get('date_from', null)) ? '' : request()->get('date_from')),
             ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
         @error('date_from')
@@ -71,8 +68,7 @@
         @enderror
     </div>
     <div class="form-group col-md-3">
-        <label for="category">{{__('Date to')}}:</label>
-        {!! Form::date('date_to',
+        {!! forms()->field(__('Date to'), 'date_to', 'date',
             (empty(request()->get('date_to', null)) ? '' : request()->get('date_to')),
             ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
         @error('date_to')
@@ -97,20 +93,12 @@
         @enderror
     </div>
     <div class="form-group col-12 text-right form-reverse">
-        {!! Form::button('<i class="fas fa-filter"></i> ' . __('Filter'),
-            ['class' => 'btn btn-primary',
-            'type' => 'submit',
-            'value' => 'filter',
-            'name' => 'action']) !!}
+        {!! forms()->button('<i class="fas fa-filter"></i> ' . __('Filter'))->attribute('class', 'btn btn-primary') !!}
         <a href="{{ route($type . '.index') }}" class="btn btn-secondary">
             <i class="fas fa-minus-circle"></i>
             {{ __('Reset') }}
         </a>
-        {!! Form::button('<i class="fas fa-file-excel"></i> ' . __('Export'),
-            ['class' => 'btn btn-success',
-             'type' => 'submit',
-             'value' => 'xls',
-             'name' => 'action']) !!}
+        {!! forms()->button('<i class="fas fa-file-excel"></i> ' . __('Export'))->attribute('class', 'btn btn-success') !!}
     </div>
-    {!! Form::close() !!}
+    {!! html()->form()->close() !!}
 </div>

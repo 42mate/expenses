@@ -19,14 +19,14 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
                 @if (empty($model))
-                    {!! Form::open(['url' => route('recurrent_expense.store')]) !!}
+                    {!! forms()->open(['url' => route('recurrent_expense.store')]) !!}
                 @else
-                    {!! Form::model($model, ['method' => 'put', 'url' => route('recurrent_expense.update', ['recurrent_expense' => $model->id])]) !!}
+                    {!! forms()->model($model, ['method' => 'put', 'url' => route('recurrent_expense.update', ['recurrent_expense' => $model->id])]) !!}
                 @endif
 
                 <div class="form-group">
-                    {!! Form::label('Amount:', null, ['class' => 'font-weight-bold']) !!}
-                    {!! Form::number('amount', null, ['step' => '.01', 'class' => [ 'form-control',  ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
+                    {!! forms()->label('Amount:', null, ['class' => 'font-weight-bold']) !!}
+                    {!! forms()->number('amount', null, ['step' => '.01', 'class' => [ 'form-control',  ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
                     @error('amount')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -35,8 +35,8 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('Description:', null, ['class' => 'font-weight-bold']) !!}
-                    {!! Form::text('description', null, ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
+                    {!! forms()->label('Description:', null, ['class' => 'font-weight-bold']) !!}
+                    {!! forms()->text('description', null, ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
                     @error('description')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -45,8 +45,8 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('Last payment date:', null, ['class' => 'font-weight-bold']) !!}
-                    {!! Form::date('last_use_date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
+                    {!! forms()->label('Last payment date:', null, ['class' => 'font-weight-bold']) !!}
+                    {!! forms()->date('last_use_date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d')), ['class' => [ 'form-control',  ($errors->has('date') ? 'is-invalid' : '')]]) !!}
                     @error('last_use_date')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -75,7 +75,7 @@
                     </div>
 
                     {{
-                        Form::select('period',
+                        forms()->select('period',
                             [
                                 '1' => 'Monthly',
                                 '2' => 'Bimonthly',
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="form-group mt-5">
-                    {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}
+                    {!! forms()->submit('Send', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('recurrent_expense.index') }}">Cancel</a>
                     @if (!empty($model) and !empty($model->id))
                         <a href="#" class="btn btn-danger float-right"
@@ -104,7 +104,7 @@
                         </a>
                     @endif
                 </div>
-                {!! Form::close() !!}
+                {!! forms()->close() !!}
 
                 @if (!empty($model) and !empty($model->id))
                     <form id="delete-form-{{ $model->id }}" action="{{ route('recurrent_expense.delete', ['recurrent_expense' => $model->id]) }}"

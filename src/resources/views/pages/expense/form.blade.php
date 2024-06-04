@@ -26,70 +26,30 @@
             </div>
         </x-help>
         <div class="side-wrapper">
-            @if (empty($model) or empty($model->id))
-                @php
-                    $route = route('expense.store');
-                    $method = 'POST';
-                @endphp
-            @else
-                @php
-                    $route = route('expense.update', ['expense' => $model->id]);
-                    $method = 'PUT';
-                @endphp
-            @endif
-            {!! Form::model($model, ['method' => $method, 'url' => $route]) !!}
+            {!! forms()->create('expense', $model) !!}
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
-                        {!! Form::label(__('Date') . ': *', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::date('date',
-                            (empty($model->date)
-                                ? Carbon\Carbon::now()->format('Y-m-d')
-                                : $model->date->format('Y-m-d')),
-                            ['class' => [
-                                'form-control',
-                                ($errors->has('date') ? 'is-invalid' : '')]]) !!}
-
-                        @error('date')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
+                        {!! forms()->field(__('Date') . ': *', 'date', 'date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d'): $model->date->format('Y-m-d'))) !!}
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label(__('Amount') . ': *', null,
-                            ['class' => 'font-weight-bold']) !!}
-
-                        {!! Form::number('amount', null,
-                            ['step' => '0.00000001', 'class' => [
-                                'form-control',
-                                ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
-                        @error('amount')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
+                        {!!
+                            forms()->field(__('Amount') , 'amount', 'number', null)->attribute('step','0.00000001')
+                        !!}
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label(__('Description') . ':', null,
-                            ['class' => 'font-weight-bold']) !!}
-                        {!! Form::text('description', null,
-                            ['class' => [ 'form-control',  ($errors->has('description') ? 'is-invalid' : '')]]) !!}
-                        @error('description')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
+                        {!!
+                            forms()->field(__('Description') , 'description')
+                        !!}
                     </div>
 
                     <div>
-                        {{ Form::hidden('recurrent_expense_id',
+                        {{ forms()->hidden('recurrent_expense_id',
                             (empty($model->recurrent_expense_id)
                             ? 0 : $model->recurrent_expense_id)) }}
                     </div>
-
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
@@ -106,11 +66,6 @@
                             use_as_label="category"
                             selected="{{ empty($model) ? 0 : $model->category_id }}"
                         />
-                        @error('category_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -129,18 +84,12 @@
                             selected="{{ empty($model) ? 0 : $model->wallet_id }}"
                             add_empty="true"
                         />
-
-                        @error('wallet_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="form-group">
-                        {!! Form::submit('Send', ['class' => 'btn btn-primary']) !!}
+                        {!! forms()->submit('Send') !!}
                         <a class="btn btn-warning" href="{{ route('expense.index') }}">
                             {{ __('Cancel') }}
                         </a>
@@ -154,7 +103,7 @@
                         @endif
                     </div>
                 </div>
-                {!! Form::close() !!}
+                {!! forms()->close() !!}
 
                 @if (!empty($model) and !empty($model->id))
                     <form id="delete-form-{{ $model->id }}"

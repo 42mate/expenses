@@ -19,64 +19,30 @@
 
     <div class="row">
         <div class="col-md-8">
-        @if (empty($model))
-            {!! Form::open(['url' => route('wallet.store')]) !!}
-        @else
-            {!! Form::model($model, ['method' => 'put', 'url' => route('wallet.update', ['wallet' => $model->id])]) !!}
-        @endif
-
-        <div class="form-group">
-            <label for="name">{{ __('Name') }}:</label>
-            {!! Form::text('name', null, ['class' => [ 'form-control',  ($errors->has('name') ? 'is-invalid' : '')]]) !!}
-            @error('name')
-            <div class="invalid-feedback">
-                {{ $message }}
+            {!! forms()->create('wallet', !empty($model) ? $model : null) !!}
+            <div class="form-group">
+                {!! forms()->field( __('Name'), 'name') !!}
             </div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label for="name">{{ __('Currency') }}:</label>
-
-            <x-currencies-drop-down name="currency_id"
-                                    addEmpty="true"
-                                    use_as_label="name"
-                                    errors="{{ $errors->has('currency_id') }}"
-                                    selected="{{ empty($model) ? 0 : $model->currency_id }}"
-            />
-
-            @error('currency_id')
-            <div class="invalid-feedback">
-                {{ $message }}
+            <div class="form-group">
+                <label for="name">{{ __('Currency') }}:</label>
+                <x-currencies-drop-down name="currency_id"
+                                        addEmpty="true"
+                                        use_as_label="name"
+                                        errors="{{ $errors->has('currency_id') }}"
+                                        selected="{{ empty($model) ? 0 : $model->currency_id }}"
+                />
             </div>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <label for="name">{{ __('Balance') }}:</label>
-            {!! Form::number('balance', null, ['step' => '.00000001', 'class' => [ 'form-control',  ($errors->has('balance') ? 'is-invalid' : '')]]) !!}
-            @error('balance')
-            <div class="invalid-feedback">
-                {{ $message }}
+            <div class="form-group">
+                {!! forms()->field(__('Balance'), 'balance', 'number')->attributes(['step' => '.00000001']) !!}
             </div>
-            @enderror
-        </div>
-
-        @if (!empty($model))
-            <label for="name">{{ __('Update related transactions to the new currency?') }}:</label>
-            {!! Form::checkbox('update_transactions', null, ['class' => [ 'form-control',  ($errors->has('update_transactions') ? 'is-invalid' : '')]]) !!}
-            @error('update_transactions')
-            <div class="invalid-feedback">
-                {{ $message }}
+            @if (!empty($model))
+                {!! forms()->field(__('Update related transactions to the new currency?'), 'update_transactions', 'checkbox', null) !!}
+            @endif
+            <div class="form-group mt-5">
+                {!! forms()->submit(__('Send'), ['class' => 'btn btn-primary']) !!}
+                <a class="btn btn-warning" href="{{ route('wallet.index') }}">{{ __('Cancel') }}</a>
             </div>
-            @enderror
-        @endif
-
-        <div class="form-group mt-5">
-            {!! Form::submit(__('Send'), ['class' => 'btn btn-primary']) !!}
-            <a class="btn btn-warning" href="{{ route('wallet.index') }}">{{ __('Cancel') }}</a>
+            {!! forms()->close() !!}
         </div>
-        {!! Form::close() !!}
-    </div>
     </div>
 @endsection

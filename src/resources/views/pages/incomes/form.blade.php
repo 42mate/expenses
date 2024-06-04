@@ -29,13 +29,13 @@
                     $method = 'PUT';
                 @endphp
             @endif
-            {!! Form::model($model, ['method' => $method, 'url' => $route]) !!}
+            {!! forms()->model($model, ['method' => $method, 'url' => $route]) !!}
 
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
-                        {!! Form::label(__('Date') . ': *', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::date('date',
+                        {!! forms()->label(__('Date') . ': *', null, ['class' => 'font-weight-bold']) !!}
+                        {!! forms()->date('date',
                             (empty($model->date)
                             ? Carbon\Carbon::now()->format('Y-m-d')
                             : $model->date->format('Y-m-d')),
@@ -49,8 +49,8 @@
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label(__('Amount') . ': *', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::number('amount', null,
+                        {!! forms()->label(__('Amount') . ': *', null, ['class' => 'font-weight-bold']) !!}
+                        {!! forms()->number('amount', null,
                             ['step' => '.01',
                              'class' => [ 'form-control',
                                 ($errors->has('amount') ? 'is-invalid' : '')]]) !!}
@@ -62,8 +62,8 @@
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label(__('Description') . ':', null, ['class' => 'font-weight-bold']) !!}
-                        {!! Form::text('description', null,
+                        {!! forms()->label(__('Description') . ':', null, ['class' => 'font-weight-bold']) !!}
+                        {!! forms()->text('description', null,
                             ['class' => [ 'form-control',
                                 ($errors->has('description') ? 'is-invalid' : '')]]) !!}
                         @error('description')
@@ -120,7 +120,7 @@
 
                 <div class="col-12">
                     <div class="form-group">
-                        {!! Form::submit(__('Send'), ['class' => 'btn btn-primary']) !!}
+                        {!! forms()->submit(__('Send'), ['class' => 'btn btn-primary']) !!}
                         <a class="btn btn-warning" href="{{ route('incomes.index') }}">
                             {{ __('Cancel') }}
                         </a>
@@ -134,7 +134,7 @@
                         @endif
                     </div>
                 </div>
-                {!! Form::close() !!}
+                {!! forms()->close() !!}
 
                 @if (!empty($model) and !empty($model->id))
                     <form id="delete-form-{{ $model->id }}"
