@@ -24,7 +24,7 @@
             <div class="form-group row mb-2">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">
-                       Send <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                       Save <i class="fa fa-paper-plane" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>

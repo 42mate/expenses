@@ -70,7 +70,7 @@
 
                 <div class="col-12">
                     <div class="form-group">
-                        {!! forms()->submit(__('Send')) !!}
+                        {!! forms()->submit(__('Save')) !!}
                         <a class="btn btn-warning" href="{{ route('incomes.index') }}">
                             {{ __('Cancel') }}
                         </a>
@@ -83,7 +83,7 @@
                         @endif
                     </div>
                 </div>
-                {!! forms()->close() !!}
+                {!! forms()->end() !!}
             </div>
         </div>
     </div>

@@ -34,15 +34,15 @@
                     </div>
 
                     <div class="form-group">
-                        {!! forms()->field(__('Amount') , 'amount', 'number')->attribute('step','0.00000001') !!}
+                        {!! forms()->field(__('Amount') , 'amount', 'number', ($model->amount ?: ''))->attribute('step','0.00000001') !!}
                     </div>
 
                     <div class="form-group">
-                        {!! forms()->field(__('Description') , 'description') !!}
+                        {!! forms()->field(__('Description') , 'description', 'text', ($model->description ?: '')) !!}
                     </div>
 
                     <div>
-                        {{ forms()->hidden('recurrent_expense_id', (empty($model->recurrent_expense_id) ? 0 : $model->recurrent_expense_id)) }}
+                        {{ forms()->hidden('recurrent_expense_id', ($model->recurrent_expense_id ?: 0)) }}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
@@ -83,7 +83,7 @@
 
                 <div class="col-12">
                     <div class="form-group">
-                        {!! forms()->submit('Send') !!}
+                        {!! forms()->submit('Save') !!}
                         <a class="btn btn-warning" href="{{ route('expense.index') }}">
                             {{ __('Cancel') }}
                         </a>
@@ -95,7 +95,7 @@
                         @endif
                     </div>
                 </div>
-                {!! forms()->close() !!}
+                {!! forms()->end() !!}
             </div>
 
             <div class="sidepanel" id="fill-from-recurrent">

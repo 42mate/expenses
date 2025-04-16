@@ -35,10 +35,10 @@
             </div>
 
             <div>
-                {!! forms()->submit(__('Send')) !!}
+                {!! forms()->submit(__('Save')) !!}
                 <a class="btn btn-warning" href="{{ route('home') }}">{{ __('Cancel') }}</a>
             </div>
-            {!! forms()->close() !!}
+            {!! forms()->end() !!}
         </div>
     </div>
 @endsection

@@ -17,9 +17,9 @@
             {!! forms()->field(__('Name'), 'category'); !!}
         </div>
         <div class="form-group mt-5">
-            {!! forms()->submit(__('Send'))->attributes(['class' => 'btn btn-primary']) !!}
+            {!! forms()->submit(__('Save'))->attributes(['class' => 'btn btn-primary']) !!}
             <a class="btn btn-warning" href="{{ route('category.index') }}">{{ __('Cancel') }}</a>
         </div>
-        {!! forms()->close() !!}
+        {!! forms()->end() !!}
     </div>
 @endsection

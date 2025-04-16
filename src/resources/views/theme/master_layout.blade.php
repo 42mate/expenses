@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -7,12 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
-    <!-- Custom fonts for this template-->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
-    <!-- Custom styles for this template-->
     <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <meta property="twitter:creator" content="@42mate"/>
     <meta property="twitter:site" content="@42mate"/>
     <meta property="twitter:domain" content="expenses.42mate.com"/>
@@ -40,32 +37,20 @@
     <meta http-equiv="cleartype" content="on">
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
 </head>
-
 <body id="page-top">
-
-<!-- Page Wrapper -->
 <div id="wrapper">
-    <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark d-sm-block" id="accordionSidebar">
         @section('sidebar')
             @include('includes.sidebar')
         @show
     </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
         <div id="content">
-
-        @section('toolbar')
-            @include('includes.toolbar')
-        @show
-
-        <!-- Begin Page Content -->
+            @section('toolbar')
+                @include('includes.toolbar')
+            @show
             <div class="container-fluid">
-
                 @yield('page_titĺe')
 
                 @if (Session::has('success'))
@@ -79,15 +64,9 @@
                 @if (!$errors->isEmpty())
                     <div class="alert alert-danger">There are some errors, please verify</div>
                 @endif
-
                 @yield('content')
             </div>
-            <!-- /.container-fluid -->
-
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
@@ -95,20 +74,11 @@
                 </div>
             </div>
         </footer>
-        <!-- End of Footer -->
-
     </div>
-    <!-- End of Content Wrapper -->
-
 </div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
-
-<!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -117,11 +87,8 @@
         </div>
     </div>
 </div>
-
 </body>
 <script src="{{ mix('/js/app.js') }}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-
-
 </html>

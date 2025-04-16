@@ -39,10 +39,10 @@
                 {!! forms()->field(__('Update related transactions to the new currency?'), 'update_transactions', 'checkbox', null) !!}
             @endif
             <div class="form-group mt-5">
-                {!! forms()->submit(__('Send'), ['class' => 'btn btn-primary']) !!}
+                {!! forms()->submit(__('Save'), ['class' => 'btn btn-primary']) !!}
                 <a class="btn btn-warning" href="{{ route('wallet.index') }}">{{ __('Cancel') }}</a>
             </div>
-            {!! forms()->close() !!}
+            {!! forms()->end() !!}
         </div>
     </div>
 @endsection

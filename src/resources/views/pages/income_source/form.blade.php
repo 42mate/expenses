@@ -20,12 +20,12 @@
         </div>
 
         <div class="form-group mt-5">
-            {!! forms()->submit(__('Send')) !!}
+            {!! forms()->submit(__('Save')) !!}
             <a class="btn btn-warning"
                 href="{{ route('income_source.index') }}">
                 {{ __('Cancel') }}
             </a>
         </div>
-        {!! forms()->close() !!}
+        {!! forms()->end() !!}
     </div>
 @endsection

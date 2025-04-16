@@ -48,10 +48,7 @@ class ExpenseController extends Controller
             }
         }
 
-        $requested_tags = $request->old('tags', null);
-
         return view('pages.expense.form', [
-            'request_tags' => $requested_tags,
             'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
             'model' => $expense,
         ]);

@@ -34,10 +34,12 @@
 
                 <div class="form-group">
                     <div>
-                        <label for="email" class="font-weight-bold">{{ __('Category') }}</label>
+                        <label for="category_id" class="strong">{{ __('Category') }}</label>
                         <span class="mt-1 mb-1 float-right">
-                        <a href="{{ route('category.create', ['gt=expense.create']) }}"><i class="fas fa-plus"></i> {{ __('Add Category') }}</a>
-                    </span>
+                            <a href="{{ route('category.create', ['gt=expense.create']) }}">
+                                <i class="fas fa-plus"></i> {{ __('Add Category') }}'
+                            </a>
+                        </span>
                     </div>
                     <x-categories-drop-down name="category_id" useAsLabel="category" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
                 </div>
@@ -57,7 +59,7 @@
                 </div>
 
                 <div class="form-group mt-5">
-                    {!! forms()->submit('Send', ['class' => 'btn btn-primary']) !!}
+                    {!! forms()->submit('Save', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('recurrent_expense.index') }}">Cancel</a>
                     @if (!empty($model) and !empty($model->id))
                         <a href="#" class="btn btn-danger float-right"
@@ -66,7 +68,7 @@
                         </a>
                     @endif
                 </div>
-                {!! forms()->close() !!}
+                {!! forms()->end() !!}
 
                 @if (!empty($model) and !empty($model->id))
                     <form id="delete-form-{{ $model->id }}" action="{{ route('recurrent_expense.delete', ['recurrent_expense' => $model->id]) }}"
