@@ -8,7 +8,7 @@
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item">
-    <a class="nav-link" href="{{ route('expense.index') }}" data-toggle="collapse" data-target="#collapseExpense" aria-expanded="true" aria-controls="collapseExpense">
+    <a class="nav-link" href="{{ route('expense.index') }}" data-bs-toggle="collapse" data-bs-target="#collapseExpense" aria-expanded="true" aria-controls="collapseExpense">
         <i class="fas fa-money-bill-wave"></i>
         <span>{{ __('Expenses') }}</span>
     </a>
@@ -31,7 +31,7 @@
 </li>
 
 <li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('incomes.index') }}" data-toggle="collapse" data-target="#collapseIncome" aria-expanded="true" aria-controls="collapseIncome">
+    <a class="nav-link collapsed" href="{{ route('incomes.index') }}" data-bs-toggle="collapse" data-bs-target="#collapseIncome" aria-expanded="true" aria-controls="collapseIncome">
         <i class="fas fa-cash-register"></i>
         <span>{{ __('Incomes') }}</span>
     </a>
@@ -50,7 +50,7 @@
 </li>
 
 <li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('wallet.index') }}" data-toggle="collapse" data-target="#collapseWallet" aria-expanded="true" aria-controls="collapseWallet">
+    <a class="nav-link collapsed" href="{{ route('wallet.index') }}" data-bs-toggle="collapse" data-bs-target="#collapseWallet" aria-expanded="true" aria-controls="collapseWallet">
         <i class="fas fa-wallet"></i>
         <span>{{ __('Wallets') }}</span>
     </a>
@@ -83,7 +83,7 @@
 {{--</li>--}}
 
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">
+    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">
         <i class="fas fa-chart-bar"></i>
         <span>{{ __('Reports') }}</span>
     </a>

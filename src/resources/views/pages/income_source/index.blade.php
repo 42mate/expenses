@@ -30,7 +30,7 @@
                     @endif
                     <tr class="">
                         <td class="">{{ $income_source->source }}</td>
-                        <td class=" text-right">
+                        <td class=" text-end">
                             <a href="{{ route('income_source.edit', ['income_source' => $income_source->id]) }}"
                                class="btn-primary btn btn-sm">
                                 {{__('Edit')}}

@@ -4,7 +4,7 @@
     <div class="">
         <h1>
             @if (empty($model->id)) {{ __('Add') }} @else {{ __('Edit') }} @endif  {{ __('Expense') }}
-            <button type="button" class="btn btn-info float-right sidebarCollapse btn-sm">
+            <button type="button" class="btn btn-info float-end sidebarCollapse btn-sm">
                 <span><i class="far fa-calendar-alt"></i>  {{ __('Recurrent') }}</span>
             </button>
         </h1>
@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <div>
                             <label for="email" class="font-weight-bold"> {{ __('Category') }}: *</label>
-                            <span class="mt-1 mb-1 float-right">
+                            <span class="mt-1 mb-1 float-end">
                                 <a href="{{ route('category.create', ['gt=expense.create']) }}">
                                     <i class="fas fa-plus"></i> {{ __('Add Category') }}
                                 </a>
@@ -67,7 +67,7 @@
                             <label for="email" class="font-weight-bold">
                                 {{ __('Wallet') }}:
                             </label>
-                            <span class="mt-1 mb-1 float-right">
+                            <span class="mt-1 mb-1 float-end">
                                 <a href="{{ route('wallet.create', ['gt=expense.create']) }}">
                                     <i class="fas fa-plus"></i> {{ __('Add Wallet') }}
                                 </a>
@@ -89,7 +89,7 @@
                         </a>
                         @if (!empty($model) and !empty($model->id))
                             <a href="{{ route('expense.delete', ['expense' => $model->id]) }}"
-                               class="btn btn-danger float-right as-submit" method="DELETE">
+                               class="btn btn-danger float-end as-submit" method="DELETE">
                                {{ __('Delete') }}
                             </a>
                         @endif
@@ -102,7 +102,7 @@
                 <div class="mb-4">
                     <label class="font-weight-bold"> {{ __('Use a recurrent expense.') }}</label>
                     <button type="button"
-                            class="btn btn-danger font-weight-bold float-right sidebarCollapse">
+                            class="btn btn-danger font-weight-bold float-end sidebarCollapse">
                         <span>X</span>
                     </button>
                 </div>

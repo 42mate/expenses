@@ -30,7 +30,7 @@
                     <td>
                         $ {{ floatval($wallet->balance) }}
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn  btn-sm">
                             {{ __('Edit') }}
                         </a>

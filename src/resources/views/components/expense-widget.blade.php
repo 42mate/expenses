@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header">
                 {{ __($title) }}
-                <div class="small float-right">
+                <div class="small float-end">
                     <a href="{{ $create_route }}">
                         <i class="fas fa-plus"></i>
                     </a>
@@ -15,7 +15,7 @@
                         <span class="small mb-1">
                             {{ __($transaction->name) }} ({{ __($transaction->code) }})
                         </span>
-                        <span class="small mb-0 font-weight-bold text-gray-800 text-right float-right">
+                        <span class="small mb-0 font-weight-bold text-gray-800 text-end float-end">
                             {{ $transaction->symbol }} {{ floatval($transaction->total) }}
                         </span>
                     </div>

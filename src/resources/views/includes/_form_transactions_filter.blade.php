@@ -92,7 +92,7 @@
         </div>
         @enderror
     </div>
-    <div class="form-group col-12 text-right form-reverse">
+    <div class="form-group col-12 text-end form-reverse">
         {!! forms()->button('<i class="fas fa-filter"></i> ' . __('Filter'))->attribute('class', 'btn btn-primary') !!}
         <a href="{{ route($type . '.index') }}" class="btn btn-secondary">
             <i class="fas fa-minus-circle"></i>

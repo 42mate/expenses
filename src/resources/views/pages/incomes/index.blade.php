@@ -26,8 +26,8 @@
                                 <th class="d-block d-sm-table-cell">{{__('Wallet')}}</th>
                                 <th class="d-block d-sm-table-cell">{{__('Description')}}</th>
                                 <th class="d-block d-sm-table-cell">{{__('Currency')}}</th>
-                                <th class="d-block d-sm-table-cell text-right">{{__('Total')}}</th>
-                                <th class="d-block d-sm-table-cell text-right"></th>
+                                <th class="d-block d-sm-table-cell text-end">{{__('Total')}}</th>
+                                <th class="d-block d-sm-table-cell text-end"></th>
                             </tr>
                         </thead>
                     @endif
@@ -53,10 +53,10 @@
                         <td class="d-block d-sm-table-cell">
                             {{ $income->currency->code }}
                         </td>
-                        <td class="d-block d-sm-table-cell font-weight-bold text-right">
+                        <td class="d-block d-sm-table-cell font-weight-bold text-end">
                             {{ $income->amount_formatted }}
                         </td>
-                        <td class="text-right">
+                        <td class="text-end">
                             <a href="{{ route('incomes.edit', [$income->id]) }}"
                                 class="btn btn-primary btn-sm">
                                 {{ __('Edit') }}

@@ -6,7 +6,7 @@
             <th class="d-block d-sm-table-cell">{{ __('Periodicity') }}</th>
             <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
             <th class="d-block d-sm-table-cell">{{ __('Past Due') }}</th>
-            <th class="d-block d-sm-table-cell text-right">{{ __('Last amount') }}</th>
+            <th class="d-block d-sm-table-cell text-end">{{ __('Last amount') }}</th>
             <th class=""></th>
         </tr>
     </thead>
@@ -42,10 +42,10 @@
             <td class="d-block d-sm-table-cell">
                 {{ $recurrent->past_due }}
             </td>
-            <td class="d-block d-sm-table-cell text-right">
+            <td class="d-block d-sm-table-cell text-end">
                 <strong>{{ $recurrent->amount_formatted }}</strong>
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 @if ($use_pay_button)
                     <a class="btn-primary btn pay btn-sm"
                         href="{{ route('expense.create', ['recurrent_expense' => $recurrent->id]) }}">

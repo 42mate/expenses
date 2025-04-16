@@ -30,7 +30,7 @@
                     @endif
                     <tr class="">
                         <td class="">{{ $category->category }}</td>
-                        <td class=" text-right">
+                        <td class=" text-end">
                             <a href="{{ route('category.edit', ['category' => $category->id]) }}"
                                class="btn-primary btn btn-sm">
                                {{ __('Edit') }}

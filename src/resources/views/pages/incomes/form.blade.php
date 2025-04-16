@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <div>
                             <label for="email" class="font-weight-bold">{{ __('Income Source') }}:</label>
-                            <span class="mt-1 mb-1 float-right">
+                            <span class="mt-1 mb-1 float-end">
                                 <a href="{{ route('income_source.create', ['gt=income.create']) }}">
                                     <i class="fas fa-plus"></i> {{ __('Add Income Source') }}
                                 </a>
@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <div>
                             <label for="email" class="font-weight-bold">{{ __('Wallet') }}:</label>
-                            <span class="mt-1 mb-1 float-right">
+                            <span class="mt-1 mb-1 float-end">
                                 <a href="{{ route('wallet.create', ['gt=income.create']) }}">
                                     <i class="fas fa-plus"></i> {{ __('Add Wallet') }}
                                 </a>
@@ -76,7 +76,7 @@
                         </a>
                         @if (!empty($model) and !empty($model->id))
                             <a href="{{ route('incomes.destroy', ['income' => $model->id]) }}"
-                               class="btn btn-danger float-right as-submit"
+                               class="btn btn-danger float-end as-submit"
                                method="DELETE">
                                 {{ __('Delete') }}
                             </a>

@@ -77,17 +77,19 @@ class Expense extends Model
         return $this->belongsTo('App\Models\Currency');
     }
 
-    public function getCurrencyCodeAttribute() {
-        return  $this->currency->code;
+    public function getCurrencyCodeAttribute()
+    {
+        return $this->currency->code;
     }
 
     public function getAmountFormattedAttribute()
     {
-        return $this->currency->symbol . ' '. floatval($this->attributes['amount']);
+        return $this->currency->symbol . ' ' . floatval($this->attributes['amount']);
     }
 
-    public function getAmountAttribute() {
-        return !empty($this->attributes['amount']) ? floatval( $this->attributes['amount']) : '';
+    public function getAmountAttribute()
+    {
+        return !empty($this->attributes['amount']) ? floatval($this->attributes['amount']) : '';
     }
 
     /**
@@ -100,7 +102,7 @@ class Expense extends Model
      */
     public function getCategoryIdxAttribute()
     {
-        if (! empty($this->attributes['category_id'])) {
+        if (!empty($this->attributes['category_id'])) {
             return $this->category_id;
         }
 
@@ -117,7 +119,7 @@ class Expense extends Model
      */
     public function getCategoryNameAttribute()
     {
-        if (! empty($this->attributes['category_id'])) {
+        if (!empty($this->attributes['category_id'])) {
             return $this->category->category;
         }
 
@@ -126,7 +128,7 @@ class Expense extends Model
 
     public function getWalletNameAttribute()
     {
-        if (! empty($this->attributes['wallet_id'])) {
+        if (!empty($this->attributes['wallet_id'])) {
             return $this->wallet->name;
         }
 
@@ -135,7 +137,7 @@ class Expense extends Model
 
     public function getWalletIdxAttribute()
     {
-        if (! empty($this->attributes['wallet_id'])) {
+        if (!empty($this->attributes['wallet_id'])) {
             return $this->wallet_id;
         }
 
@@ -146,7 +148,7 @@ class Expense extends Model
     {
         $q = self::query();
 
-        if (! empty($args['wallet_id'])) {
+        if (!empty($args['wallet_id'])) {
             $q->where('wallet_id', $args['wallet_id']);
         }
 
@@ -154,7 +156,7 @@ class Expense extends Model
             $q->where('wallet_id', null);
         }
 
-        if (! empty($args['category_id'])) {
+        if (!empty($args['category_id'])) {
             $q->where('category_id', $args['category_id']);
         }
 
@@ -162,7 +164,7 @@ class Expense extends Model
             $q->where('category_id', null);
         }
 
-        if (! empty($args['income_source_id'])) {
+        if (!empty($args['income_source_id'])) {
             $q->where('income_source_id', $args['income_source_id']);
         }
 
@@ -170,19 +172,19 @@ class Expense extends Model
             $q->where('income_source_id', null);
         }
 
-        if (! empty($args['description'])) {
-            $q->where('description', 'LIKE', '%'.$args['description'].'%');
+        if (!empty($args['description'])) {
+            $q->where('description', 'LIKE', '%' . $args['description'] . '%');
         }
 
-        if (! empty($args['date_from'])) {
+        if (!empty($args['date_from'])) {
             $q->where('date', '>=', $args['date_from']);
         }
 
-        if (! empty($args['date_to'])) {
+        if (!empty($args['date_to'])) {
             $q->where('date', '<=', $args['date_to']);
         }
 
-        if (! empty($args['currency_id'])) {
+        if (!empty($args['currency_id'])) {
             $q->where('currency_id', '=', $args['currency_id']);
         }
 
@@ -299,7 +301,8 @@ class Expense extends Model
     /**
      * @throws \Exception
      */
-    public function setWalletIdAttribute($value) {
+    public function setWalletIdAttribute($value)
+    {
 
         if ($value === null) {
             $defaultCurrencyId = Auth::user()->default_currency_id;
@@ -315,7 +318,8 @@ class Expense extends Model
         $this->attributes['wallet_id'] = $value;
     }
 
-    public static function aggregateByCurrency($expenses) {
+    public static function aggregateByCurrency($expenses)
+    {
         $aggregate = [];
         foreach ($expenses as $expense) {
             if (empty($aggregate[$expense->currency_id])) {
@@ -330,7 +334,8 @@ class Expense extends Model
         return $aggregate;
     }
 
-    static public function isEmpty() {
+    static public function isEmpty()
+    {
         $oneRecord = DB::table((with(new static)->getTable()))
             ->where('user_id', '=', Auth::id())
             ->select(['id'])
@@ -347,12 +352,14 @@ class Expense extends Model
      *
      * @return void
      */
-    static public function updateCurrency(Wallet $wallet) : void {
+    static public function updateCurrency(Wallet $wallet): void
+    {
         self::where('wallet_id', $wallet->id)
             ->update(['currency_id' => $wallet->currency_id]);
     }
 
-    static public function updateCurrencyOfNoWallets(int $currencyId) : void {
+    static public function updateCurrencyOfNoWallets(int $currencyId): void
+    {
         self::where('wallet_id', null)
             ->update(['currency_id' => $currencyId]);
     }

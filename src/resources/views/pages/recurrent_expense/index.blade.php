@@ -22,7 +22,7 @@
                             <th class="d-block d-sm-table-cell">{{ __('Category') }}</th>
                             <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
                             <th class="d-block d-sm-table-cell">{{ __('Periodicity') }}</th>
-                            <th class="d-block d-sm-table-cell text-right">{{ __('Total') }}</th>
+                            <th class="d-block d-sm-table-cell text-end">{{ __('Total') }}</th>
                             <th class="d-block d-sm-table-cell"></th>
                         </tr>
                         </thead>
@@ -53,10 +53,10 @@
                             @case(12) {{ __('Anual') }}@break
                         @endswitch
                     </td>
-                    <td class="d-block d-sm-table-cell font-weight-bold text-right">
+                    <td class="d-block d-sm-table-cell font-weight-bold text-end">
                         {{ $expense->amount_formatted}}
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"
                            class="btn btn-primary btn-sm">
                            {{ __('Edit') }}

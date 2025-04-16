@@ -11,14 +11,6 @@ require('chart.js');
 require('./charts/charts');
 require('./anchor-submit');
 
-window.Vue = require('vue');
-
-Vue.component('tags-input', require('./vue/components/tags.vue').default);
-
-const app = new Vue({
-  el: '#wrapper',
-});
-
 //Used for recurrent payments in create expense
 $('.fill-expense').click(function(e) {
     var recurrent = $(e.target).data('expense');

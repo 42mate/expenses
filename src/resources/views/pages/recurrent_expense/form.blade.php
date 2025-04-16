@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <div>
                         <label for="category_id" class="strong">{{ __('Category') }}</label>
-                        <span class="mt-1 mb-1 float-right">
+                        <span class="mt-1 mb-1 float-end">
                             <a href="{{ route('category.create', ['gt=expense.create']) }}">
                                 <i class="fas fa-plus"></i> {{ __('Add Category') }}'
                             </a>
@@ -62,7 +62,7 @@
                     {!! forms()->submit('Save', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('recurrent_expense.index') }}">Cancel</a>
                     @if (!empty($model) and !empty($model->id))
-                        <a href="#" class="btn btn-danger float-right"
+                        <a href="#" class="btn btn-danger float-end"
                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $model->id }}').submit();">
                             Delete
                         </a>
