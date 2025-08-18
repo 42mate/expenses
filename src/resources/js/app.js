@@ -10,6 +10,7 @@ require('./sb-admin-2');
 require('chart.js');
 require('./charts/charts');
 require('./anchor-submit');
+require('./fp.js');
 
 //Used for recurrent payments in create expense
 $('.fill-expense').click(function(e) {

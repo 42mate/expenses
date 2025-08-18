@@ -105,4 +105,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/api/transactions/expense/month', 'Api\TransactionsData@expenseTotalByMonth')
         ->name('api.transactions.expense.month');
+
+    Route::post('fp/up', [\App\Http\Controllers\FilePondController::class, 'up'])
+        ->name('fp.up');
+
+    Route::get('fp/load', [\App\Http\Controllers\FilePondController::class, 'load'])
+        ->name('fp.load');
+
+    Route::delete('receipt/{receipt}', [\App\Http\Controllers\FilePondController::class, 'delete'])
+        ->name('receipt.delete');
 });

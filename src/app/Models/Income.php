@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -47,5 +48,13 @@ class Income extends Expense
     public function incomeSource()
     {
         return $this->belongsTo('App\Models\IncomeSource');
+    }
+
+    /**
+     * Get all receipts
+     */
+    public function receipts(): MorphMany
+    {
+        return $this->morphMany(Receipt::class, 'receiptable');
     }
 }

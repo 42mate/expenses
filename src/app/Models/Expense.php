@@ -6,6 +6,7 @@ use App\Models\Scopes\OwnerScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -362,5 +363,13 @@ class Expense extends Model
     {
         self::where('wallet_id', null)
             ->update(['currency_id' => $currencyId]);
+    }
+
+    /**
+     * Get all receipts
+     */
+    public function receipts(): MorphMany
+    {
+        return $this->morphMany(Receipt::class, 'receiptable');
     }
 }

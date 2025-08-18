@@ -22,6 +22,9 @@ services:
     run:
       - cd $LANDO_MOUNT/src && composer install && php artisan migrate -v --no-interaction && php artisan vendor:publish --all -v --no-interaction && php artisan cache:clear -v --no-interaction
 
+  database:
+    portforward: 13306   # external port on your host
+
   mail:
     type: mailhog:v1.0.0
     portforward: false
@@ -66,4 +69,4 @@ tooling:
     service: node
     description: Install node dependencies using npm inside node container.
     user: node
-    cmd: nopm install
+    cmd: npm install

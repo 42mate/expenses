@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExpenseExport;
 use App\Models\Expense;
+use App\Models\Receipt;
 use App\Models\RecurrentExpense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Matrix\Exception;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\File;
 
 class ExpenseController extends Controller
 {
@@ -35,6 +37,7 @@ class ExpenseController extends Controller
     public function create(Request $request)
     {
         $expense = new Expense();
+
         if ($request->get('recurrent_expense', 0) > 0) {
             $recurrent_expense = RecurrentExpense::find($request->get('recurrent_expense'));
             if ($recurrent_expense) {
@@ -75,6 +78,10 @@ class ExpenseController extends Controller
             //Updates balance in balance.
             if (! empty($expense->wallet)) {
                 $expense->wallet->newOperation(-($request->amount));
+            }
+
+            if (($receipts = $request->input('receipts', '')) !== '') {
+                Receipt::bindReceiptsToExpense($expense, $receipts);
             }
 
             DB::commit();
@@ -138,6 +145,11 @@ class ExpenseController extends Controller
             }
 
             $expense->save();
+
+            if (($receipts = $request->input('receipts', '')) !== '') {
+                Receipt::bindReceiptsToExpense($expense, $receipts);
+            }
+
             DB::commit();
 
             return redirect(route('expense.index'))
