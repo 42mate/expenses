@@ -1,0 +1,5 @@
+PHP=php
+SSH_USER=deploy_usr
+SERVERS=(server_a.com server_b.com)
+ARTISAN=server_a
+WORKSPACE=/var/www/expenses.com/

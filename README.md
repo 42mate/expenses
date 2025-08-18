@@ -73,3 +73,19 @@ To access to mysql, use
 ## Email
 
 To tests emails, enter to the Mailhog service with your browser.
+
+## Deployment
+
+There is a script for deploy the current source code into a server.
+
+First you need to create a .server_env file in the project root, copy the .server_env.example as .server_env and set the proper values.
+
+The user needs to have configured the ssh keys properly to get access to the servers
+
+In production, you have to setup your .env file, for prod, manually (you can leave it in the document root of the server)
+
+To deploy, cd to the root of the project and run
+
+`bash script/deploy.sh`
+
+This will copy all current files in the local machine to the servers, without any config such as .env or files as storage, only source files and assets.
