@@ -20,10 +20,10 @@
     <div class="row">
         <div class="col-md-8">
             {!! forms()->create('wallet', !empty($model) ? $model : null) !!}
-            <div class="form-group">
-                {!! forms()->field( __('Name'), 'name') !!}
-            </div>
-            <div class="form-group">
+
+            {!! forms()->field( __('Name'), 'name') !!}
+
+            <div class="form-group mb-3">
                 <label for="name">{{ __('Currency') }}:</label>
                 <x-currencies-drop-down name="currency_id"
                                         addEmpty="true"
@@ -32,16 +32,18 @@
                                         selected="{{ empty($model) ? 0 : $model->currency_id }}"
                 />
             </div>
-            <div class="form-group">
-                {!! forms()->field(__('Balance'), 'balance', 'number')->attributes(['step' => '.00000001']) !!}
-            </div>
+
+            {!! forms()->field(__('Balance'), 'balance', 'number')->attributes(['step' => '.00000001']) !!}
+
             @if (!empty($model))
                 {!! forms()->field(__('Update related transactions to the new currency?'), 'update_transactions', 'checkbox', null) !!}
             @endif
-            <div class="form-group mt-5">
+
+            <div class="form-group mb-3">
                 {!! forms()->submit(__('Save'), ['class' => 'btn btn-primary']) !!}
                 <a class="btn btn-warning" href="{{ route('wallet.index') }}">{{ __('Cancel') }}</a>
             </div>
+            
             {!! forms()->end() !!}
         </div>
     </div>

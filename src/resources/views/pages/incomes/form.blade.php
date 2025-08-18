@@ -22,17 +22,9 @@
 
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                    <div class="form-group">
-                        {!! forms()->field(__('Date'), 'date', 'date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d') : $model->date->format('Y-m-d')),) !!}
-                    </div>
-
-                    <div class="form-group">
-                        {!! forms()->field(__('Amount'), 'amount', 'number')->attribute('step', '.01') !!}
-                    </div>
-
-                    <div class="form-group">
-                        {!! forms()->field(__('Description'), 'description') !!}
-                    </div>
+                    {!! forms()->field(__('Date'), 'date', 'date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d') : $model->date->format('Y-m-d')),) !!}
+                    {!! forms()->field(__('Amount'), 'amount', 'number')->attribute('step', '.01') !!}
+                    {!! forms()->field(__('Description'), 'description') !!}
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">

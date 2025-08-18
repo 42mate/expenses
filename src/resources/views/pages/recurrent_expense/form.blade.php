@@ -20,19 +20,11 @@
             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
                 {!! forms()->create('recurrent_expense', !empty($model)? $model : null) !!}
 
-                <div class="form-group">
-                    {!! forms()->field(__('Amount'), 'amount', 'number')->attribute('step', '.01') !!}
-                </div>
+                {!! forms()->field(__('Amount'), 'amount', 'number')->attribute('step', '.01') !!}
+                {!! forms()->field(__('Description'), 'description') !!}
+                {!! forms()->field(__('Last payment date'), 'last_use_date', 'date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d'))) !!}
 
-                <div class="form-group">
-                    {!! forms()->field(__('Description'), 'description') !!}
-                </div>
-
-                <div class="form-group">
-                    {!! forms()->field(__('Last payment date'), 'last_use_date', 'date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d'))) !!}
-                </div>
-
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <div>
                         <label for="category_id" class="strong">{{ __('Category') }}</label>
                         <span class="mt-1 mb-1 float-end">
@@ -44,21 +36,19 @@
                     <x-categories-drop-down name="category_id" useAsLabel="category" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
                 </div>
 
-                <div class="form-group">
-                    {{
-                        forms()->field(__('Periodicity'), 'period', 'select', null,
-                            [
-                                '1' => 'Monthly',
-                                '2' => 'Bimonthly',
-                                '3' => 'Trimonthly',
-                                '6' => 'Bianual',
-                                '12' => 'Anual',
-                            ]
-                        )
-                    }}
-                </div>
+                {{
+                    forms()->field(__('Periodicity'), 'period', 'select', null,
+                        [
+                            '1' => 'Monthly',
+                            '2' => 'Bimonthly',
+                            '3' => 'Trimonthly',
+                            '6' => 'Bianual',
+                            '12' => 'Anual',
+                        ]
+                    )
+                }}
 
-                <div class="form-group mt-5">
+                <div class="form-group mb-3">
                     {!! forms()->submit('Save', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('recurrent_expense.index') }}">Cancel</a>
                     @if (!empty($model) and !empty($model->id))
@@ -68,6 +58,7 @@
                         </a>
                     @endif
                 </div>
+
                 {!! forms()->end() !!}
 
                 @if (!empty($model) and !empty($model->id))

@@ -29,21 +29,10 @@
             {!! forms()->create('expense', !empty($model) ? $model : null) !!}
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                    <div class="form-group">
-                        {!! forms()->field(__('Date') . ': *', 'date', 'date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d'): $model->date->format('Y-m-d'))) !!}
-                    </div>
-
-                    <div class="form-group">
-                        {!! forms()->field(__('Amount') , 'amount', 'number', ($model->amount ?: ''))->attribute('step','0.00000001') !!}
-                    </div>
-
-                    <div class="form-group">
-                        {!! forms()->field(__('Description') , 'description', 'text', ($model->description ?: '')) !!}
-                    </div>
-
-                    <div>
-                        {{ forms()->hidden('recurrent_expense_id', ($model->recurrent_expense_id ?: 0)) }}
-                    </div>
+                    {!! forms()->field(__('Date') . ': *', 'date', 'date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d'): $model->date->format('Y-m-d'))) !!}
+                    {!! forms()->field(__('Amount') , 'amount', 'number', ($model->amount ?: ''))->attribute('step','0.00000001') !!}
+                    {!! forms()->field(__('Description') , 'description', 'text', ($model->description ?: '')) !!}
+                    {{ forms()->hidden('recurrent_expense_id', ($model->recurrent_expense_id ?: 0)) }}
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
@@ -101,7 +90,7 @@
                 {!! forms()->end() !!}
             </div>
             <div class="sidepanel" id="fill-from-recurrent">
-                @include('includes._recurrent_expense');
+                @include('includes._recurrent_expense')
             </div>
         </div>
     </div>

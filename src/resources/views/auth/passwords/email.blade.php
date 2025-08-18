@@ -6,7 +6,7 @@
         <form method="POST" action="{{ route('password.email') }}" class="mb-5 mt-5">
             @csrf
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                 <div class="col-md-6">
@@ -24,7 +24,7 @@
             <div class="form-group row mb-2">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">
-                       Save <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                       Send Link <i class="fa fa-paper-plane" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
