@@ -1,5 +1,0 @@
-PHP=php
-SSH_USER=agustin
-SERVERS=(67.205.173.199)
-ARTISAN=67.205.173.199
-WORKSPACE=/var/www/expenses.casivalabs.com/
