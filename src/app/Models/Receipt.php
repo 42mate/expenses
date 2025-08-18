@@ -51,12 +51,17 @@ class Receipt extends Model
         $uploadedReceipts = [];
         foreach ($receipts as $receipt) {
             // Copy the file from a temporary location to a permanent location.
+            if (empty($receipt)) {
+                continue; //no path, just blank.
+            }
             $uploadedReceipts[] = [
                 'path' => Receipt::putFile($receipt),
             ];
         }
 
-        $expense->receipts()->createMany($uploadedReceipts);
+        if (!empty($uploadedReceipts)) {
+            $expense->receipts()->createMany($uploadedReceipts);
+        }
     }
 
     /**

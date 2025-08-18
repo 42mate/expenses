@@ -11,6 +11,7 @@
 
 @import "pages/marketing";
 @import "blocks/tables";
+@import "components/filepond/_filepond";
 
 a {
     &.btn, &:hover {
@@ -153,27 +154,4 @@ h1 {
 
 .spacer {
     border-top: 1px solid #eee;
-}
-
-a.filepond--credits {
-    display: none;
-}
-
-.filepond--custom-delete {
-    position: absolute;
-    z-index: 10000;
-    right: 5px;
-    top: 5px;
-    color: red;
-    background-color: #fff;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    font-size: 14px;
-    border-radius: 3px;
-    font-weight: bold;
-}
-
-.filepond--custom--preview-container {
-    POSITION: RELATIVE;
 }

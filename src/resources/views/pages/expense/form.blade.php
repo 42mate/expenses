@@ -80,29 +80,8 @@
                         />
                     </div>
                     <div class="form-group mb-3">
-                        <label class="strong font-weight-bold mb-1" for="receipts">Receipts</label>
-                        @if (!empty($model))
-                            <div class="receipts">
-                                @foreach($model->receipts as $receipt)
-                                    <div class="receipt filepond--custom--preview-container">
-                                        @if ($receipt->isImage())
-                                            <img src="{{ $receipt->url() }}" class="img-fluid mb-3" />
-                                        @else
-                                            <a href="{{ $receipt->url() }}" target="_blank" class="mb-2 d-block">
-                                                <i class="fas fa-download"></i>&nbsp;
-                                                {{ basename($receipt->path) }}
-                                            </a>
-                                        @endif
-                                        <div class="filepond--custom-delete" data-delete-url="{{ route('receipt.delete', ['receipt' => $receipt]) }}">
-                                            X
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                        <input type="file" name="receipts[]" class="filepond" multiple data-allow-reorder="true" data-state="{{ json_encode(old('receipts')) }}"/>
+                        @include('includes._receipts')
                     </div>
-
                 </div>
 
                 <div class="col-12">
@@ -121,51 +100,8 @@
                 </div>
                 {!! forms()->end() !!}
             </div>
-
             <div class="sidepanel" id="fill-from-recurrent">
-                <div class="mb-4">
-                    <label class="font-weight-bold"> {{ __('Use a recurrent expense.') }}</label>
-                    <button type="button"
-                            class="btn btn-danger font-weight-bold float-end sidebarCollapse">
-                        <span>X</span>
-                    </button>
-                </div>
-
-                <table width="100%" class="table">
-                    <thead>
-                        <tr>
-                            <th class=""></th>
-                            <th class="d-block d-sm-table-cell">{{ __('Description') }}</th>
-                            <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
-                            <th class="d-block d-sm-table-cell">{{ __('Amount') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($recurrent_expenses as $recurrent)
-                        <tr @class(['paid' => $recurrent->usedThisMonth()])>
-                            <td class="">
-                                <span class="btn btn-info fill-expense btn-sm"
-                                      data-expense="{{ $recurrent->getJsonData() }}">
-                                      {{ __('Use') }}
-                                </span>
-                            </td>
-                            <td class="d-block d-sm-table-cell">
-                                {{ $recurrent->description }}
-                            </td>
-                            <td class="d-block d-sm-table-cell">
-                                {{
-                                    empty($recurrent->last_use_date)
-                                        ? __('Never') :
-                                        $recurrent->last_use_date->format('m/d/Y')
-                                }}
-                            </td>
-                            <td class="d-block d-sm-table-cell">
-                                <strong>{{ $recurrent->amount_formatted }}</strong>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                @include('includes._recurrent_expense');
             </div>
         </div>
     </div>

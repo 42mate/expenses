@@ -112,6 +112,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('fp/load', [\App\Http\Controllers\FilePondController::class, 'load'])
         ->name('fp.load');
 
-    Route::delete('receipt/{receipt}', [\App\Http\Controllers\FilePondController::class, 'delete'])
+    Route::delete('receipt/{receipt}', [\App\Http\Controllers\ReceiptController::class, 'delete'])
         ->name('receipt.delete');
 });

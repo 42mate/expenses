@@ -66,8 +66,4 @@ final class FilePondController extends Controller
         $filename = $request->get('file');
         return response()->file(storage_path("app/{$filename}"));
     }
-
-    public function delete(Receipt $receipt) {
-        $receipt->delete();
-    }
 }

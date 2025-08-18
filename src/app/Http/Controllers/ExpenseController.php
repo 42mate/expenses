@@ -11,10 +11,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Matrix\Exception;
-use Illuminate\Http\File;
 
 class ExpenseController extends Controller
 {
@@ -185,7 +183,6 @@ class ExpenseController extends Controller
     {
         $date = Carbon::now();
         $name = 'expenses-'.$date.'.xlsx';
-
         return Excel::download(new ExpenseExport($data), $name);
     }
 }
