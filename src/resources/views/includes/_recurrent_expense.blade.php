@@ -34,7 +34,7 @@
                         $recurrent->last_use_date->format('m/d/Y')
                 }}
             </td>
-            <td class="d-block d-sm-table-cell">
+            <td class="d-block d-sm-table-cell text-end">
                 <strong>{{ $recurrent->amount_formatted }}</strong>
             </td>
         </tr>

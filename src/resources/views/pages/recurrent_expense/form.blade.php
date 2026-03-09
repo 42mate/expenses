@@ -49,6 +49,15 @@
                 }}
 
                 <div class="form-group mb-3">
+                    <label class="strong">{{ __('State') }}</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="paused" id="paused" value="1"
+                            {{ (!empty($model) && $model->paused) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="paused">{{ __('Paused') }}</label>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
                     {!! forms()->submit('Save', ['class' => 'btn btn-primary']) !!}
                     <a class="btn btn-warning" href="{{ route('recurrent_expense.index') }}">Cancel</a>
                     @if (!empty($model) and !empty($model->id))

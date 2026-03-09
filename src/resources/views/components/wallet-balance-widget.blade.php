@@ -24,7 +24,7 @@
                                 {{ $wallet->name }} ({{ $wallet->currency->code }})
                             </a>
                         </span>
-                    <span class="font-weight-bold text-end float-end small">{{ $wallet->currency->symbol }} {{ floatval($wallet->balance) }}</span>
+                    <span class="font-weight-bold text-end float-end small">{{ $wallet->currency->symbol }} {{ number_format(floatval($wallet->balance), 2) }}</span>
                 </div>
             @endforeach
 

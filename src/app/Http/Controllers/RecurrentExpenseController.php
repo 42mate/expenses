@@ -40,6 +40,7 @@ class RecurrentExpenseController extends Controller
             'category_id' => $request->category_id,
             'period' => $request->period,
             'last_use_date' => $request->get('last_use_date', null),
+            'paused' => $request->boolean('paused', false),
         ]);
 
         return $redirect->with('success', 'Expense Created!');
@@ -67,6 +68,7 @@ class RecurrentExpenseController extends Controller
             'category_id' => $request->category_id,
             'period' => $request->period,
             'last_use_date' => $request->get('last_use_date', $recurrent_expense->last_use_date),
+            'paused' => $request->has('paused'),
         ]);
 
         $recurrent_expense->save();

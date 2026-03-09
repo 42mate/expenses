@@ -11,7 +11,7 @@
             </div>
             <div>
                 <label class="font-weight-bold">{{ __('Amount') }}: </label>
-                $ {{ $expense->amount }}
+                {{ $expense->amount_formatted }}
             </div>
 
             <div>

@@ -19,7 +19,7 @@
                             <tr>
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Currency') }}</th>
-                                <th>{{ __('Balance') }}</th>
+                                <th class="text-end">{{ __('Balance') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -27,8 +27,8 @@
                 <tr class="">
                     <td class="">{{ $wallet->name }}</td>
                     <td class="">{{ $wallet->currency->code }}</td>
-                    <td>
-                        $ {{ floatval($wallet->balance) }}
+                    <td class="text-end">
+                        {{ $wallet->currency->symbol }} {{ number_format(floatval($wallet->balance), 2) }}
                     </td>
                     <td class="text-end">
                         <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn  btn-sm">

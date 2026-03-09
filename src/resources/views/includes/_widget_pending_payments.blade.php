@@ -4,7 +4,7 @@
             @if (count($recurrent_expense_pending_payment) > 0)
             <strong>
                 ({{ count($recurrent_expense_pending_payment) }}) -
-                $ {{$recurrent_expense_pending_payment->sum('amount')}}
+                $ {{ number_format($recurrent_expense_pending_payment->sum('amount'), 2) }}
             </strong>
             @endif
         </h6>

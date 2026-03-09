@@ -22,6 +22,7 @@
                             <th class="d-block d-sm-table-cell">{{ __('Category') }}</th>
                             <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
                             <th class="d-block d-sm-table-cell">{{ __('Periodicity') }}</th>
+                            <th class="d-block d-sm-table-cell">{{ __('State') }}</th>
                             <th class="d-block d-sm-table-cell text-end">{{ __('Total') }}</th>
                             <th class="d-block d-sm-table-cell"></th>
                         </tr>
@@ -53,8 +54,15 @@
                             @case(12) {{ __('Anual') }}@break
                         @endswitch
                     </td>
+                    <td class="d-block d-sm-table-cell">
+                        @if ($expense->paused)
+                            <span class="badge bg-secondary">{{ __('Paused') }}</span>
+                        @else
+                            <span class="badge bg-success">{{ __('Active') }}</span>
+                        @endif
+                    </td>
                     <td class="d-block d-sm-table-cell font-weight-bold text-end">
-                        {{ $expense->amount_formatted}}
+                        {{ $expense->amount_formatted }}
                     </td>
                     <td class="text-end">
                         <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"

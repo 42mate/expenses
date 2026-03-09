@@ -84,7 +84,7 @@ class Expense extends Model
 
     public function getAmountFormattedAttribute()
     {
-        return $this->currency->symbol . ' ' . floatval($this->attributes['amount']);
+        return $this->currency->symbol . ' ' . number_format(floatval($this->attributes['amount']), 2);
     }
 
     public function getAmountAttribute()

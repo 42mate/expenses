@@ -16,7 +16,7 @@
                             {{ __($transaction->name) }} ({{ __($transaction->code) }})
                         </span>
                         <span class="small mb-0 font-weight-bold text-gray-800 text-end float-end">
-                            {{ $transaction->symbol }} {{ floatval($transaction->total) }}
+                            {{ $transaction->symbol }} {{ number_format(floatval($transaction->total), 2) }}
                         </span>
                     </div>
                 @empty
