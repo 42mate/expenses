@@ -25,7 +25,7 @@
                         </div>
                         <div class="badge-warning result-message mb-2 p-2 rounded text-center" style="display: none;"></div>
                         <canvas class="pie"
-                                data="{{ route('api.transactions.expense.category') }}"
+                                data="{{ secure_url(route('api.transactions.expense.category')) }}"
 
                                 show_legend="0">
                         </canvas>
