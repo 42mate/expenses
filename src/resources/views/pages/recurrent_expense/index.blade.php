@@ -69,6 +69,10 @@
                            class="btn btn-primary btn-sm">
                            {{ __('Edit') }}
                         </a>
+                        <a href="{{ route('recurrent_expense.delete', ['recurrent_expense' => $expense->id]) }}"
+                           class="btn btn-danger btn-sm as-submit" method="DELETE">
+                           {{ __('Delete') }}
+                        </a>
                     </td>
                 </tr>
 

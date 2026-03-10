@@ -11,6 +11,16 @@
             </div>
         </h1>
 
+        <form method="GET" action="{{ route('wallet.index') }}" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control" placeholder="{{ __('Search by name...') }}" value="{{ $name ?? '' }}">
+                <button class="btn btn-primary" type="submit">{{ __('Search') }}</button>
+                @if (!empty($name))
+                    <a href="{{ route('wallet.index') }}" class="btn btn-secondary">{{ __('Clear') }}</a>
+                @endif
+            </div>
+        </form>
+
         <div class="">
             @forelse ($wallets as $wallet)
                 @if ($loop->first)

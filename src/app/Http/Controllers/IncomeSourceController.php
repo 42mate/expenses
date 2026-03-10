@@ -8,12 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class IncomeSourceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $income_sources = IncomeSource::allForUser();
 
+        if ($request->filled('name')) {
+            $income_sources->where('source', 'LIKE', '%' . $request->name . '%');
+        }
+
         return view('pages.income_source.index', [
             'income_sources' => $income_sources->get(),
+            'name' => $request->name,
         ]);
     }
 

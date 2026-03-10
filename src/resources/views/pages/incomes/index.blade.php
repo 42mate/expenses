@@ -61,6 +61,10 @@
                                 class="btn btn-primary btn-sm">
                                 {{ __('Edit') }}
                             </a>
+                            <a href="{{ route('incomes.destroy', ['income' => $income->id]) }}"
+                                class="btn btn-danger btn-sm as-submit" method="DELETE">
+                                {{ __('Delete') }}
+                            </a>
                         </td>
                     </tr>
 

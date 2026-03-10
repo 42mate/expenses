@@ -58,7 +58,7 @@ class Wallet extends Model
 
     public static function getBalance(): Collection
     {
-        return self::orderBy('balance')
+        return self::orderBy('name')
             ->where('balance', '<>', 0)
             ->get();
     }

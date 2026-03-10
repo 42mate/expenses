@@ -25,9 +25,9 @@
             @if (count($recurrent_expense_pending_payment) > 0)
                 <strong>
                     {{ __('Pending Payments:') }} ({{ count($recurrent_expense_pending_payment) }})
-                    @foreach($recurrent_expense_pending_payment->groupBy('currency') as $e)
+                    @foreach($recurrent_expense_pending_payment->groupBy('currency_id') as $e)
                         {{ $e[0]->currency->symbol }}
-                        {{ $e->sum('amount') }}
+                        {{ number_format($e->sum('amount'), 2) }}
                     @endforeach
                 </strong>
             @endif
@@ -45,7 +45,10 @@
             @if (count($recurrent_expenses_paused) > 0)
                 <strong>
                     {{ __('Pending Payments Paused:') }} ({{ count($recurrent_expenses_paused) }}) -
-                    $ {{ $recurrent_expenses_paused->sum('amount') }}
+                    @foreach($recurrent_expenses_paused->groupBy('currency_id') as $e)
+                        {{ $e[0]->currency->symbol }}
+                        {{ number_format($e->sum('amount'), 2) }}
+                    @endforeach
                 </strong>
             @endif
         </div>

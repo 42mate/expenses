@@ -8,12 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::allForUser();
 
+        if ($request->filled('name')) {
+            $categories->where('category', 'LIKE', '%' . $request->name . '%');
+        }
+
         return view('pages.category.index', [
             'categories' => $categories->get(),
+            'name' => $request->name,
         ]);
     }
 

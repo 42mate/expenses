@@ -92,12 +92,17 @@ class WalletController extends Controller
         return redirect(route('wallet.index'))->with('success', 'Wallet Deleted!');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $wallets = Auth::user()->wallets()->orderBy('name')->get();
+        $query = Auth::user()->wallets()->orderBy('name');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        }
 
         return view('pages.wallet.index', [
-            'wallets' => $wallets,
+            'wallets' => $query->get(),
+            'name' => $request->name,
         ]);
     }
 }
