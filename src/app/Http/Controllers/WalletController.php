@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class WalletController extends Controller
 {
@@ -20,7 +21,7 @@ class WalletController extends Controller
     {
         $request->validate([
             'currency_id' => 'required',
-            'name' => 'required|max:100',
+            'name' => ['required', 'max:100', Rule::unique('wallets', 'name')->where('user_id', Auth::id())],
         ]);
 
         Wallet::create([
@@ -47,8 +48,8 @@ class WalletController extends Controller
     {
         $request->validate([
             'currency_id' => 'required',
-            'name' => 'required|max:100',
-            'balance' => 'required'
+            'name' => ['required', 'max:100', Rule::unique('wallets', 'name')->where('user_id', Auth::id())->ignore($wallet->id)],
+            'balance' => 'required',
         ]);
 
         $wallet->fill([
@@ -77,6 +78,23 @@ class WalletController extends Controller
 
         $request->session()->forget('back_to');
         return redirect($back_to)->with('success', 'Wallet updated!');
+    }
+
+    public function ajaxStore(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'max:100', Rule::unique('wallets', 'name')->where('user_id', Auth::id())],
+            'currency_id' => 'required',
+        ]);
+
+        $wallet = Wallet::create([
+            'name' => $request->name,
+            'user_id' => Auth::id(),
+            'currency_id' => $request->currency_id,
+            'balance' => $request->balance ?? 0,
+        ]);
+
+        return response()->json(['id' => $wallet->id, 'name' => $wallet->name]);
     }
 
     public function delete(Wallet $wallet)

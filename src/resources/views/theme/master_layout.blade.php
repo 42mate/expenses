@@ -89,6 +89,7 @@
 </div>
 </body>
 <script src="{{ mix('/js/app.js') }}"></script>
+@stack('scripts')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 </html>

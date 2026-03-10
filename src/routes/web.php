@@ -114,4 +114,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('receipt/{receipt}', [\App\Http\Controllers\ReceiptController::class, 'delete'])
         ->name('receipt.delete');
+
+    Route::post('/ajax/category', 'CategoryController@ajaxStore')->name('ajax.category.store');
+    Route::post('/ajax/wallet', 'WalletController@ajaxStore')->name('ajax.wallet.store');
 });

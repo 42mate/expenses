@@ -26,4 +26,20 @@ $(document).ready(function () {
     $('.sidebarCollapse').on('click', function () {
         $('.sidepanel').toggleClass('active');
     });
+
+    // Enter submits, Esc cancels the active modal
+    $(document).on('keydown', function (e) {
+        const $modal = $('.modal.show');
+        if ($modal.length === 0) return;
+
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $modal.find('[id^="save-"]').trigger('click');
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $modal.find('[data-bs-dismiss="modal"]').first().trigger('click');
+        }
+    });
 });

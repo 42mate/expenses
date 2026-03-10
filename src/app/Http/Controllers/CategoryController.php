@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -37,7 +38,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required|max:100',
+            'category' => ['required', 'max:100', Rule::unique('categories', 'category')->where('user_id', Auth::id())],
         ]);
 
         Category::create([
@@ -51,7 +52,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'category' => 'required|max:100',
+            'category' => ['required', 'max:100', Rule::unique('categories', 'category')->where('user_id', Auth::id())->ignore($category->id)],
         ]);
 
         $category->fill([
@@ -61,6 +62,20 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect('/category')->with('success', 'Category Updated!');
+    }
+
+    public function ajaxStore(Request $request)
+    {
+        $request->validate([
+            'category' => ['required', 'max:100', Rule::unique('categories', 'category')->where('user_id', Auth::id())],
+        ]);
+
+        $category = Category::create([
+            'category' => $request->category,
+            'user_id' => Auth::id(),
+        ]);
+
+        return response()->json(['id' => $category->id, 'name' => $category->category]);
     }
 
     public function delete(Category $category)
