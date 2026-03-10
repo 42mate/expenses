@@ -15,7 +15,6 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css', {
         sassOptions: {
             quietDeps: true,
-            silenceDeprecations: ['legacy-js-api', 'import', 'color-functions', 'global-builtin', 'mixed-decls'],
         },
     });
 

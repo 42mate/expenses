@@ -1,14 +1,15 @@
+// @use rules must come first (FontAwesome only — Bootstrap must stay @import for sb-admin-2 variable scope)
+@use '@fortawesome/fontawesome-free/scss/fontawesome' as *;
+@use '@fortawesome/fontawesome-free/scss/regular' as *;
+@use '@fortawesome/fontawesome-free/scss/solid' as *;
+@use '@fortawesome/fontawesome-free/scss/brands' as *;
+
+// Bootstrap and custom variables must be @import so variables are globally accessible to sb-admin-2
 @import "boostrap_variables";
+@import "bootstrap/scss/bootstrap";
 
-@import "~bootstrap/scss/bootstrap";
-
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/brands';
-
+// sb-admin-2 is a vendored theme with internal @import chains — kept as-is
 @import "sb-admin-2/sb-admin-2";
-
 @import "pages/marketing";
 @import "blocks/tables";
 @import "components/filepond/_filepond";
