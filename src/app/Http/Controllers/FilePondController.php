@@ -64,6 +64,19 @@ final class FilePondController extends Controller
      */
     public function load(Request $request) {
         $filename = $request->get('file');
-        return response()->file(storage_path("app/{$filename}"));
+
+        // Prevent path traversal by ensuring the filename doesn't contain '..'
+        // and only allow files from the 'tmp' directory.
+        if (str_contains($filename, '..') || !str_starts_with($filename, 'tmp/')) {
+            abort(403, 'Invalid file path.');
+        }
+
+        $path = storage_path("app/{$filename}");
+
+        if (!file_exists($path)) {
+            abort(404, 'File not found.');
+        }
+
+        return response()->file($path);
     }
 }

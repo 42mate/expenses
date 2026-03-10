@@ -11,7 +11,8 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
-        $token = auth('api')->attempt($request->all());
+        $credentials = $request->only(['email', 'password']);
+        $token = auth('api')->attempt($credentials);
 
         if (empty($token)) {
             return response()->json([], 401);
@@ -29,7 +30,13 @@ class UserController extends Controller
 
     public function store(UserApiRequest $request)
     {
-        $user = User::create($request->toArray());
+        $data = $request->only(['name', 'email', 'password', 'default_currency_id']);
+
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        $user = User::create($data);
 
         return response()->json([
             'data' => [
@@ -42,7 +49,15 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        $user->fill($request->toArray());
+        $data = $request->only(['name', 'email', 'password', 'default_currency_id']);
+
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->fill($data);
         $user->save();
 
         return response()->json([

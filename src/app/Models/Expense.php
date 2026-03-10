@@ -285,10 +285,11 @@ class Expense extends Model
 
         $q = self::select(DB::raw(
             "IF (categories.category IS NULL,
-                    '" . self::DEFAULT_CATEGORY_LABEL . "',
+                    ?,
                     categories.category) as category,
                  SUM(expenses.amount) as total"
         ))
+            ->addBinding(self::DEFAULT_CATEGORY_LABEL, 'select')
             ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
             ->whereBetween('expenses.date', [$start, $end])
             ->where('currency_id', $currencyId)
