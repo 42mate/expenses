@@ -68,16 +68,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/recurrent_expense/create', 'RecurrentExpenseController@store')
         ->name('recurrent_expense.store');
 
-    Route::put('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@update')
+    Route::put('/recurrent_expense/{recurrentexpense}', 'RecurrentExpenseController@update')
         ->name('recurrent_expense.update');
 
-    Route::get('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@edit')
+    Route::get('/recurrent_expense/{recurrentexpense}', 'RecurrentExpenseController@edit')
         ->name('recurrent_expense.edit');
 
-    Route::delete('/recurrent_expense/{recurrent_expense}', 'RecurrentExpenseController@delete')
+    Route::delete('/recurrent_expense/{recurrentexpense}', 'RecurrentExpenseController@delete')
         ->name('recurrent_expense.delete');
 
-    Route::get('/recurrent_expense/{recurrent_expense}/toggle', 'RecurrentExpenseController@stateToggle')
+    Route::get('/recurrent_expense/{recurrentexpense}/toggle', 'RecurrentExpenseController@stateToggle')
         ->name('recurrent_expense.state_toggle');
 
     Route::get('/recurrent_expense', 'RecurrentExpenseController@index')

@@ -46,14 +46,14 @@ class RecurrentExpenseController extends Controller
         return $redirect->with('success', 'Expense Created!');
     }
 
-    public function edit(RecurrentExpense $recurrent_expense)
+    public function edit(RecurrentExpense $recurrentexpense)
     {
         return view('pages.recurrent_expense.form', [
-            'model' => $recurrent_expense,
+            'model' => $recurrentexpense,
         ]);
     }
 
-    public function update(Request $request, RecurrentExpense $recurrent_expense)
+    public function update(Request $request, RecurrentExpense $recurrentexpense)
     {
         $request->validate([
             'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
@@ -62,32 +62,32 @@ class RecurrentExpenseController extends Controller
             'period' => 'required|numeric',
         ]);
 
-        $recurrent_expense->fill([
+        $recurrentexpense->fill([
             'amount' => $request->amount,
             'description' => $request->description,
             'category_id' => $request->category_id,
             'period' => $request->period,
-            'last_use_date' => $request->get('last_use_date', $recurrent_expense->last_use_date),
+            'last_use_date' => $request->get('last_use_date', $recurrentexpense->last_use_date),
             'paused' => $request->has('paused'),
         ]);
 
-        $recurrent_expense->save();
+        $recurrentexpense->save();
 
-        return redirect(route('recurrent_expense.edit', ['recurrent_expense' => $recurrent_expense->id]))
+        return redirect(route('recurrent_expense.edit', ['recurrentexpense' => $recurrentexpense->id]))
             ->with('success', 'Recurrent Expense Updated!');
     }
 
-    public function delete(RecurrentExpense $recurrent_expense)
+    public function delete(RecurrentExpense $recurrentexpense)
     {
-        $recurrent_expense->delete();
+        $recurrentexpense->delete();
 
         return redirect(route('recurrent_expense.index'))
             ->with('success', 'Expense deleted!');
     }
 
-    public function stateToggle(RecurrentExpense $recurrent_expense) {
-        $recurrent_expense->paused = !$recurrent_expense->paused;
-        $recurrent_expense->save();
+    public function stateToggle(RecurrentExpense $recurrentexpense) {
+        $recurrentexpense->paused = !$recurrentexpense->paused;
+        $recurrentexpense->save();
         return back()->with('success', 'Recurrent Expense Updated!');
     }
 }

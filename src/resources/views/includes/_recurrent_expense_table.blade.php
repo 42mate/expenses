@@ -32,7 +32,7 @@
             </td>
             <td class="d-block d-sm-table-cell">
                 @if (empty($recurrent->last_use_date))
-                    <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $recurrent->id ]) }}">
+                    <a href="{{ route('recurrent_expense.update', ['recurrentexpense' => $recurrent->id ]) }}">
                        {{ __('Never') }}
                     </a>
                 @else
@@ -52,7 +52,7 @@
                         {{ __('Pay') }}
                     </a>
                     <a class="btn @if ($recurrent->paused) btn-success @else btn-danger @endif pay btn-sm"
-                       href="{{ route('recurrent_expense.state_toggle', ['recurrent_expense' => $recurrent->id]) }}">
+                       href="{{ route('recurrent_expense.state_toggle', ['recurrentexpense' => $recurrent->id]) }}">
                         @if ($recurrent->paused) {{ __('Unpause') }} @else {{ __('Pause') }} @endif
                     </a>
                 @else
