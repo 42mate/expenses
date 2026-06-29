@@ -71,7 +71,7 @@
                 {!! forms()->end() !!}
 
                 @if (!empty($model) and !empty($model->id))
-                    <form id="delete-form-{{ $model->id }}" action="{{ route('recurrent_expense.delete', ['recurrent_expense' => $model->id]) }}"
+                    <form id="delete-form-{{ $model->id }}" action="{{ route('recurrent_expense.delete', ['recurrentexpense' => $model->id]) }}"
                           method="POST" style="display: none;">
                         {{ method_field('DELETE') }}
                         @csrf

@@ -38,7 +38,7 @@
                     </td>
                     <td class="d-block d-sm-table-cell">
                         @if (empty($expense->last_use_date))
-                            <a href="{{ route('recurrent_expense.update', ['recurrent_expense' => $expense->id ]) }}">
+                            <a href="{{ route('recurrent_expense.update', ['recurrentexpense' => $expense->id ]) }}">
                                 {{ __('Never') }}
                             </a>
                         @else
@@ -65,11 +65,11 @@
                         {{ $expense->amount_formatted }}
                     </td>
                     <td class="text-end">
-                        <a href="{{ route('recurrent_expense.edit', ['recurrent_expense' => $expense->id]) }}"
+                        <a href="{{ route('recurrent_expense.edit', ['recurrentexpense' => $expense->id]) }}"
                            class="btn btn-primary btn-sm">
                            {{ __('Edit') }}
                         </a>
-                        <a href="{{ route('recurrent_expense.delete', ['recurrent_expense' => $expense->id]) }}"
+                        <a href="{{ route('recurrent_expense.delete', ['recurrentexpense' => $expense->id]) }}"
                            class="btn btn-danger btn-sm as-submit" method="DELETE">
                            {{ __('Delete') }}
                         </a>
