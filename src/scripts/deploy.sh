@@ -23,7 +23,7 @@ wait
 
 for SERVER in ${SERVERS[@]};
 do
-   /usr/bin/rsync --rsync-path 'sudo -u www-data rsync' -e "ssh -o StrictHostKeyChecking=no" -rlz --checksum --delete --itemize-changes --exclude '.git' --exclude='.env' --exclude "storage" --no-owner --no-group --chown=www-data:www-data "." "$SSH_USER@$SERVER:$WORKSPACE" &
+   /usr/bin/rsync --rsync-path 'sudo -u www-data rsync' -e "ssh -o StrictHostKeyChecking=no" -rlz --checksum --delete --itemize-changes --exclude '.git' --exclude='.env' --exclude=".env.local" --exclude "storage" --no-owner --no-group --chown=www-data:www-data "." "$SSH_USER@$SERVER:$WORKSPACE" &
 done
 wait
 
