@@ -1,38 +1,184 @@
 @use 'sass:color';
 
-// Body
-$body-bg: #f5f8fa;
+// =====================================================================
+//  MODERN DARK THEME  —  palette & Bootstrap variable overrides
+//  These are set *before* Bootstrap and sb-admin-2 so every standard
+//  component (buttons, forms, cards, tables, dropdowns, modals, alerts)
+//  renders dark out of the box. Surface-level sb-admin-2 hard-codes are
+//  handled in `_dark-theme.scss` (imported last in app.scss).
+// =====================================================================
 
-// Borders
-$laravel-border-color: color.adjust($body-bg, $lightness: -10%);
-$list-group-border: $laravel-border-color;
-$navbar-default-border: $laravel-border-color;
-$panel-default-border: $laravel-border-color;
-$panel-inner-border: $laravel-border-color;
+// ---- Palette tokens ------------------------------------------------
+$bg:            #0e1015; // app background (deepest)
+$surface:       #171a21; // cards, topbar, dropdowns, modals
+$surface-2:     #1e222c; // elevated: card headers, hover states
+$surface-3:     #262b36; // inputs / subtle raised
+$border-soft:   #262b36; // hairline borders
+$border-strong: #333a47;
 
-// Brands
-$brand-primary: #3097D1;
-$brand-info: #8eb4cb;
-$brand-success: #2ab27b;
-$brand-warning: #cbb956;
-$brand-danger: #bf5329;
+$text:          #e5e7eb; // primary text
+$text-muted:    #9aa1ad; // secondary text
+$text-dim:      #6b7280; // placeholders / disabled
 
-// Typography
-$font-family-sans-serif: 'Roboto', sans-serif;
-$font-size-base: 1rem; // <-- Important Change
+// Accents — fresh indigo primary with finance-friendly semantics
+$accent:        #6d67f6; // primary (indigo/violet)
+$accent-hover:  #837dff;
+$accent-soft:   rgba(109, 103, 246, 0.15);
+
+$positive:      #34d399; // income / success (emerald)
+$negative:      #f87171; // expense / danger  (soft red)
+$caution:       #fbbf24; // warning (amber)
+$sky:           #38bdf8; // info
+
+// ---- Bootstrap theme colors ---------------------------------------
+$primary:   $accent;
+$secondary: #6b7280;
+$success:   $positive;
+$info:      $sky;
+$warning:   $caution;
+$danger:    $negative;
+$light:     $surface-2; // "light" surfaces flip to dark
+$dark:      $text;      // "dark" text flips to light
+
+$min-contrast-ratio: 2.4; // let colored buttons keep white text on dark
+
+// ---- Body & typography --------------------------------------------
+$body-bg:    $bg;
+$body-color: $text;
+
+$font-family-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-base:   1rem;
 $line-height-base: 1.6;
-$text-color: #636b6f;
+$headings-color:   $text;
+$headings-font-weight: 700;
 
-// Navbar
-$navbar-default-bg: #fff;
+// ---- Links ---------------------------------------------------------
+$link-color:            $accent-hover;
+$link-hover-color:      #a9a4ff;
+$link-decoration:       none;
+$link-hover-decoration: none;
 
-// Buttons
-$btn-default-color: $text-color;
+// ---- Borders & shape ----------------------------------------------
+$border-color:  $border-soft;
+$border-radius:    0.6rem;
+$border-radius-sm: 0.4rem;
+$border-radius-lg: 0.9rem;
 
-// Inputs
-$input-border: color.adjust($text-color, $lightness: 40%);
-$input-border-focus: color.adjust($brand-primary, $lightness: 25%);
-$input-color-placeholder: color.adjust($text-color, $lightness: 30%);
+// ---- Shadows (soft, diffuse — modern depth) -----------------------
+$box-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+$box-shadow:    0 6px 24px rgba(0, 0, 0, 0.35);
+$box-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
 
-// PanelS
-$panel-default-heading-bg: #fff;
+// ---- Components: active state --------------------------------------
+$component-active-bg:    $accent;
+$component-active-color: #fff;
+
+// ---- Cards ---------------------------------------------------------
+$card-bg:            $surface;
+$card-cap-bg:        $surface-2;
+$card-color:         $text;
+$card-cap-color:     $text;
+$card-border-color:  $border-soft;
+$card-border-radius: $border-radius-lg;
+$card-cap-padding-y: 0.9rem;
+$card-spacer-y:      1.25rem;
+$card-spacer-x:      1.25rem;
+
+// ---- Forms ---------------------------------------------------------
+$input-bg:                 #12151b;
+$input-disabled-bg:        #1a1d24;
+$input-color:              $text;
+$input-border-color:       $border-strong;
+$input-border-radius:      $border-radius-sm;
+$input-focus-bg:           #12151b;
+$input-focus-border-color: $accent;
+$input-focus-color:        $text;
+$input-focus-box-shadow:   0 0 0 0.2rem $accent-soft;
+$input-placeholder-color:  $text-dim;
+$input-group-addon-bg:     $surface-3;
+$input-group-addon-color:  $text-muted;
+
+$form-label-color:         $text-muted;
+$form-label-font-weight:   600;
+$form-check-input-bg:      #12151b;
+$form-check-input-border:  1px solid $border-strong;
+$form-select-bg:           #12151b;
+$form-select-color:        $text;
+$form-select-border-color: $border-strong;
+$form-select-indicator-color: $text-muted;
+
+// ---- Dropdowns -----------------------------------------------------
+$dropdown-bg:              $surface;
+$dropdown-color:           $text;
+$dropdown-border-color:    $border-soft;
+$dropdown-divider-bg:      $border-soft;
+$dropdown-link-color:      $text;
+$dropdown-link-hover-bg:   $surface-2;
+$dropdown-link-hover-color: #fff;
+$dropdown-link-active-bg:  $accent;
+$dropdown-link-active-color: #fff;
+$dropdown-border-radius:   $border-radius;
+
+// ---- Modals --------------------------------------------------------
+$modal-content-bg:            $surface;
+$modal-content-color:         $text;
+$modal-content-border-color:  $border-soft;
+$modal-header-border-color:   $border-soft;
+$modal-footer-border-color:   $border-soft;
+$modal-backdrop-bg:           #05070b;
+$modal-backdrop-opacity:      0.7;
+$modal-content-border-radius: $border-radius-lg;
+
+// ---- Tables --------------------------------------------------------
+$table-color:        $text;
+$table-bg:           transparent;
+$table-border-color: $border-soft;
+$table-striped-bg:   rgba(255, 255, 255, 0.02);
+$table-hover-bg:     $accent-soft;
+$table-hover-color:  #fff;
+$table-th-color:     $text-muted;
+
+// ---- Navs / navbar -------------------------------------------------
+$navbar-light-color:        $text-muted;
+$navbar-light-hover-color:  $text;
+$navbar-light-active-color: $text;
+$nav-tabs-border-color:     $border-soft;
+$nav-tabs-link-active-bg:   $surface;
+$nav-tabs-link-active-color: $text;
+$nav-link-color:            $text-muted;
+$nav-link-hover-color:      $text;
+
+// ---- List groups ---------------------------------------------------
+$list-group-bg:           $surface;
+$list-group-color:        $text;
+$list-group-border-color: $border-soft;
+$list-group-hover-bg:     $surface-2;
+$list-group-action-color: $text;
+
+// ---- Misc ----------------------------------------------------------
+$hr-color:            $border-soft;
+$hr-opacity:          1;
+$popover-bg:          $surface;
+$popover-border-color: $border-soft;
+$popover-header-bg:   $surface-2;
+$popover-body-color:  $text;
+$tooltip-bg:          $surface-3;
+$tooltip-color:       $text;
+$pagination-bg:            $surface;
+$pagination-color:        $text-muted;
+$pagination-border-color: $border-soft;
+$pagination-hover-bg:     $surface-2;
+$pagination-hover-color:  $text;
+$pagination-active-bg:    $accent;
+$pagination-disabled-bg:  $surface;
+$progress-bg:             $surface-3;
+$close-color:             $text;
+$code-color:              #f0a5c8;
+
+// Legacy Laravel scaffolding vars kept for backward compatibility
+$brand-primary: $accent;
+$brand-info:    $sky;
+$brand-success: $positive;
+$brand-warning: $caution;
+$brand-danger:  $negative;
+$text-color:    $text;

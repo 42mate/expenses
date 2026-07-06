@@ -1,43 +1,42 @@
-<div class="mb-4">
-    <label class="font-weight-bold"> {{ __('Use a recurrent expense.') }}</label>
-    <button type="button"
-            class="btn btn-danger font-weight-bold float-end sidebarCollapse">
-        <span>X</span>
-    </button>
-</div>
+<div class="recurrent-drawer">
+    <div class="recurrent-drawer__header">
+        <div>
+            <h2 class="recurrent-drawer__title">{{ __('Recurrent expenses') }}</h2>
+            <p class="recurrent-drawer__sub">{{ __('Pick one to fill in the form') }}</p>
+        </div>
+        <button type="button" class="recurrent-drawer__close sidebarCollapse" aria-label="{{ __('Close') }}">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
 
-<table width="100%" class="table">
-    <thead>
-    <tr>
-        <th class=""></th>
-        <th class="d-block d-sm-table-cell">{{ __('Description') }}</th>
-        <th class="d-block d-sm-table-cell">{{ __('Last Payment') }}</th>
-        <th class="d-block d-sm-table-cell">{{ __('Amount') }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($recurrent_expenses as $recurrent)
-        <tr @class(['paid' => $recurrent->usedThisMonth()])>
-            <td class="">
-                                <span class="btn btn-info fill-expense btn-sm"
-                                      data-expense="{{ $recurrent->getJsonData() }}">
-                                      {{ __('Use') }}
-                                </span>
-            </td>
-            <td class="d-block d-sm-table-cell">
-                {{ $recurrent->description }}
-            </td>
-            <td class="d-block d-sm-table-cell">
-                {{
-                    empty($recurrent->last_use_date)
-                        ? __('Never') :
-                        $recurrent->last_use_date->format('m/d/Y')
-                }}
-            </td>
-            <td class="d-block d-sm-table-cell text-end">
-                <strong>{{ $recurrent->amount_formatted }}</strong>
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+    <div class="recurrent-drawer__body">
+        @forelse($recurrent_expenses as $recurrent)
+            <div @class(['recurrent-item', 'is-paid' => $recurrent->usedThisMonth()])>
+                <div class="recurrent-item__main">
+                    <span class="recurrent-item__desc">{{ $recurrent->description }}</span>
+                    <span class="recurrent-item__meta">
+                        <i class="far fa-clock"></i>
+                        {{ empty($recurrent->last_use_date)
+                            ? __('Never used')
+                            : __('Last') . ' ' . $recurrent->last_use_date->format('M d, Y') }}
+                        @if($recurrent->usedThisMonth())
+                            <span class="recurrent-item__badge">{{ __('Used this month') }}</span>
+                        @endif
+                    </span>
+                </div>
+                <div class="recurrent-item__side">
+                    <span class="recurrent-item__amount">{{ $recurrent->amount_formatted }}</span>
+                    <button type="button" class="btn btn-primary btn-sm fill-expense"
+                            data-expense="{{ $recurrent->getJsonData() }}">
+                        <i class="fas fa-arrow-left"></i> {{ __('Use') }}
+                    </button>
+                </div>
+            </div>
+        @empty
+            <div class="recurrent-empty">
+                <i class="far fa-calendar-alt"></i>
+                <p>{{ __('You have no recurrent expenses yet.') }}</p>
+            </div>
+        @endforelse
+    </div>
+</div>

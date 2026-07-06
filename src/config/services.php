@@ -34,4 +34,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Public exchange-rate endpoints (no API key required). Base currency USD.
+    'exchange' => [
+        'fiat_url' => env('EXCHANGE_FIAT_URL', 'https://open.er-api.com/v6/latest/USD'),
+        'crypto_url' => env('EXCHANGE_CRYPTO_URL', 'https://api.coingecko.com/api/v3/simple/price'),
+    ],
+
 ];

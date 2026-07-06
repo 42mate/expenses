@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserPostRequest;
 use App\Models\Expense;
 use App\Models\Income;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,5 +45,22 @@ class UserController extends Controller
 
         return redirect(route('user.edit'))
             ->with('success', 'User Updated');
+    }
+
+    /**
+     * Persist the user's display currency (presentation-only). Unlike
+     * default_currency_id, this does NOT rewrite any transaction data.
+     */
+    public function updateDisplayCurrency(Request $request)
+    {
+        $request->validate([
+            'display_currency_id' => 'required|exists:currencies,id',
+        ]);
+
+        $user = Auth::user();
+        $user->display_currency_id = $request->input('display_currency_id');
+        $user->save();
+
+        return back();
     }
 }

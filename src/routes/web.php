@@ -22,6 +22,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'HomeController@dashboard')
         ->name('home');
 
+    Route::get('/dashboard/skip-onboarding', 'HomeController@skipOnboarding')
+        ->name('onboarding.skip');
+
     Route::get('/create', 'ExpenseController@create')->name('expense.create');
 
     Route::post('/create', 'ExpenseController@store')->name('expense.store');
@@ -91,6 +94,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::put('/me', 'UserController@update')->name('user.update');
 
+    Route::post('/display-currency', 'UserController@updateDisplayCurrency')
+        ->name('display_currency.update');
+
+    Route::get('/exchange-rates', 'ExchangeRateController@index')
+        ->name('exchange_rates.index');
+
+    Route::post('/exchange-rates/refresh', 'ExchangeRateController@refresh')
+        ->name('exchange_rates.refresh');
+
     Route::name('reports.')->group(function () {
         Route::prefix('reports')->group(function () {
             Route::get('/month_flow', 'ReportsController@monthFlow')
@@ -117,4 +129,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/ajax/category', 'CategoryController@ajaxStore')->name('ajax.category.store');
     Route::post('/ajax/wallet', 'WalletController@ajaxStore')->name('ajax.wallet.store');
+    Route::post('/ajax/income_source', 'IncomeSourceController@ajaxStore')->name('ajax.income_source.store');
 });

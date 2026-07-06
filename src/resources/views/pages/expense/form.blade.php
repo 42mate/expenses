@@ -30,19 +30,17 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     {!! forms()->field(__('Date') . ': *', 'date', 'date', (empty($model->date) ? Carbon\Carbon::now()->format('Y-m-d'): $model->date->format('Y-m-d'))) !!}
-                    {!! forms()->field(__('Amount') , 'amount', 'number', ($model->amount ?: ''))->attribute('step','0.00000001') !!}
+                    {!! forms()->field(__('Amount') , 'amount', 'text', ($model->amount ?: '')) !!}
                     {!! forms()->field(__('Description') , 'description', 'text', ($model->description ?: '')) !!}
                     {{ forms()->hidden('recurrent_expense_id', ($model->recurrent_expense_id ?: 0)) }}
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                     <div class="form-group">
-                        <div>
-                            <label for="email" class="font-weight-bold"> {{ __('Category') }}: *</label>
-                            <span class="mt-1 mb-1 float-end">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#categoryModal">
-                                    <i class="fas fa-plus"></i> {{ __('Add Category') }}
-                                </a>
-                            </span>
+                        <div class="field-label-row">
+                            <label for="category_id" class="form-label">{{ __('Category') }}: *</label>
+                            <a href="#" class="field-action" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                                <i class="fas fa-plus"></i> {{ __('Add') }}
+                            </a>
                         </div>
                         <x-categories-drop-down name="category_id"
                             addEmpty="true"
@@ -52,21 +50,25 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <div>
-                            <label for="email" class="font-weight-bold">
-                                {{ __('Wallet') }}:
-                            </label>
-                            <span class="mt-1 mb-1 float-end">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#walletModal">
-                                    <i class="fas fa-plus"></i> {{ __('Add Wallet') }}
-                                </a>
-                            </span>
+                        <div class="field-label-row">
+                            <label for="wallet_id" class="form-label">{{ __('Wallet') }}:</label>
+                            <a href="#" class="field-action" data-bs-toggle="modal" data-bs-target="#walletModal">
+                                <i class="fas fa-plus"></i> {{ __('Add') }}
+                            </a>
                         </div>
 
                         <x-wallet-drop-down name="wallet_id"
                             selected="{{ empty($model) ? 0 : $model->wallet_id }}"
                             add_empty="true"
+                            currency_id="{{ $restrict_wallet_currency_id ?? '' }}"
                         />
+                        @if (!empty($restrict_wallet_currency_id))
+                            <small class="text-muted">
+                                {{ __('Only wallets in the recurrent payment currency are available') }}
+                                @php($__restrictCurrency = \App\Models\Currency::find($restrict_wallet_currency_id))
+                                @if ($__restrictCurrency) ({{ $__restrictCurrency->code }}) @endif
+                            </small>
+                        @endif
                     </div>
                     <div class="form-group mb-3">
                         @include('includes._receipts')

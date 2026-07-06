@@ -1,0 +1,1067 @@
+// =====================================================================
+//  DARK THEME — surface overrides
+//  sb-admin-2 hard-codes many light surfaces (bg-white, $gray-100,
+//  gradient-primary, gray text utilities). Bootstrap variables can't
+//  reach those, so we recolor them here. Imported LAST in app.scss so
+//  these rules win on source order.
+//  Palette tokens ($bg, $surface, $accent, …) come from
+//  `_boostrap_variables.scss`, still in scope at this point.
+// =====================================================================
+
+// ---- CSS custom properties (handy for inline / JS-driven bits) -----
+:root {
+  --bg: #{$bg};
+  --surface: #{$surface};
+  --surface-2: #{$surface-2};
+  --border: #{$border-soft};
+  --text: #{$text};
+  --text-muted: #{$text-muted};
+  --accent: #{$accent};
+  --positive: #{$positive};
+  --negative: #{$negative};
+  color-scheme: dark;
+}
+
+// ---- Reusable brand mark (gradient wallet tile) --------------------
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7rem;
+  background: linear-gradient(135deg, $accent, #8b5cf6);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(109, 103, 246, 0.4);
+}
+
+// ---- Base ----------------------------------------------------------
+body {
+  background-color: $bg;
+  color: $text;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: $accent-soft;
+  color: #fff;
+}
+
+// Custom scrollbars — subtle, on-theme
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $surface-3 transparent;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: $surface-3;
+  border-radius: 10px;
+  border: 2px solid $bg;
+}
+::-webkit-scrollbar-thumb:hover { background: $border-strong; }
+
+// White surfaces flip to the elevated dark surface everywhere
+.bg-white { background-color: $surface !important; color: $text; }
+.bg-light { background-color: $surface-2 !important; color: $text; }
+
+// Lift the content area above the deepest `$bg` so text and panels read with more
+// contrast, while staying darker than cards/surfaces ($surface) to keep depth.
+#wrapper #content-wrapper {
+  background-color: #14171e;
+}
+
+// ---- Sidebar -------------------------------------------------------
+// Redefine the "primary gradient" (used by sidebar + auth pages) as a
+// deep, modern dark gradient instead of bright indigo.
+.bg-gradient-primary {
+  background-color: $surface !important;
+  background-image: linear-gradient(180deg, #171b26 0%, #0f1218 100%) !important;
+  background-size: cover;
+}
+
+.sidebar {
+  border-right: 1px solid $border-soft;
+
+  &.sidebar-dark {
+    .sidebar-brand { color: #fff; }
+    .sidebar-brand-text { color: #fff; letter-spacing: 0.06rem; }
+
+    // Wallet brand mark, matching the landing/home brand lockup.
+    .brand-mark {
+      width: 2rem; height: 2rem;
+      font-size: 0.95rem;
+      flex: none;
+    }
+
+    hr.sidebar-divider { border-color: rgba(255, 255, 255, 0.06); }
+
+    .nav-item {
+      margin: 0;
+      .nav-link {
+        color: $text-muted;
+        border-radius: $border-radius;
+        // No horizontal margin: sb-admin gives the link a fixed width equal to
+        // the full sidebar, so a side margin pushes it (and its focus outline)
+        // past the sidebar edge.
+        margin: 0.05rem 0;
+        padding: 0.4rem 0.75rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
+        span { font-size: 0.62rem; }
+        i { color: inherit; }
+        &:hover {
+          color: #fff;
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+        // The default focus outline was drawn around the link and spilled past
+        // the sidebar edge. Drop it for pointer focus and use a contained inset
+        // ring for keyboard focus.
+        &:focus { outline: none; }
+        &:focus-visible {
+          outline: 2px solid $accent-hover;
+          outline-offset: -2px;
+        }
+      }
+      &:last-child { margin-bottom: 0.5rem; }
+      &.active .nav-link,
+      .nav-link.active {
+        color: #fff;
+        background-color: $accent-soft;
+        box-shadow: inset 3px 0 0 $accent;
+      }
+    }
+  }
+}
+
+// Sidebar submenu — plain inline items (no floating card / box)
+// Selector depth matches sb-admin-2's own rule so our colors actually win.
+.sidebar .nav-item {
+  .collapse,
+  .collapsing {
+    position: static !important;
+    .collapse-inner {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      margin: 0 0 0.15rem !important;
+      padding: 0.05rem 0 !important;
+      min-width: 0 !important;
+
+      .collapse-header { color: $text-dim; }
+      .collapse-item {
+        padding: 0.28rem 0.75rem;
+        margin: 0.03rem 0.5rem;
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.85);
+        border-radius: $border-radius;
+        &:hover { background-color: rgba(255, 255, 255, 0.06); color: #fff; }
+        &:active { background-color: rgba(255, 255, 255, 0.1); }
+        &.active { color: $accent-hover; background-color: $accent-soft; }
+        &:focus { outline: none; }
+        &:focus-visible {
+          outline: 2px solid $accent-hover;
+          outline-offset: -2px;
+        }
+      }
+    }
+  }
+}
+
+// ---- Topbar --------------------------------------------------------
+.topbar {
+  &.bg-white { background-color: $surface !important; }
+  background-color: $surface !important;
+  border-bottom: 1px solid $border-soft;
+  box-shadow: none !important;
+
+  .nav-item .nav-link {
+    color: $text-muted;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0 0.6rem;
+    &:hover { color: $text; }
+    i { color: inherit; font-size: 0.8rem; }
+  }
+  #sidebarToggleTop:hover { background-color: $surface-2; }
+  .topbar-divider { border-right-color: $border-soft; }
+  .dropdown-menu { box-shadow: $box-shadow; }
+}
+
+// ---- Cards ---------------------------------------------------------
+.card {
+  background-color: $surface;
+  border: 1px solid $border-soft;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-sm;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid $border-soft;
+    color: $text;
+    font-weight: 600;
+    a { color: $text-muted; &:hover { color: $accent-hover; } }
+  }
+  .card-header[data-bs-toggle="collapse"]::after { color: $text-dim; }
+}
+
+// ---- Tables --------------------------------------------------------
+.table {
+  --bs-table-bg: transparent;
+  color: $text;
+  margin-bottom: 1rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid $border-soft;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+
+  // Comfortable, readable cell padding
+  > :not(caption) > * > * {
+    padding: 0.6rem 0.85rem;
+    border-bottom-color: $border-soft;
+  }
+
+  // Header band
+  thead th {
+    color: $text-muted;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: $surface-2;
+    border-bottom: 1px solid $border-strong;
+  }
+
+  // Body rows
+  tbody td { vertical-align: middle; border-bottom: 1px solid $border-soft; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:nth-of-type(even) { background-color: rgba(255, 255, 255, 0.018); }
+  tbody tr:hover { background-color: rgba(16, 185, 129, 0.07); }
+  tbody tr:last-child > * { border-bottom: 0; }
+
+  // Numeric / total columns line up cleanly
+  .text-end { font-variant-numeric: tabular-nums; }
+
+  // Links inside tables read like links — but NOT action buttons (`a.btn`),
+  // which must keep their own readable button text color.
+  tbody a:not(.btn) {
+    color: $accent-hover;
+    font-weight: 500;
+    text-decoration: none;
+    &:hover { color: #a9a4ff; text-decoration: underline; }
+  }
+
+  // Rounded outer corners (border-collapse: separate needs corner cells rounded)
+  thead tr:first-child th:first-child { border-top-left-radius: $border-radius-lg; }
+  thead tr:first-child th:last-child  { border-top-right-radius: $border-radius-lg; }
+  tbody tr:last-child td:first-child  { border-bottom-left-radius: $border-radius-lg; }
+  tbody tr:last-child td:last-child   { border-bottom-right-radius: $border-radius-lg; }
+}
+
+// Desktop: keep the action buttons inline on one line (they'd otherwise wrap
+// into a stack when the actions column is narrow) and space adjacent ones so
+// they don't touch. Scoped to >= lg only — on tablet/mobile they stack
+// full-width, where a left margin would offset the second button.
+@media (min-width: 992px) {
+  .table td:last-child { white-space: nowrap; }
+  .table td .btn + .btn { margin-left: 0.35rem; }
+}
+
+// On tablet/mobile the "actions" cell buttons (Edit / Delete / Pay …) previously
+// wrapped into a cramped, uneven cluster. Stack them full-width with a 5px gap so
+// they're readable and easy to tap. Targets the buttons (not the cell) so it
+// coexists with Bootstrap's `.d-block` (display: block !important) on the cells.
+@media (max-width: 991.98px) {
+  .table td .btn,
+  .table td form {
+    display: block;
+    width: 100%;
+    margin: 0 0 5px 0;
+  }
+  .table td form .btn { width: 100%; margin: 0; }
+  .table td .btn:last-child,
+  .table td form:last-child { margin-bottom: 0; }
+}
+
+// On mobile, lay the whole table out as stacked blocks so every cell — and the
+// actions cell in particular — spans the full width. (Bootstrap only stacks the
+// data cells via `.d-block`; the leftover table-cell rows/headers otherwise
+// reserve a phantom column that keeps content from reaching full width.)
+@media (max-width: 575.98px) {
+  .table,
+  .table thead,
+  .table tbody,
+  .table tr,
+  .table th,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  // Empty header cells (e.g. the actions column header) would show as an empty
+  // full-width block — hide them.
+  .table thead th:empty { display: none; }
+
+  // The corner-rounding rules target first/last cells; as stacked blocks they'd
+  // leave a stray rounded corner mid-table. Keep every cell square on mobile.
+  .table thead tr:first-child th:first-child,
+  .table thead tr:first-child th:last-child,
+  .table tbody tr:last-child td:first-child,
+  .table tbody tr:last-child td:last-child {
+    border-radius: 0;
+  }
+
+  // Actions drop to the bottom of the row, full width, with a divider above.
+  .table td:last-child {
+    text-align: left;
+    padding-top: 0.6rem;
+    border-top: 1px solid $border-soft;
+  }
+}
+
+// ---- Forms ---------------------------------------------------------
+.form-control,
+.form-select {
+  background-color: #12151b;
+  border-color: $border-strong;
+  color: $text;
+  &:focus {
+    background-color: #12151b;
+    border-color: $accent;
+    color: $text;
+    box-shadow: 0 0 0 0.2rem $accent-soft;
+  }
+  &::placeholder { color: $text-dim; }
+}
+.form-select { background-color: #12151b; }
+.form-select option { background-color: $surface; color: $text; }
+label, .col-form-label, .form-label { color: $text-muted; }
+.form-check-input {
+  background-color: #12151b;
+  border-color: $border-strong;
+  &:checked { background-color: $accent; border-color: $accent; }
+  &:focus { border-color: $accent; box-shadow: 0 0 0 0.2rem $accent-soft; }
+}
+.input-group-text {
+  background-color: $surface-3;
+  border-color: $border-strong;
+  color: $text-muted;
+}
+
+// Rounded "user" auth inputs
+form.user .form-control-user {
+  background-color: #12151b;
+  border-color: $border-strong;
+  color: $text;
+}
+
+// Compact form controls on desktop — default Bootstrap sizing + the
+// theme's tall line-height makes inputs oversized on wide screens.
+// Mobile keeps the larger, touch-friendly defaults.
+@include media-breakpoint-up(md) {
+  .form-control,
+  .form-select,
+  input[type="search"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  textarea.form-control {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    min-height: unset;
+    height: auto;
+  }
+  .form-select { padding-right: 2rem; background-position: right 0.6rem center; }
+
+  label, .col-form-label, .form-label { font-size: 0.85rem; margin-bottom: 0.25rem; }
+
+  // Buttons that sit in forms shrink to match the inputs
+  .btn { padding: 0.3rem 0.75rem; font-size: 0.8rem; }
+  .btn-sm { padding: 0.18rem 0.55rem; font-size: 0.74rem; }
+  .btn-lg { padding: 0.5rem 1.1rem; font-size: 0.95rem; }
+
+  // Login/register keep their pill shape but slimmer
+  form.user .form-control-user { padding: 0.6rem 1rem; font-size: 0.85rem; }
+  form.user .btn-user { padding: 0.55rem 1rem; font-size: 0.85rem; }
+}
+
+// ---- Dropdowns / modals -------------------------------------------
+.dropdown-menu {
+  background-color: $surface;
+  border: 1px solid $border-soft;
+  box-shadow: $box-shadow;
+  .dropdown-item {
+    color: $text;
+    &:hover, &:focus { background-color: $surface-2; color: #fff; }
+    &.active, &:active { background-color: $accent; color: #fff; }
+    i { color: $text-muted; }
+  }
+  .dropdown-divider { border-color: $border-soft; }
+}
+.modal-content {
+  background-color: $surface;
+  border: 1px solid $border-soft;
+  color: $text;
+}
+.modal-header, .modal-footer { border-color: $border-soft; }
+.btn-close { filter: invert(1) grayscale(1) brightness(1.8); }
+
+// ---- Buttons -------------------------------------------------------
+// A cohesive dark-theme palette. Bootstrap 5.3 buttons read the
+// --bs-btn-* custom properties, so overriding those (rather than the
+// default computed variants) keeps hover/active/focus/disabled states
+// consistent. Fills are vivid-but-muted; bright fills use dark text
+// and dark fills use light text for legible contrast.
+@mixin dark-btn($bg, $hover, $active, $color, $rgb) {
+  --bs-btn-color: #{$color};
+  --bs-btn-bg: #{$bg};
+  --bs-btn-border-color: #{$bg};
+  --bs-btn-hover-color: #{$color};
+  --bs-btn-hover-bg: #{$hover};
+  --bs-btn-hover-border-color: #{$hover};
+  --bs-btn-active-color: #{$color};
+  --bs-btn-active-bg: #{$active};
+  --bs-btn-active-border-color: #{$active};
+  --bs-btn-disabled-color: #{$color};
+  --bs-btn-disabled-bg: #{$bg};
+  --bs-btn-disabled-border-color: #{$bg};
+  --bs-btn-focus-shadow-rgb: #{$rgb};
+}
+
+.btn {
+  border-radius: $border-radius-sm;
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+// Emerald "money" palette (chosen scheme)
+.btn-primary   { @include dark-btn(#10b981, #16cc94, #0d9c72, #04231a, "16,185,129"); }
+.btn-secondary { @include dark-btn(#2b3140, #353d4c, #262c38, $text,   "130,140,160"); }
+.btn-success   { @include dark-btn(#22c55e, #33d06e, #1ba64e, #052310, "34,197,94"); }
+.btn-danger    { @include dark-btn(#ef4444, #f25a5a, #dc3a3a, #fff,    "239,68,68"); }
+.btn-warning   { @include dark-btn(#f59e0b, #ffad1f, #d98908, #241702, "245,158,11"); }
+.btn-info      { @include dark-btn(#2dd4bf, #40dcc9, #22b8a5, #04231f, "45,212,191"); }
+
+.btn-primary { box-shadow: 0 2px 12px rgba(16, 185, 129, 0.30); }
+.btn-success { box-shadow: 0 2px 12px rgba(34, 197, 94, 0.22); }
+.btn-danger  { box-shadow: 0 2px 12px rgba(239, 68, 68, 0.22); }
+
+// Outline variants tuned for dark surfaces
+.btn-outline-primary {
+  --bs-btn-color: #34d399;
+  --bs-btn-border-color: rgba(16, 185, 129, 0.6);
+  --bs-btn-hover-color: #04231a;
+  --bs-btn-hover-bg: #10b981;
+  --bs-btn-hover-border-color: #10b981;
+  --bs-btn-active-color: #04231a;
+  --bs-btn-active-bg: #10b981;
+  --bs-btn-active-border-color: #10b981;
+}
+.btn-light, .btn-outline-secondary {
+  --bs-btn-color: #{$text};
+  --bs-btn-bg: #{$surface-2};
+  --bs-btn-border-color: #{$border-strong};
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #{$surface-3};
+  --bs-btn-hover-border-color: #{$border-strong};
+  --bs-btn-active-bg: #{$surface-3};
+  --bs-btn-active-border-color: #{$border-strong};
+}
+
+.btn-link {
+  --bs-btn-color: #{$accent-hover};
+  --bs-btn-hover-color: #a9a4ff;
+}
+.btn-ghost {
+  color: $text;
+  background: transparent;
+  border: 1px solid $border-strong;
+  &:hover { background-color: $surface-2; color: #fff; border-color: $border-strong; }
+}
+
+// ---- Dashboard -----------------------------------------------------
+.dashboard {
+  .dashboard-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .dashboard-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: $text;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .dashboard-sub { color: $text-muted; margin: 0.25rem 0 0; }
+  .dashboard-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+}
+
+.dashboard-card {
+  display: flex;
+  flex-direction: column;
+
+  .dashboard-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 1rem 1.25rem;
+  }
+  .dc-title { display: inline-flex; align-items: center; gap: 0.65rem; color: $text; }
+  .dc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem; height: 2.1rem;
+    border-radius: 0.6rem;
+    font-size: 0.85rem;
+    &.is-income  { background: rgba(52, 211, 153, 0.15); color: $positive; }
+    &.is-expense { background: rgba(248, 113, 113, 0.15); color: $negative; }
+    &.is-wallet  { background: $accent-soft; color: $accent-hover; }
+  }
+  .dc-add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem; height: 2rem;
+    border-radius: 0.55rem;
+    border: 1px solid $border-strong;
+    color: $text-muted;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    &:hover { color: #fff; background: $accent; border-color: $accent; }
+  }
+
+  .dashboard-card-body { flex: 1 1 auto; padding: 0.5rem 1.25rem; }
+
+  .dc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid $border-soft;
+    &:last-child { border-bottom: 0; }
+  }
+  .dc-row-label {
+    color: $text;
+    text-decoration: none;
+    font-size: 0.92rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  a.dc-row-label { color: $accent-hover; &:hover { color: #a9a4ff; } }
+  .dc-code {
+    color: $text-dim;
+    font-size: 0.78em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: 0.15rem;
+  }
+  .dc-row-value {
+    font-weight: 700;
+    color: $text;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dc-empty {
+    text-align: center;
+    padding: 1.75rem 0.5rem;
+    color: $text-muted;
+    i { font-size: 1.75rem; color: $text-dim; margin-bottom: 0.75rem; display: block; }
+    p { font-size: 0.9rem; margin-bottom: 1rem; }
+  }
+
+  .dashboard-card-footer {
+    background: transparent;
+    border-top: 1px solid $border-soft;
+    padding: 0.85rem 1.25rem;
+    a { color: $accent-hover; font-weight: 600; font-size: 0.88rem; text-decoration: none; }
+  }
+
+  .dc-totals { display: flex; flex-direction: column; gap: 0.4rem; }
+  .dc-totals-label {
+    color: $text-muted;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.2rem;
+  }
+  .dc-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dc-total-value { font-weight: 800; color: $text; font-variant-numeric: tabular-nums; }
+
+  // Scrollable list (e.g. wallets) so a long list doesn't dominate the dashboard.
+  .dc-scroll { max-height: 20rem; overflow-y: auto; }
+  .dc-scroll.expanded { max-height: none; overflow: visible; }
+
+  // "Show all / View less" toggle under a capped list.
+  .dc-toggle {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid $border-soft;
+    color: $accent-hover;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    &:hover { color: #a9a4ff; background-color: rgba(255, 255, 255, 0.03); }
+    i { font-size: 0.7rem; margin-left: 0.2rem; }
+
+    .dc-toggle-less { display: none; }
+    &.is-expanded {
+      .dc-toggle-more { display: none; }
+      .dc-toggle-less { display: inline; }
+    }
+  }
+}
+
+.kpi-sub { color: $text-muted; font-size: 0.76rem; }
+
+// KPI indicator cards (Expenses / Incomes): one big headline number.
+.kpi-card {
+  .kpi-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem 0.25rem;
+  }
+  .kpi-body { flex: 1 1 auto; padding: 0.25rem 1.25rem 1rem; }
+  .kpi-value {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: $text;
+    &.is-income { color: $positive; }
+    &.is-expense { color: $negative; }
+  }
+  .kpi-body .kpi-sub { margin-top: 0.2rem; }
+  .kpi-link {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid $border-soft;
+    color: $accent-hover;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    &:hover { color: #a9a4ff; }
+  }
+}
+
+// Doughnut chart wrapper on the dashboard.
+.dash-chart {
+  position: relative;
+  height: 260px;
+  padding: 0.5rem 0;
+}
+
+@include media-breakpoint-down(sm) {
+  .dashboard .dashboard-actions { width: 100%; }
+  .dashboard .dashboard-actions .btn { flex: 1 1 auto; text-align: center; }
+}
+
+// ---- Alerts (dark, translucent, colored accent) -------------------
+.alert {
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+  background-color: $surface-2;
+  color: $text;
+}
+.alert-success { border-color: rgba(52, 211, 153, 0.4); background-color: rgba(52, 211, 153, 0.10); color: #6ee7b7; }
+.alert-danger  { border-color: rgba(248, 113, 113, 0.4); background-color: rgba(248, 113, 113, 0.10); color: #fca5a5; }
+.alert-warning { border-color: rgba(251, 191, 36, 0.4);  background-color: rgba(251, 191, 36, 0.10);  color: #fcd34d; }
+.alert-info    { border-color: rgba(56, 189, 248, 0.4);  background-color: rgba(56, 189, 248, 0.10);  color: #7dd3fc; }
+
+// ---- Text utility remaps (dark text -> light) ----------------------
+.text-gray-900, .text-gray-800, .text-gray-700, .text-dark, .text-black-50 { color: $text !important; }
+.text-gray-600, .text-gray-500, .text-muted { color: $text-muted !important; }
+.text-gray-400, .text-gray-300 { color: $text-dim !important; }
+.text-primary { color: $accent-hover !important; }
+.text-success { color: $positive !important; }
+.text-danger  { color: $negative !important; }
+a { color: $accent-hover; }
+
+// ---- Footer / misc -------------------------------------------------
+.sticky-footer {
+  background-color: transparent;
+  color: $text-dim;
+  .copyright { color: $text-dim; }
+  a { color: $accent-hover; }
+}
+hr { border-color: $border-soft; color: $border-soft; opacity: 1; }
+.border, .border-top, .border-bottom, .border-start, .border-end { border-color: $border-soft !important; }
+
+.scroll-to-top {
+  background: $accent !important;
+  color: #fff;
+  border-radius: $border-radius;
+  &:hover { background: $accent-hover !important; }
+}
+
+// Page-title heading rule
+h1 { border-bottom-color: $border-soft !important; color: $text; }
+
+// ---- FilePond (receipt uploads) -----------------------------------
+// FilePond's own CSS is injected at runtime (imported in app.js), so it lands
+// after app.css in the cascade — these overrides need !important to win.
+.filepond--root { font-family: inherit; }
+.filepond--panel-root {
+  background-color: #12151b !important;
+  border: 1px dashed $border-strong !important;
+}
+.filepond--drop-label { color: $text-muted !important; }
+.filepond--label-action {
+  color: $accent-hover !important;
+  text-decoration-color: $accent-hover;
+}
+.filepond--item-panel { background-color: $surface-3 !important; }
+.filepond--file { color: $text; }
+.filepond--credits { display: none; }
+
+// ---- Pagination ----------------------------------------------------
+.page-link {
+  background-color: $surface;
+  border-color: $border-soft;
+  color: $text-muted;
+  &:hover { background-color: $surface-2; color: $text; }
+}
+.page-item.active .page-link { background-color: $accent; border-color: $accent; color: #fff; }
+.page-item.disabled .page-link { background-color: $surface; border-color: $border-soft; color: $text-dim; }
+
+// ---- Focus-visible accessibility ring ------------------------------
+a:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 2px solid $accent;
+  outline-offset: 2px;
+}
+
+// ---- Density / compact spacing -------------------------------------
+// Reduce the gap the top navbar leaves below itself
+.topbar.mb-4 { margin-bottom: 0.85rem !important; }
+
+// Page-title "+ Add …" control: small right-aligned chip (matches .field-action)
+h1 .add_control { top: 0.1rem; }
+.add_control > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: $text-muted;
+  text-decoration: none;
+  padding: 0.32rem 0.65rem;
+  border: 1px solid $border-strong;
+  border-radius: 0.45rem;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  i { font-size: 0.64rem; }
+  &:hover, &:focus {
+    color: $accent-hover;
+    background-color: $accent-soft;
+    border-color: rgba($accent, 0.5);
+  }
+}
+
+// Filter panels — pack controls tighter, less vertical waste
+.filter {
+  margin-bottom: 0.85rem;
+  .row { --bs-gutter-y: 0.15rem; }
+  .form-group { margin-bottom: 0.15rem; }
+  label, .form-label, .col-form-label { font-size: 0.78rem; margin-bottom: 0.1rem; }
+  // Neutralise any bottom margin the form-field helper adds to controls
+  .form-control, .form-select, .mb-3 { margin-bottom: 0 !important; }
+
+  // Action buttons at the bottom — smaller
+  .form-reverse {
+    margin-top: 0.55rem;
+    gap: 0.4rem;
+    .btn { padding: 0.24rem 0.7rem; font-size: 0.74rem; }
+  }
+}
+
+// New-user onboarding / welcome checklist
+.onboarding {
+  max-width: 640px;
+  margin: 0.5rem auto;
+
+  &-card { padding: 1.75rem; }
+  &-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  &-title { font-size: 1.5rem; font-weight: 800; color: $text; margin: 0; padding: 0; border: 0; }
+  &-sub { color: $text-muted; font-size: 0.9rem; margin: 0.35rem 0 0; }
+  &-skip {
+    flex: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $text-muted;
+    white-space: nowrap;
+    text-decoration: none;
+    &:hover { color: $accent-hover; }
+  }
+
+  &-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    &__bar {
+      flex: 1;
+      height: 8px;
+      background: $surface-3;
+      border-radius: 999px;
+      overflow: hidden;
+      span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.3s ease; }
+    }
+    &__label { font-size: 0.8rem; font-weight: 700; color: $text-muted; white-space: nowrap; }
+  }
+
+  &-steps { list-style: none; padding: 0; margin: 0 0 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  &-footer { border-top: 1px solid $border-soft; padding-top: 1.25rem; }
+}
+
+.onboarding-step {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0.85rem;
+  background: $surface-2;
+  border: 1px solid $border-soft;
+  border-radius: 0.6rem;
+
+  &__check {
+    flex: none;
+    width: 1.6rem; height: 1.6rem;
+    border-radius: 50%;
+    border: 2px solid $border-strong;
+    color: transparent;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+  }
+  &__icon { flex: none; width: 1.4rem; text-align: center; color: $text-muted; }
+  &__label { flex: 1; min-width: 0; color: $text; font-weight: 600; font-size: 0.92rem; }
+  &__action { flex: none; }
+  &__badge { flex: none; font-size: 0.72rem; font-weight: 700; color: $positive; }
+
+  &.is-done {
+    .onboarding-step__check { background: $positive; border-color: $positive; color: #04231a; }
+    .onboarding-step__icon { color: $positive; }
+    .onboarding-step__label { color: $text-muted; text-decoration: line-through; }
+  }
+}
+
+// Recurrent-expense slide-in drawer content
+.recurrent-drawer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid $border-soft;
+  }
+  &__title { font-size: 1.05rem; font-weight: 700; color: $text; margin: 0; }
+  &__sub { font-size: 0.8rem; color: $text-muted; margin: 0.15rem 0 0; }
+  &__close {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid $border-strong;
+    background: transparent;
+    color: $text-muted;
+    transition: all 0.15s ease;
+    &:hover { background: $negative; border-color: $negative; color: #fff; }
+  }
+  &__body { flex: 1; overflow-y: auto; padding: 0.85rem; }
+}
+
+.recurrent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 0.6rem;
+  background: $surface-2;
+  border: 1px solid $border-soft;
+  border-radius: 0.6rem;
+  transition: border-color 0.15s ease;
+  &:hover { border-color: rgba(16, 185, 129, 0.5); }
+
+  &__main { min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+  &__desc {
+    font-weight: 600;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: $text-muted;
+    i { font-size: 0.7rem; }
+  }
+  &__badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: $caution;
+    background: rgba(251, 191, 36, 0.15);
+    padding: 0.05rem 0.4rem;
+    border-radius: 999px;
+  }
+  &__side { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+  &__amount { font-weight: 800; color: $text; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  &.is-paid { opacity: 0.65; }
+}
+
+.recurrent-empty {
+  text-align: center;
+  color: $text-muted;
+  padding: 2rem 1rem;
+  i { font-size: 1.75rem; color: $text-dim; margin-bottom: 0.6rem; display: block; }
+  p { font-size: 0.88rem; margin: 0; }
+}
+
+// Field label + inline "add" action (keeps the label row height = label height
+// so right-column fields stay aligned with the left column)
+.field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.1rem;
+  margin-bottom: 0.12rem;
+
+  label, .form-label { margin-bottom: 0; }
+}
+.field-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: $text-muted;
+  text-decoration: none;
+  padding: 0.12rem 0.4rem;
+  border-radius: 0.35rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  i { font-size: 0.62rem; }
+  &:hover, &:focus { color: $accent-hover; background-color: $accent-soft; }
+}
+
+// Help: a floating action button anchored to the viewport corner so it consumes
+// no page space, opening the help content in a modal (see components/help.blade.php).
+.help {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 1040; // above content, below the modal (1050+)
+}
+.help-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $accent, #8b5cf6);
+  color: #fff;
+  font-size: 1.15rem;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(109, 103, 246, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover, &:focus {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(109, 103, 246, 0.5);
+  }
+}
+
+// Top-bar display-currency selector: compact, sized to its content.
+.display-currency-select {
+  width: auto;
+  min-width: 5rem;
+}
+
+// Trim default form-group spacing site-wide (used across create/edit forms)
+.form-group { margin-bottom: 0.6rem; }
+
+// Bold every form label. The mate `forms()->field()` helper tags its labels with
+// class `.strong` (otherwise undefined, so they'd render at the default weight);
+// `.form-label` covers manually-built labels. Keep both at the same weight.
+.strong,
+.form-label,
+.form-group > label { font-weight: 600; }
+
+// Two-column create/edit forms (expense, income): keep the left and right columns
+// on the same horizontal grid. Plain fields (mate `forms()->field()`, label class
+// `.strong`) and fields with an inline "+ Add" action (`.field-label-row`) used to
+// differ in label weight, label-row height, and group spacing, so controls drifted
+// out of line. Normalize all three so every label row and control lines up.
+.side-wrapper {
+  // Uniform group spacing (beats both `.mb-3 !important` and the site default).
+  .form-group { margin-bottom: 0.75rem !important; }
+
+  // Identical label metrics for plain labels and inline-action label rows.
+  .form-group > label,
+  .field-label-row {
+    min-height: 1.15rem;
+    margin-bottom: 0.15rem !important;
+  }
+
+  .form-group > label {
+    display: flex;
+    align-items: center;
+  }
+}
+
+// Cards — slightly tighter default padding
+.card-body { padding: 1rem; }
+.card-header { padding-top: 0.75rem; padding-bottom: 0.75rem; }

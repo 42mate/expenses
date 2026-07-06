@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RecurrentExpense;
+use App\Support\AmountNormalizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,11 +25,14 @@ class RecurrentExpenseController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['amount' => AmountNormalizer::normalize($request->input('amount'))]);
+
         $request->validate([
             'amount' => 'required|numeric',
             'category_id' => 'required|numeric',
             'description' => 'required',
             'period' => 'required|numeric',
+            'currency_id' => 'nullable|exists:currencies,id',
         ]);
 
         $redirect = redirect('/recurrent_expense/create');
@@ -41,6 +45,7 @@ class RecurrentExpenseController extends Controller
             'period' => $request->period,
             'last_use_date' => $request->get('last_use_date', null),
             'paused' => $request->boolean('paused', false),
+            'currency_id' => $request->get('currency_id') ?: Auth::user()->default_currency_id,
         ]);
 
         return $redirect->with('success', 'Expense Created!');
@@ -55,11 +60,14 @@ class RecurrentExpenseController extends Controller
 
     public function update(Request $request, RecurrentExpense $recurrentexpense)
     {
+        $request->merge(['amount' => AmountNormalizer::normalize($request->input('amount'))]);
+
         $request->validate([
             'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
             'category_id' => 'required|numeric',
             'description' => 'required',
             'period' => 'required|numeric',
+            'currency_id' => 'nullable|exists:currencies,id',
         ]);
 
         $recurrentexpense->fill([
@@ -69,6 +77,7 @@ class RecurrentExpenseController extends Controller
             'period' => $request->period,
             'last_use_date' => $request->get('last_use_date', $recurrentexpense->last_use_date),
             'paused' => $request->has('paused'),
+            'currency_id' => $request->get('currency_id') ?: $recurrentexpense->currency_id,
         ]);
 
         $recurrentexpense->save();

@@ -34,6 +34,7 @@ class RecurrentExpense extends Expense
         'last_use_date',
         'period',
         'paused',
+        'currency_id',
     ];
 
     protected $casts = [

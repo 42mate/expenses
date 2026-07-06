@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-5">
+        <h1>
             <i class="fas fa-tasks"></i> {{ __('Categories') }}
             <div class="add_control">
                 <a href="{{ route('category.create') }}">

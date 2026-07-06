@@ -2,9 +2,16 @@
     <div class="card-header py-3">
         <h6 class="m-0 ">{{ __('Pending Payments') }}
             @if (count($recurrent_expense_pending_payment) > 0)
+            @php
+                $__items = [];
+                foreach ($recurrent_expense_pending_payment as $__p) {
+                    $__items[] = ['code' => $__p->currency->code, 'amount' => $__p->amount];
+                }
+                $__sum = $currencyConverter->sumToDisplay($__items);
+            @endphp
             <strong>
                 ({{ count($recurrent_expense_pending_payment) }}) -
-                $ {{ number_format($recurrent_expense_pending_payment->sum('amount'), 2) }}
+                {{ $displayCurrency->symbol }} {{ number_format($__sum['total'], 2) }}
             </strong>
             @endif
         </h6>

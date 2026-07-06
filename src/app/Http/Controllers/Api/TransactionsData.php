@@ -4,65 +4,43 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
+use App\Services\CurrencyConverter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionsData extends Controller
 {
     /**
-     * Returns the total by month of the expenses.
-     * The return format is for Chart Js.
+     * Returns the total by month of the expenses, converted into the user's
+     * display currency as a single unified dataset. The format is for Chart Js.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function expenseTotalByMonth()
     {
         $data = Expense::getTotalByMonth();
+        $converter = app(CurrencyConverter::class);
+        $display = $converter->displayCurrency();
+
+        // Accumulate every native per-currency row into one total per month.
+        $months = [];
+        foreach ($data as $d) {
+            if (!isset($months[$d->month])) {
+                $months[$d->month] = 0;
+            }
+            $converted = $converter->toDisplay((float) $d->total, $d->code);
+            if ($converted !== null) {
+                $months[$d->month] += $converted;
+            }
+        }
+
+        $dataset = new class{};
+        $dataset->label = $display->code;
+        $dataset->data = array_values($months);
 
         $chartData = new class{};
-        $chartData->datasets = [];
-        $chartData->labels = [];
-        $months = [];
-        $currencies = [];
-
-        //We need to extract the currencies and the months in this period.
-        foreach ($data as $d) {
-            if (empty($chartData->datasets[$d->code])) {
-                $dataset = new class{};
-                $dataset->label = $d->code;
-                $dataset->data = [];
-                $chartData->datasets[$d->code] = $dataset;
-                $chartData->labels[] = $d->code;
-                $currencies[] = $d->code;
-            }
-
-            if (empty($months[$d->month])) {
-                $months[$d->month] = $d->month;
-            }
-        }
-
-        //We have to initialize all datasets on all months, all datasets needs
-        //to have the same number of entries and these needs to be same as the
-        //number of labels.
-        foreach ($months as $month) {
-            foreach ($currencies as $currency) {
-                $chartData->datasets[$currency]->data[$month] = 0;
-            }
-        }
-
-        //We will set the amounts from the query.
-        foreach ($data as $model) {
-            $chartData->datasets[$model->code]->data[$model->month] = $model->total;
-        }
-
-        //On all datasets, we need to remove the string keys in order to export the dataset
-        //as an array, otherwise it will be converted as an object.
-        foreach ($chartData->datasets as $key => $data) {
-            $chartData->datasets[$key]->data = array_values($chartData->datasets[$key]->data);
-        }
-
-        $chartData->datasets = array_values($chartData->datasets);
-        $chartData->labels = array_values($months);
+        $chartData->datasets = [$dataset];
+        $chartData->labels = array_keys($months);
 
         return response()->json([
             'data' => $chartData,
@@ -78,23 +56,28 @@ class TransactionsData extends Controller
      */
     public function expenseByCategory()
     {
-        $models = Expense::getExpensesByCategory(request()->get('currency_id'));
+        $models = Expense::getExpensesByCategory();
+        $converter = app(CurrencyConverter::class);
 
-        $return = new \stdClass();
+        // Convert each native row into the display currency and aggregate by category.
+        $byCategory = [];
+        foreach ($models as $model) {
+            $converted = $converter->toDisplay((float) $model->total, $model->code);
+            if ($converted === null) {
+                continue;
+            }
+            $byCategory[$model->category] = ($byCategory[$model->category] ?? 0) + $converted;
+        }
 
-        $return->labels = [];
-        $return->datasets = [];
+        arsort($byCategory);
 
         $dataset = new \stdClass();
         $dataset->label = 'Total by category';
-        $dataset->data = [];
+        $dataset->data = array_values($byCategory);
 
-        foreach ($models as $model) {
-            $return->labels[] = $model->category;
-            $dataset->data[] = $model->total;
-        }
-
-        $return->datasets[] = $dataset;
+        $return = new \stdClass();
+        $return->labels = array_keys($byCategory);
+        $return->datasets = [$dataset];
 
         return response()->json([
             'data' => $return,

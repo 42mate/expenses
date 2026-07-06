@@ -1,7 +1,252 @@
-.mkt {
-    .btn-spacer {
-        border-bottom: 1px solid #eee;
-        margin-bottom: 20px;
-        padding-bottom: 20px;
+// =====================================================================
+//  Public landing page (guest home) — modern dark marketing styles
+//  Palette tokens come from _boostrap_variables.scss.
+// =====================================================================
+
+.landing-body {
+  background-color: $bg;
+  color: $text;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.landing {
+  position: relative;
+
+  // Ambient accent glows behind the hero
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.5;
+    z-index: 0;
+    pointer-events: none;
+  }
+  &::before {
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(109, 103, 246, 0.45), transparent 70%);
+    top: -140px; left: -120px;
+  }
+  &::after {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(52, 211, 153, 0.28), transparent 70%);
+    top: 220px; right: -140px;
+  }
+
+  > * { position: relative; z-index: 1; }
+}
+
+// ---- Navbar --------------------------------------------------------
+.landing-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+  margin-bottom: 1rem;
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: $text;
+    text-decoration: none;
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2rem; height: 2.2rem;
+      border-radius: 0.7rem;
+      background: linear-gradient(135deg, $accent, #8b5cf6);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(109, 103, 246, 0.4);
     }
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+// ---- Hero ----------------------------------------------------------
+.landing-hero {
+  padding: 3.5rem 0 4.5rem;
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid $border-strong;
+    background: $surface;
+    color: $text-muted;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+
+    i { color: $positive; }
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    border: 0;
+    padding: 0;
+    margin-bottom: 1.25rem;
+    color: $text;
+
+    .gradient-text {
+      background: linear-gradient(120deg, #8b8bff 0%, $accent 45%, #34d399 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: $text-muted;
+    max-width: 34rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    color: $text-dim;
+    font-size: 0.85rem;
+    i { color: $positive; margin-right: 0.35rem; }
+  }
+
+  .hero-art {
+    position: relative;
+    text-align: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 8% 8%;
+      background: radial-gradient(circle, rgba(109, 103, 246, 0.22), transparent 70%);
+      filter: blur(40px);
+      z-index: 0;
+    }
+    img { position: relative; z-index: 1; max-height: 420px; }
+  }
+}
+
+// ---- Buttons (landing-specific polish) -----------------------------
+.landing {
+  .btn {
+    border-radius: 0.6rem;
+    font-weight: 600;
+    padding: 0.7rem 1.4rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .btn-lg { padding: 0.85rem 1.75rem; font-size: 1rem; }
+  .btn-primary { box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35); }
+  .btn-ghost {
+    color: $text;
+    background: transparent;
+    border: 1px solid $border-strong;
+    &:hover { background: $surface-2; color: #fff; }
+  }
+  .lift:hover { transform: translateY(-2px); }
+}
+
+// ---- Feature section ----------------------------------------------
+.landing-features {
+  padding: 2rem 0 3.5rem;
+
+  .section-heading {
+    text-align: center;
+    max-width: 40rem;
+    margin: 0 auto 2.75rem;
+
+    h2 {
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: $text;
+    }
+    p { color: $text-muted; font-size: 1.05rem; margin: 0; }
+  }
+
+  .feature-card {
+    height: 100%;
+    background: $surface;
+    border: 1px solid $border-soft;
+    border-radius: $border-radius-lg;
+    padding: 1.75rem;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      border-color: rgba(109, 103, 246, 0.5);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .feature-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem; height: 3rem;
+      border-radius: 0.85rem;
+      font-size: 1.25rem;
+      margin-bottom: 1.1rem;
+      background: $accent-soft;
+      color: $accent-hover;
+    }
+    &.accent-green .feature-icon { background: rgba(52, 211, 153, 0.15); color: $positive; }
+    &.accent-amber .feature-icon { background: rgba(251, 191, 36, 0.15); color: $caution; }
+
+    h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; color: $text; }
+    p { color: $text-muted; margin: 0; line-height: 1.65; }
+  }
+}
+
+// ---- Final CTA band ------------------------------------------------
+.landing-cta {
+  margin: 1rem 0 3.5rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-radius: $border-radius-lg;
+  border: 1px solid $border-soft;
+  background:
+    radial-gradient(circle at 50% -20%, rgba(109, 103, 246, 0.25), transparent 60%),
+    $surface;
+
+  h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 800; margin-bottom: 0.75rem; color: $text; }
+  p { color: $text-muted; margin-bottom: 1.75rem; }
+}
+
+// ---- Footer --------------------------------------------------------
+.landing-footer {
+  padding: 2rem 0 2.5rem;
+  border-top: 1px solid $border-soft;
+  text-align: center;
+  color: $text-dim;
+  font-size: 0.9rem;
+
+  a { color: $accent-hover; }
+  .fa-heart { color: $negative; }
 }

@@ -1,6 +1,7 @@
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
-    <div class="sidebar-brand-text mx-3">{{ config('app.name', 'Laravel') }}</div>
+    <span class="brand-mark"><i class="fas fa-wallet"></i></span>
+    <div class="sidebar-brand-text mx-2">{{ config('app.name', 'Laravel') }}</div>
 </a>
 
 <!-- Divider -->
@@ -81,6 +82,13 @@
 {{--        <span>{{ __('Loans') }}</span>--}}
 {{--    </a>--}}
 {{--</li>--}}
+
+<li class="nav-item">
+    <a class="nav-link " href="{{ route('exchange_rates.index') }}">
+        <i class="fa-solid fa-right-left"></i>
+        <span>{{ __('Exchange Rates') }}</span>
+    </a>
+</li>
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">

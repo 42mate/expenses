@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ExpenseExport;
 use App\Models\Expense;
 use App\Models\Income;
+use App\Support\AmountNormalizer;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -58,6 +59,8 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['amount' => AmountNormalizer::normalize($request->input('amount'))]);
+
         $request->validate([
             'amount' => 'required|numeric',
         ]);
@@ -115,6 +118,8 @@ class IncomeController extends Controller
      */
     public function update(Request $request, Income $income)
     {
+        $request->merge(['amount' => AmountNormalizer::normalize($request->input('amount'))]);
+
         $request->validate([
             'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
         ]);

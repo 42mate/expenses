@@ -14,14 +14,8 @@
                         {{ __('Expenses by Cateogry') }}
                     </div>
                     <div class="card-body">
-                        <div class="mb-2">
-                            <label for="category"> {{ __('Select a currency') }}:</label>
-
-                            <x-currencies-drop-down name="currency_id"
-                                                    use_as_label="name"
-                                                    onlyInUse="yes"
-                                                    selected="{{ (empty(request()->get('currency_id', null)) ? '' : request()->get('currency_id'))}}"
-                            />
+                        <div class="mb-2 text-muted small">
+                            {{ __('Amounts are shown in your display currency') }}: {{ $displayCurrency->code }}
                         </div>
                         <div class="badge-warning result-message mb-2 p-2 rounded text-center" style="display: none;"></div>
                         <canvas class="pie"

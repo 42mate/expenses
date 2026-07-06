@@ -82,9 +82,38 @@ class Expense extends Model
         return $this->currency->code;
     }
 
+    /**
+     * The amount converted into the user's display currency (presentation-only).
+     * Falls back to native formatting when no exchange rate is available.
+     */
     public function getAmountFormattedAttribute()
     {
-        return $this->currency->symbol . ' ' . number_format(floatval($this->attributes['amount']), 2);
+        $amount = floatval($this->attributes['amount'] ?? 0);
+        $native = $this->currency;
+
+        $converter = app(\App\Services\CurrencyConverter::class);
+        $display = $converter->displayCurrency();
+
+        if ($native && strtoupper($native->code) === strtoupper($display->code)) {
+            return $display->symbol . ' ' . number_format($amount, 2);
+        }
+
+        $converted = $native ? $converter->convert($amount, $native->code, $display->code) : null;
+
+        if ($converted === null) {
+            // No rate for this pair — keep the native currency.
+            return ($native->symbol ?? '') . ' ' . number_format($amount, 2);
+        }
+
+        return $display->symbol . ' ' . number_format($converted, 2);
+    }
+
+    /**
+     * The amount in its own (native) currency — used for tooltips / reference.
+     */
+    public function getAmountNativeFormattedAttribute()
+    {
+        return $this->currency->symbol . ' ' . number_format(floatval($this->attributes['amount'] ?? 0), 2);
     }
 
     public function getAmountAttribute()
@@ -278,7 +307,12 @@ class Expense extends Model
             ->get();
     }
 
-    public static function getExpensesByCategory($currencyId = 1)
+    /**
+     * Current-month totals grouped by category AND native currency code.
+     * Conversion into the display currency + final per-category aggregation is
+     * done by the caller via CurrencyConverter.
+     */
+    public static function getExpensesByCategory()
     {
         $start = Carbon::now()->startOfMonth()->format('Y-m-d');
         $end = Carbon::now()->endOfMonth()->format('Y-m-d');
@@ -287,14 +321,14 @@ class Expense extends Model
             "IF (categories.category IS NULL,
                     ?,
                     categories.category) as category,
+                 currencies.code as code,
                  SUM(expenses.amount) as total"
         ))
             ->addBinding(self::DEFAULT_CATEGORY_LABEL, 'select')
             ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
+            ->join('currencies', 'currencies.id', '=', 'expenses.currency_id')
             ->whereBetween('expenses.date', [$start, $end])
-            ->where('currency_id', $currencyId)
-            ->groupBy(DB::raw('1'))
-            ->orderBy(DB::raw('1'), 'DESC');
+            ->groupBy(DB::raw('1, 2'));
 
         return $q->get();
     }

@@ -8,6 +8,7 @@ use App\Models\Income;
 use App\Models\IncomeSource;
 use App\Models\RecurrentExpense;
 use App\Models\Wallet;
+use App\Services\CurrencyConverter;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -33,7 +34,7 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        if (Auth::user()->isANewUser()) {
+        if (Auth::user()->isANewUser() && ! session('onboarding_skipped')) {
             $status = [
                 'category' => Category::isEmpty(),
                 'source' => IncomeSource::isEmpty(),
@@ -44,7 +45,34 @@ class HomeController extends Controller
             return view('welcome', ['status' => $status]);
         }
 
-        return view('home');
+        $converter = app(CurrencyConverter::class);
+
+        // Current-month expenses grouped by category, converted to the display
+        // currency, sorted from largest to smallest — for the dashboard chart.
+        $byCategory = [];
+        foreach (Expense::getExpensesByCategory() as $row) {
+            $converted = $converter->toDisplay((float) $row->total, $row->code);
+            if ($converted === null) {
+                continue;
+            }
+            $byCategory[$row->category] = ($byCategory[$row->category] ?? 0) + $converted;
+        }
+        arsort($byCategory);
+
+        return view('home', [
+            'expenseCategories' => array_keys($byCategory),
+            'expenseCategoryTotals' => array_values($byCategory),
+        ]);
+    }
+
+    /**
+     * Skip the onboarding checklist and go straight to the dashboard.
+     */
+    public function skipOnboarding()
+    {
+        session(['onboarding_skipped' => true]);
+
+        return redirect()->route('home');
     }
 
     public function pending()

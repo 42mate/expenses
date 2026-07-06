@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-5">
+        <h1>
             <i class="fas fa-wallet"></i> {{ __('Wallets') }}
             <div class="add_control">
                 <a href="{{ route('wallet.create') }}">
@@ -37,8 +37,16 @@
                 <tr class="">
                     <td class="">{{ $wallet->name }}</td>
                     <td class="">{{ $wallet->currency->code }}</td>
-                    <td class="text-end">
-                        {{ $wallet->currency->symbol }} {{ number_format(floatval($wallet->balance), 2) }}
+                    @php
+                        $__converted = $currencyConverter->toDisplay(floatval($wallet->balance), $wallet->currency->code);
+                    @endphp
+                    <td class="text-end"
+                        title="{{ $wallet->currency->symbol }} {{ number_format(floatval($wallet->balance), 2) }}">
+                        @if($__converted !== null)
+                            {{ $displayCurrency->symbol }} {{ number_format($__converted, 2) }}
+                        @else
+                            {{ $wallet->currency->symbol }} {{ number_format(floatval($wallet->balance), 2) }}
+                        @endif
                     </td>
                     <td class="text-end">
                         <a href="{{ route('wallet.edit', ['wallet' => $wallet->id]) }}" class="btn-primary btn  btn-sm">

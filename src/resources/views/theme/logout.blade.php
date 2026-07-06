@@ -9,9 +9,9 @@
     <title>@yield('title')</title>
     <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
     <!-- Custom fonts for this template-->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
     <meta property="twitter:creator" content="@42mate" />
     <meta property="twitter:site" content="@42mate" />
     <meta property="twitter:domain" content="expenses.casivaagustin.com.ar" />
@@ -42,8 +42,9 @@
 <body class="bg-gradient-primary">
 <div class="container pt-5">
     <div class="title-brand text-center">
-        <a href="{{ route('home') }}">
-            {{ config('app.name', 'Laravel') }}
+        <a href="{{ route('home') }}" class="brand-lockup">
+            <span class="brand-mark"><i class="fas fa-wallet"></i></span>
+            <span class="brand-name">{{ config('app.name', 'Expenses') }}</span>
         </a>
     </div>
     <div class="row justify-content-center">

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-5">
+        <h1>
             <i class="far fa-calendar-alt"></i> {{ __('Recurrent Expenses') }}
             <div class="add_control">
                 <a href="{{ route('recurrent_expense.create') }}">
@@ -61,7 +61,8 @@
                             <span class="badge bg-success">{{ __('Active') }}</span>
                         @endif
                     </td>
-                    <td class="d-block d-sm-table-cell font-weight-bold text-end">
+                    <td class="d-block d-sm-table-cell font-weight-bold text-end"
+                        title="{{ $expense->amount_native_formatted }}">
                         {{ $expense->amount_formatted }}
                     </td>
                     <td class="text-end">

@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'default_currency_id'
+        'default_currency_id',
+        'display_currency_id',
     ];
 
     /**
@@ -67,6 +68,24 @@ class User extends Authenticatable
     public function wallets()
     {
         return $this->hasMany('App\Models\Wallet');
+    }
+
+    public function displayCurrency()
+    {
+        return $this->belongsTo(Currency::class, 'display_currency_id');
+    }
+
+    /**
+     * The currency every amount is converted to for this user's display.
+     * Falls back: display_currency_id -> default_currency_id -> currency 1.
+     */
+    public function resolveDisplayCurrency(): Currency
+    {
+        $id = $this->display_currency_id ?: $this->default_currency_id ?: 1;
+
+        return Currency::find($id)
+            ?? Currency::find(1)
+            ?? new Currency(['name' => 'US Dollar', 'code' => 'USD', 'symbol' => '$']);
     }
 
     /**

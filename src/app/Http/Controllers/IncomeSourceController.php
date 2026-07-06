@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\IncomeSource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class IncomeSourceController extends Controller
 {
@@ -61,6 +62,20 @@ class IncomeSourceController extends Controller
         $income_source->save();
 
         return redirect('/income_source')->with('success', 'Income Source Updated!');
+    }
+
+    public function ajaxStore(Request $request)
+    {
+        $request->validate([
+            'source' => ['required', 'max:100', Rule::unique('income_sources', 'source')->where('user_id', Auth::id())],
+        ]);
+
+        $income_source = IncomeSource::create([
+            'source' => $request->source,
+            'user_id' => Auth::id(),
+        ]);
+
+        return response()->json(['id' => $income_source->id, 'name' => $income_source->source]);
     }
 
     public function destroy(IncomeSource $income_source)

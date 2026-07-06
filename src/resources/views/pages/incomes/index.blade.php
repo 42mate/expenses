@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-5">
+        <h1>
             <i class="fa-solid fa-sack-dollar"></i> {{ __('Incomes') }}
             <div class="add_control">
                 <a href="{{ route('incomes.create') }}">
@@ -53,7 +53,8 @@
                         <td class="d-block d-sm-table-cell">
                             {{ $income->currency->code }}
                         </td>
-                        <td class="d-block d-sm-table-cell font-weight-bold text-end">
+                        <td class="d-block d-sm-table-cell font-weight-bold text-end"
+                            title="{{ $income->amount_native_formatted }}">
                             {{ $income->amount_formatted }}
                         </td>
                         <td class="text-end">

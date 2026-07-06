@@ -3,75 +3,119 @@
    {{ __('Welcome') }}!
 @endsection
 @section('content')
-    <div class="mkt">
-        <div class="row align-items-center btn-spacer">
-            <div class="col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6">
-                <!-- Heading -->
-                <h1 class="display-3 text-center text-md-left">
-                    <span class="text-primary">{{ __('Expenses') }}</span>
+<div class="landing container">
+
+    {{-- Navbar --}}
+    <nav class="landing-nav">
+        <a href="{{ route('home') }}" class="brand">
+            <span class="brand-mark"><i class="fas fa-wallet"></i></span>
+            {{ config('app.name', 'Expenses') }}
+        </a>
+        <div class="nav-actions">
+            @guest
+                <a href="{{ route('login') }}" class="btn btn-ghost">{{ __('Login') }}</a>
+                <a href="{{ route('register') }}" class="btn btn-primary">{{ __('Get started') }}</a>
+            @else
+                <a href="{{ route('home') }}" class="btn btn-primary">{{ __('Go to dashboard') }}</a>
+            @endguest
+        </div>
+    </nav>
+
+    {{-- Hero --}}
+    <header class="landing-hero">
+        <div class="row align-items-center g-5">
+            <div class="col-12 col-lg-6 text-center text-lg-start">
+                <span class="eyebrow">
+                    <i class="fas fa-circle-check"></i> {{ __('Free & open source') }}
+                </span>
+
+                <h1>
+                    {{ __('Take control of your') }}
+                    <span class="gradient-text">{{ __('money') }}</span>.
                 </h1>
 
-                <!-- Text -->
-                <p class="lead text-center text-md-left text-muted mb-6 mb-lg-8 ">
-                    {{ __('A web application to keep track of your expenses, incomes, loans and recurrent payments in order to get insights to optimize your money.') }}
+                <p class="lead mx-auto mx-lg-0">
+                    {{ __('Track expenses, incomes, wallets and recurrent payments across multiple currencies — and turn them into insights that help you spend smarter.') }}
                 </p>
 
-                <!-- Buttons -->
-                <div class="text-center text-md-left mb-5">
+                <div class="hero-cta justify-content-center justify-content-lg-start">
                     @guest
-                        <a href="/register" class="btn btn-primary shadow lift me-1">
-                            {{ __('Create an account!') }}
+                        <a href="{{ route('register') }}" class="btn btn-primary btn-lg lift">
+                            {{ __('Create your free account') }} <i class="fas fa-arrow-right ms-1"></i>
                         </a>
-                        <a href="/login" class="btn btn-success lift">
-                            {{ __('Login') }}
+                        <a href="{{ route('login') }}" class="btn btn-ghost btn-lg lift">
+                            {{ __('Sign in') }}
+                        </a>
+                    @else
+                        <a href="{{ route('home') }}" class="btn btn-primary btn-lg lift">
+                            {{ __('Welcome back') }}, {{ Auth::user()->name }} — {{ __('go to dashboard') }}
                         </a>
                     @endguest
-                    @auth
-                        <a href="/dashboard" class="btn btn-primary shadow lift me-1">
-                            {{ __('Welcome back') }} {{ Auth::user()->name}}, {{ __('Go to the dashboard') }}.
-                        </a>
-                    @endauth
+                </div>
 
+                <div class="hero-trust justify-content-center justify-content-lg-start">
+                    <span><i class="fas fa-check"></i> {{ __('No credit card') }}</span>
+                    <span><i class="fas fa-check"></i> {{ __('Multi-currency') }}</span>
+                    <span><i class="fas fa-check"></i> {{ __('Private by design') }}</span>
                 </div>
             </div>
-            <div class="col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6">
-                <img src="/images/home.svg" class="img-fluid"/>
+
+            <div class="col-12 col-lg-6">
+                <div class="hero-art">
+                    <img src="/images/hero.svg" class="img-fluid" alt="{{ __('Expenses dashboard illustration') }}"/>
+                </div>
             </div>
         </div>
-        <div class="row align-items-top text-center">
-            <div class="col-12 col-md-4 aos-init aos-animate mb-5" data-aos="fade-up">
-                <h3 class="mb-3">
-                    <i class="fas fa-lightbulb me-2"></i> {{ __('What is it?') }}
-                </h3>
-                <p class="text-muted mb-6 mb-md-0">
-                    {{ __("It's a web application to track expenses and incomes to have control of your money.") }}
-                </p>
-            </div>
-            <div class="col-12 col-md-4 aos-init aos-animate mb-5" data-aos="fade-up" data-aos-delay="50">
-                <h3 class="mb-3">
-                    <i class="fas fa-cog me-2"></i> {{ __('How it works?') }}
-                </h3>
-                <p class="text-muted mb-6 mb-md-0">
-                    {{ __('Every time you spend money or receive money, you track the transactions. The application
-                            will save all data and you will be able to have logs
-                             and reports of your money.') }}
-                </p>
+    </header>
 
-            </div>
+    {{-- Features --}}
+    <section class="landing-features">
+        <div class="section-heading">
+            <h2>{{ __('Everything you need, nothing you don\'t') }}</h2>
+            <p>{{ __('A simple, focused way to understand where your money goes.') }}</p>
+        </div>
 
-            <div class="col-12 col-md-4 aos-init aos-animate mb-5" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="mb-3">
-                    <i class="fas fa-comment-dollar me-2"></i> {{ __("It's free!!!") }}
-                </h3>
-                <p class="text-muted mb-0">
-                    {{ __("Yes, the app is totally free. And also is Open Source, get the code!") }}
-                </p>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="feature-card">
+                    <span class="feature-icon"><i class="fas fa-lightbulb"></i></span>
+                    <h3>{{ __('What is it?') }}</h3>
+                    <p>{{ __("A web app to track your expenses and incomes so you always know exactly where your money stands.") }}</p>
+                </div>
             </div>
-        <div class="col-12 btn-spacer"></div>
-    </div>
-</div>
+            <div class="col-12 col-md-4">
+                <div class="feature-card accent-green">
+                    <span class="feature-icon"><i class="fas fa-chart-line"></i></span>
+                    <h3>{{ __('How it works') }}</h3>
+                    <p>{{ __('Log each transaction as you spend or earn. The app stores everything and turns it into clear reports and trends.') }}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="feature-card accent-amber">
+                    <span class="feature-icon"><i class="fas fa-heart"></i></span>
+                    <h3>{{ __("It's free") }}</h3>
+                    <p>{{ __('Completely free and open source. Own your data and grab the code whenever you like.') }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="text-center mt-2 mb-5">
-Made with <i class="fas fa-heart"></i> in <a href="https://www.42mate.com">42mate</a>
+    {{-- Final CTA --}}
+    @guest
+    <section class="landing-cta">
+        <h2>{{ __('Ready to master your finances?') }}</h2>
+        <p>{{ __('Join now and start tracking in minutes — it only takes a few clicks.') }}</p>
+        <a href="{{ route('register') }}" class="btn btn-primary btn-lg lift">
+            {{ __('Create an account') }} <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </section>
+    @endguest
+
+    {{-- Footer --}}
+    <footer class="landing-footer">
+        {{ __('Made with') }} <i class="fas fa-heart"></i> {{ __('in') }}
+        <a href="https://www.42mate.com" target="_blank" rel="noopener">42mate</a>
+    </footer>
+
 </div>
 @endsection

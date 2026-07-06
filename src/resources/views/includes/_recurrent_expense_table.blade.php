@@ -42,7 +42,7 @@
             <td class="d-block d-sm-table-cell">
                 {{ $recurrent->past_due }}
             </td>
-            <td class="d-block d-sm-table-cell text-end">
+            <td class="d-block d-sm-table-cell text-end" title="{{ $recurrent->amount_native_formatted }}">
                 <strong>{{ $recurrent->amount_formatted }}</strong>
             </td>
             <td class="text-end">

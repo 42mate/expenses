@@ -11,6 +11,7 @@ require('chart.js');
 require('./charts/charts');
 require('./anchor-submit');
 require('./components/filepond.js');
+require('./amount-input');
 
 //Used for recurrent payments in create expense
 $('.fill-expense').click(function(e) {
@@ -25,6 +26,13 @@ $('.fill-expense').click(function(e) {
 $(document).ready(function () {
     $('.sidebarCollapse').on('click', function () {
         $('.sidepanel').toggleClass('active');
+    });
+
+    // Expand/collapse a scroll-capped list (e.g. dashboard wallets).
+    $(document).on('click', '.dc-toggle', function () {
+        var $btn = $(this);
+        $($btn.data('target')).toggleClass('expanded');
+        $btn.toggleClass('is-expanded');
     });
 
     // Enter submits, Esc cancels the active modal

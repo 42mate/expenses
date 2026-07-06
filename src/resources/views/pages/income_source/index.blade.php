@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-5">
+        <h1>
             <i class="fa-brands fa-sourcetree"></i> {{ __('Income Source') }}
             <div class="add_control">
                 <a href="{{ route('income_source.create') }}">

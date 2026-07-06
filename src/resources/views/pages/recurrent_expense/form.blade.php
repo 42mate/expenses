@@ -20,20 +20,27 @@
             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
                 {!! forms()->create('recurrent_expense', !empty($model)? $model : null) !!}
 
-                {!! forms()->field(__('Amount'), 'amount', 'number')->attribute('step', '.01') !!}
+                {!! forms()->field(__('Amount'), 'amount', 'text') !!}
                 {!! forms()->field(__('Description'), 'description') !!}
                 {!! forms()->field(__('Last payment date'), 'last_use_date', 'date', (empty($model->last_use_date) ? '' : $model->last_use_date->format('Y-m-d'))) !!}
 
                 <div class="form-group mb-3">
-                    <div>
-                        <label for="category_id" class="strong">{{ __('Category') }}</label>
-                        <span class="mt-1 mb-1 float-end">
-                            <a href="{{ route('category.create', ['gt=expense.create']) }}">
-                                <i class="fas fa-plus"></i> {{ __('Add Category') }}'
-                            </a>
-                        </span>
+                    <div class="field-label-row">
+                        <label for="category_id" class="form-label">{{ __('Category') }}</label>
+                        <a href="{{ route('category.create', ['gt=expense.create']) }}" class="field-action">
+                            <i class="fas fa-plus"></i> {{ __('Add') }}
+                        </a>
                     </div>
                     <x-categories-drop-down name="category_id" useAsLabel="category" selected="{{ empty($model) ? 0 : $model->category_id }}"/>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="currency_id" class="form-label">{{ __('Currency') }}</label>
+                    <x-currencies-drop-down name="currency_id"
+                        use_as_label="name"
+                        selected="{{ empty($model) ? Auth::user()->default_currency_id : $model->currency_id }}"
+                    />
+                    <small class="text-muted">{{ __('Defaults to your profile currency. Used to convert this payment in reports and the pending list.') }}</small>
                 </div>
 
                 {{

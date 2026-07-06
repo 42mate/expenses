@@ -6,6 +6,7 @@ use App\Exports\ExpenseExport;
 use App\Models\Expense;
 use App\Models\Receipt;
 use App\Models\RecurrentExpense;
+use App\Support\AmountNormalizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -35,6 +36,7 @@ class ExpenseController extends Controller
     public function create(Request $request)
     {
         $expense = new Expense();
+        $restrictWalletCurrencyId = null;
 
         if ($request->get('recurrent_expense', 0) > 0) {
             $recurrent_expense = RecurrentExpense::find($request->get('recurrent_expense'));
@@ -44,6 +46,10 @@ class ExpenseController extends Controller
                 $expense->category_id = $recurrent_expense->category_id;
                 $expense->recurrent_expense_id = $recurrent_expense->id;
 
+                // Paying a recurrent expense: only wallets matching its currency
+                // may be selected, so the created expense keeps that currency.
+                $restrictWalletCurrencyId = $recurrent_expense->currency_id;
+
                 // Save the referer in the session to redirect back to it after saving the expense
                 $request->session()->put('back_to', request()->headers->get('referer'));
             }
@@ -52,11 +58,14 @@ class ExpenseController extends Controller
         return view('pages.expense.form', [
             'recurrent_expenses' => RecurrentExpense::getAllNotUsedFirst(Auth::id()),
             'model' => $expense,
+            'restrict_wallet_currency_id' => $restrictWalletCurrencyId,
         ]);
     }
 
     public function store(Request $request)
     {
+        $request->merge(['amount' => AmountNormalizer::normalize($request->input('amount'))]);
+
         $request->validate([
             'amount' => 'required|numeric',
         ]);
@@ -117,6 +126,8 @@ class ExpenseController extends Controller
 
     public function update(Request $request, Expense $expense)
     {
+        $request->merge(['amount' => AmountNormalizer::normalize($request->input('amount'))]);
+
         $request->validate([
             'amount' => 'required|numeric',
         ]);

@@ -13,27 +13,36 @@
                 </a>
             </li>
         @else
-        <li  class="nav-item dropdown no-arrow">
+        <li  class="nav-item dropdown no-arrow d-none d-lg-block">
             <a class="nav-link" href="{{ route('home') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>&nbsp; {{ __('Dashboard') }}</span>
             </a>
         </li>
         <li  class="nav-item dropdown no-arrow">
-            <a class="nav-link" href="{{ route('expense.create') }}">
+            <a class="nav-link" href="{{ route('expense.create') }}" title="{{ __('Add Expense') }}">
                 <i class="fas fa-money-bill-wave"></i>
-                <span>&nbsp; {{ __('Add Expense') }}</span>
+                <span class="d-none d-md-inline">&nbsp; {{ __('Add Expense') }}</span>
             </a>
         </li>
 
-        <li  class="nav-item dropdown no-arrow">
-            <a class="d-sm-none nav-link" data-bs-toggle="collapse"
-                href="#accordionSidebar" role="button"
-                aria-expanded="false" aria-controls="accordionSidebar">
-                <i class="fas fa-bars"></i>
-            </a>
+        <!-- Nav Item - Display currency selector -->
+        <li class="nav-item dropdown no-arrow d-flex align-items-center">
+            <form method="POST" action="{{ route('display_currency.update') }}" class="m-0 px-2">
+                @csrf
+                <select name="display_currency_id"
+                        class="form-select form-select-sm display-currency-select"
+                        title="{{ __('Display currency') }}"
+                        onchange="this.form.submit()">
+                    @foreach(\App\Models\Currency::where('code', '!=', 'DEF')->orderBy('name')->get() as $currency)
+                        <option value="{{ $currency->id }}"
+                            @if(!empty($displayCurrency) && $displayCurrency->id == $currency->id) selected @endif>
+                            {{ $currency->code }} {{ $currency->symbol }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
         </li>
-
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
@@ -65,6 +74,15 @@
                     </form>
                 </a>
             </div>
+        </li>
+
+        <!-- Nav Item - Sidebar toggle (mobile) — kept last so it's the first button from the right -->
+        <li class="nav-item dropdown no-arrow">
+            <a class="d-sm-none nav-link" data-bs-toggle="collapse"
+                href="#accordionSidebar" role="button"
+                aria-expanded="false" aria-controls="accordionSidebar">
+                <i class="fas fa-bars"></i>
+            </a>
         </li>
         @endguest
     </ul>

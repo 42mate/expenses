@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="">
-        <h1 class="mb-5">
+        <h1>
             <i class="fas fa-money-bill-wave"></i> {{ __('Expenses') }}
             <div class="add_control">
                 <a href="{{ route('expense.create') }}">
@@ -54,7 +54,8 @@
                             <td class="d-block d-sm-table-cell ">
                                 {{ $expense->currency->code }}
                             </td>
-                            <td class="d-block d-sm-table-cell font-weight-bold text-end">
+                            <td class="d-block d-sm-table-cell font-weight-bold text-end"
+                                title="{{ $expense->amount_native_formatted }}">
                                 {{ $expense->amount_formatted }}
                             </td>
                             <td class="text-end">
