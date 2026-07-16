@@ -51,6 +51,57 @@ class Expense extends Model
         static::addGlobalScope(new OwnerScope);
     }
 
+    /**
+     * Names of the categories / income-sources that represent wallet-to-wallet
+     * transfers. These are not real expenses or incomes, so they are excluded
+     * from the dashboard widgets and the expense reports. Configurable so the
+     * user can rename their transfer category without touching code.
+     */
+    public static function transferNames(): array
+    {
+        return config('expenses.transfer_names', []);
+    }
+
+    /**
+     * The foreign-key column used to detect transfers on this model.
+     * Overridden by Income, which categorises via income_source_id.
+     */
+    protected static function transferColumn(): string
+    {
+        return 'category_id';
+    }
+
+    /**
+     * IDs of the current user's transfer categories (income-sources for Income).
+     */
+    protected static function transferIds(): array
+    {
+        $names = static::transferNames();
+        if (empty($names)) {
+            return [];
+        }
+
+        return Category::whereIn('category', $names)->pluck('id')->all();
+    }
+
+    /**
+     * Constrain a query to exclude transfer movements. Rows with no
+     * category/source (NULL) are kept — only the transfer ones are dropped.
+     */
+    public function scopeWithoutTransfers($query)
+    {
+        $ids = static::transferIds();
+        if (empty($ids)) {
+            return $query;
+        }
+
+        $column = $this->getTable() . '.' . static::transferColumn();
+
+        return $query->where(function ($q) use ($column, $ids) {
+            $q->whereNotIn($column, $ids)->orWhereNull($column);
+        });
+    }
+
     protected $casts = [
         'date' => 'datetime:Y-m-d',
     ];
@@ -282,6 +333,7 @@ class Expense extends Model
     public static function totalByDateRange($from, $to)
     {
         $expenses = self::whereBetween('date', [$from, $to])
+            ->withoutTransfers()
             ->selectRaw('DATE_FORMAT(date, "%Y-%c") as `month`,
                     currencies.name as name,
                     currencies.code as code,
@@ -295,6 +347,7 @@ class Expense extends Model
     public static function getTotalByMonth()
     {
         return self::query()
+            ->withoutTransfers()
             ->select(DB::raw('DATE_FORMAT(date, "%Y-%c") as `month`,
                     currencies.name as name,
                     currencies.code as code,
@@ -328,6 +381,7 @@ class Expense extends Model
             ->leftJoin('categories', 'categories.id', '=', 'expenses.category_id')
             ->join('currencies', 'currencies.id', '=', 'expenses.currency_id')
             ->whereBetween('expenses.date', [$start, $end])
+            ->withoutTransfers()
             ->groupBy(DB::raw('1, 2'));
 
         return $q->get();

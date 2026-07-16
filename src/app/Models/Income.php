@@ -51,6 +51,25 @@ class Income extends Expense
     }
 
     /**
+     * Incomes are categorised by income-source, so transfers are detected
+     * through income_source_id rather than category_id.
+     */
+    protected static function transferColumn(): string
+    {
+        return 'income_source_id';
+    }
+
+    protected static function transferIds(): array
+    {
+        $names = static::transferNames();
+        if (empty($names)) {
+            return [];
+        }
+
+        return IncomeSource::whereIn('source', $names)->pluck('id')->all();
+    }
+
+    /**
      * Get all receipts
      */
     public function receipts(): MorphMany
