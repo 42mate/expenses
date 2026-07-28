@@ -71,7 +71,7 @@ ssh ${SSH_USER}@${ARTISAN} "
   sudo -u www-data -- $PHP artisan --no-ansi --no-interaction optimize:clear;
 
   echo 'Running database migrations';
-  sudo -u www-data -- $PHP artisan migrate;
+  sudo -u www-data -- $PHP artisan migrate --force;
 
   echo 'Reloading supervisor configuration';
 
