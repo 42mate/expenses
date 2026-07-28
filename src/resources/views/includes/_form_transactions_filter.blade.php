@@ -93,12 +93,24 @@
         @enderror
     </div>
     <div class="form-group col-12 text-end form-reverse">
-        {!! forms()->button('<i class="fas fa-filter"></i> ' . __('Filter'))->attribute('class', 'btn btn-primary') !!}
+        {{-- The controllers branch on the submitted `action` value, so both buttons must
+             carry name/value. `forms()->button()` has no $value parameter and namespaces
+             $name, hence the explicit attributes. Filter stays first in the DOM so that
+             pressing Enter in a field filters instead of downloading. --}}
+        {!! forms()->button('<i class="fas fa-filter"></i> ' . __('Filter'))
+            ->attribute('class', 'btn btn-primary')
+            ->attribute('type', 'submit')
+            ->attribute('name', 'action')
+            ->attribute('value', 'filter') !!}
         <a href="{{ route($type . '.index') }}" class="btn btn-secondary">
             <i class="fas fa-minus-circle"></i>
             {{ __('Reset') }}
         </a>
-        {!! forms()->button('<i class="fas fa-file-excel"></i> ' . __('Export'))->attribute('class', 'btn btn-success') !!}
+        {!! forms()->button('<i class="fas fa-file-excel"></i> ' . __('Export'))
+            ->attribute('class', 'btn btn-success')
+            ->attribute('type', 'submit')
+            ->attribute('name', 'action')
+            ->attribute('value', 'xls') !!}
     </div>
     {!! html()->form()->close() !!}
 </div>

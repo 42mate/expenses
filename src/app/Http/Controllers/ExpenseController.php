@@ -192,8 +192,8 @@ class ExpenseController extends Controller
 
     public function export(Collection $data)
     {
-        $date = Carbon::now();
-        $name = 'expenses-'.$date.'.xlsx';
+        $name = 'expenses-'.Carbon::now()->format('Y-m-d_His').'.xlsx';
+
         return Excel::download(new ExpenseExport($data), $name);
     }
 }

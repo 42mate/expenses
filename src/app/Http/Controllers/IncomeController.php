@@ -168,9 +168,11 @@ class IncomeController extends Controller
 
     public function export(Collection $data)
     {
-        $date = Carbon::now();
-        $name = 'incomes-'.$date.'.xlsx';
+        //Expense::filter() only eager loads the category, which incomes do not use.
+        $data->loadMissing('incomeSource');
 
-        return Excel::download(new ExpenseExport($data), $name);
+        $name = 'incomes-'.Carbon::now()->format('Y-m-d_His').'.xlsx';
+
+        return Excel::download(new ExpenseExport($data, 'Income Source'), $name);
     }
 }
